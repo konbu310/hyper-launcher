@@ -98,7 +98,6 @@ export const Launcher: React.FC = () => {
     cardId: string,
     ev: React.DragEvent<HTMLElement>
   ) => {
-    console.log("on drag end");
     setDraggedItem(draft => {
       draft.boxKey = draft.cardIndex = null;
     });

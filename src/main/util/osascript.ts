@@ -8,14 +8,6 @@ export const getRunningApps = (...apps: AppInfo[]): Promise<AppInfo[]> => {
   }, apps);
 };
 
-export const getFrontMostApp = (
-  ...apps: AppInfo[]
-): Promise<AppInfo | null> => {
-  return run((apps: AppInfo[]) => {
-    return apps.filter(app => Application(app.name).frontmost())[0] || null;
-  }, apps);
-};
-
 export const getFrontMostAppIndex = (
   ...apps: AppInfo[]
 ): Promise<number | null> => {
