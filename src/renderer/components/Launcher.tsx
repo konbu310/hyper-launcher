@@ -2,8 +2,9 @@ import * as React from "react";
 import { css } from "emotion";
 import { initialData, AppInfo, Shortcut } from "../util/initial-data";
 import { Box } from "./Box";
-import { Card } from "./Card";
+import { Card, EmptyCard } from "./Card";
 import { nonNullableObj } from "../util/guard";
+import { useImmer } from "use-immer";
 
 // ______________________________________________________
 //
@@ -20,6 +21,8 @@ type DraggedItem = {
 //
 const styles = {
   LauncherSection: css`
+    width: 900px;
+    height: 900px;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-auto-rows: 300px;
@@ -28,7 +31,8 @@ const styles = {
     display: flex;
     flex-direction: column;
     height: 100%;
-    overflow-y: scroll;
+    overflow-y: auto;
+    overflow-x: hidden;
   `
 };
 
@@ -38,20 +42,28 @@ const styles = {
 //
 export const Launcher: React.FC = () => {
   // ショートカットのデータ
-  const [shortcutData, setShortcutData] = React.useState<Shortcut>(initialData);
-
-  // ドラッグ中アイテムのデータ
-  const draggedItem = React.useRef<DraggedItem>({
+  const [shortcutData, setShortcutData] = useImmer<Shortcut>(initialData);
+  const [draggedItem, setDraggedItem] = useImmer<DraggedItem>({
     boxKey: null,
     cardIndex: null
   });
+
+  React.useEffect(() => {
+    document.ondragover = document.ondrop = ev => {
+      ev.preventDefault();
+      return;
+    };
+  }, []);
 
   // ドラッグ開始イベントのハンドラ
   const onDragStart = (boxKey: string, cardIndex: number) => (
     cardId: string,
     ev: React.DragEvent<HTMLElement>
   ) => {
-    draggedItem.current = { boxKey, cardIndex };
+    setDraggedItem(draft => {
+      draft.boxKey = boxKey;
+      draft.cardIndex = cardIndex;
+    });
     const dragElm = document.querySelector(`#${cardId}`);
     dragElm && ev.dataTransfer.setDragImage(dragElm, 0, 0);
     ev.dataTransfer.effectAllowed = "move";
@@ -62,18 +74,23 @@ export const Launcher: React.FC = () => {
     cardId: string,
     ev: React.DragEvent<HTMLElement>
   ) => {
-    if (draggedItem.current === { boxKey, cardIndex }) return;
+    if (draggedItem === { boxKey, cardIndex }) return;
+    if (ev.dataTransfer.effectAllowed === "all") return;
 
-    if (nonNullableObj(draggedItem.current)) {
-      const newShortcutData = { ...shortcutData };
-      const removedData = newShortcutData[draggedItem.current.boxKey].splice(
-        draggedItem.current.cardIndex,
-        1
-      );
-      newShortcutData[boxKey].splice(cardIndex, 0, ...removedData);
-      setShortcutData(newShortcutData);
-      draggedItem.current = { boxKey, cardIndex };
+    if (nonNullableObj(draggedItem)) {
+      setShortcutData(draft => {
+        const removedData = draft[draggedItem.boxKey].splice(
+          draggedItem.cardIndex,
+          1
+        );
+        draft[boxKey].splice(cardIndex, 0, ...removedData);
+      });
     }
+
+    setDraggedItem(draft => {
+      draft.boxKey = boxKey;
+      draft.cardIndex = cardIndex;
+    });
   };
 
   // ドラッグ終了イベントのハンドラ
@@ -81,7 +98,16 @@ export const Launcher: React.FC = () => {
     cardId: string,
     ev: React.DragEvent<HTMLElement>
   ) => {
-    draggedItem.current = { boxKey: null, cardIndex: null };
+    console.log("on drag end");
+    setDraggedItem(draft => {
+      draft.boxKey = draft.cardIndex = null;
+    });
+  };
+
+  const updateShortcutData = (boxKey: string) => (newApp: AppInfo) => {
+    setShortcutData(draft => {
+      draft[boxKey].push(newApp);
+    });
   };
 
   // View
@@ -92,19 +118,27 @@ export const Launcher: React.FC = () => {
           key={`box-${boxKey}`}
           boxId={`box-${boxKey}`}
           header={`Ctrl + ${boxKey}`}
+          updateShortcutData={updateShortcutData(boxKey)}
         >
           <div className={styles.CardContainer}>
-            {shortcutData[boxKey].map((app, cardIndex) => (
-              <Card
-                key={`card-${boxKey}${cardIndex}`}
-                cardId={`card-${boxKey}${cardIndex}`}
-                icon={app.icon}
-                name={app.name}
-                onDragStart={onDragStart(boxKey, cardIndex)}
-                onDragEnter={onDragEnter(boxKey, cardIndex)}
-                onDragEnd={onDragEnd(boxKey, cardIndex)}
+            {shortcutData[boxKey].length === 0 ? (
+              <EmptyCard
+                cardId={`card-${boxKey}0`}
+                onDragEnter={onDragEnter(boxKey, 0)}
               />
-            ))}
+            ) : (
+              shortcutData[boxKey].map((app, cardIndex) => (
+                <Card
+                  key={`card-${app.name}`}
+                  cardId={`card-${boxKey}${cardIndex}`}
+                  icon={app.icon}
+                  name={app.name}
+                  onDragStart={onDragStart(boxKey, cardIndex)}
+                  onDragEnter={onDragEnter(boxKey, cardIndex)}
+                  onDragEnd={onDragEnd(boxKey, cardIndex)}
+                />
+              ))
+            )}
           </div>
         </Box>
       ))}

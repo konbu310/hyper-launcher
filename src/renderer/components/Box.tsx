@@ -1,5 +1,6 @@
 import * as React from "react";
 import { css } from "emotion";
+import { AppInfo } from "../util/initial-data";
 
 // ______________________________________________________
 //
@@ -8,6 +9,7 @@ import { css } from "emotion";
 type BoxProps = {
   boxId: string;
   header: string | React.ReactNode;
+  updateShortcutData: Function;
 };
 
 // ______________________________________________________
@@ -35,8 +37,21 @@ const styles = {
 // @ Box View
 //
 export const Box: React.FC<BoxProps> = props => {
+  const handleDrop = (ev: React.DragEvent<HTMLElement>) => {
+    ev.preventDefault();
+    if (ev.dataTransfer.effectAllowed === "move") return;
+    const file = ev.dataTransfer.files[0];
+    const fileName = file.name.slice(0, -4);
+    const appData: AppInfo = {
+      name: fileName,
+      path: file.path,
+      icon: ""
+    };
+    props.updateShortcutData(appData);
+  };
+
   return (
-    <div className={styles.Box}>
+    <div className={styles.Box} onDrop={ev => handleDrop(ev)}>
       <header className={styles.BoxHeader}>{props.header}</header>
       {props.children}
     </div>

@@ -14,6 +14,11 @@ type CardProps = {
   onDragEnd: Function;
 };
 
+type EmptyCardProps = {
+  cardId: string;
+  onDragEnter: Function;
+};
+
 // ______________________________________________________
 //
 // @ Styles
@@ -26,7 +31,7 @@ const styles = {
     border-radius: 5px;
     position: relative;
     box-shadow: 0 0 5px lightgrey;
-    flex: 0 0 65px;
+    flex: 0 0 60px;
   `,
   CardIcon: css`
     vertical-align: middle;
@@ -41,7 +46,16 @@ const styles = {
     transform: translateY(-50%);
     pointer-events: none;
   `,
-  CardText: css``
+  CardText: css`
+    overflow: hidden;
+    width: 250px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  `,
+  EmptyCard: css`
+    position: relative;
+    flex: 0 0 180px;
+  `
 };
 
 // ______________________________________________________
@@ -59,9 +73,21 @@ export const Card: React.FC<CardProps> = props => {
       onDragEnd={ev => props.onDragEnd(props.cardId, ev)}
     >
       <div className={styles.CardContent}>
-        <img className={styles.CardIcon} src={props.icon} alt="" />
-        <span className={styles.CardText}>{props.name}</span>
+        <p className={styles.CardText}>
+          <img className={styles.CardIcon} src={props.icon} alt="" />
+          {props.name}
+        </p>
       </div>
     </div>
+  );
+};
+
+export const EmptyCard: React.FC<EmptyCardProps> = props => {
+  return (
+    <div
+      id={props.cardId}
+      className={styles.EmptyCard}
+      onDragEnter={ev => props.onDragEnter(props.cardId, ev)}
+    />
   );
 };

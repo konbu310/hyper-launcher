@@ -1,10 +1,13 @@
 import { app, globalShortcut, shell } from "electron";
 import { createMainWindow } from "./windowManager";
+import { initialData } from "../renderer/util/initial-data";
+import { registerShortcut } from "./shortcutOps";
 
 app.setName("nine-launcher");
 
 // 準備完了
 app.on("ready", async () => {
+  await registerShortcut(initialData);
   createMainWindow();
 });
 
