@@ -1,7 +1,6 @@
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const TsConfigWebpackPlugin = require("ts-config-webpack-plugin");
-const CopyPlugin = require("copy-webpack-plugin");
 const path = require("path");
 
 // ______________________________________________________
@@ -23,7 +22,7 @@ module.exports = [
     name: "main",
     mode: isProduction ? "production" : "development",
     target: "electron-main",
-    devtool: "source-map",
+    devtool: isProduction ? "" : "source-map",
     entry: path.join(__dirname, "src/main/main.ts"),
     node: {
       __dirname: false,
@@ -48,7 +47,7 @@ module.exports = [
     name: "renderer",
     mode: isProduction ? "production" : "development",
     target: "electron-renderer",
-    devtool: "source-map",
+    devtool: isProduction ? "" : "source-map",
     entry: path.join(__dirname, "src/renderer/index.tsx"),
     output: {
       path: path.join(__dirname, "dist/"),

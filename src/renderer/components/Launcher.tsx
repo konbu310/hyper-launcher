@@ -63,7 +63,6 @@ export const Launcher: React.FC = () => {
     cardId: string,
     ev: React.DragEvent<HTMLElement>
   ) => {
-    console.log(`Start: ${boxKey}, ${cardIndex}`);
     setDraggedItem({
       boxKey,
       cardIndex
@@ -102,7 +101,6 @@ export const Launcher: React.FC = () => {
     cardId: string,
     ev: React.DragEvent<HTMLElement>
   ) => {
-    console.log(`End: ${boxKey}, ${cardIndex}`);
     setDraggedItem({
       boxKey: null,
       cardIndex: null
