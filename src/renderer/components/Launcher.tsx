@@ -1,10 +1,11 @@
 import * as React from "react";
 import { css } from "emotion";
-import { initialData, AppInfo, Shortcut } from "../util/initial-data";
 import { Box } from "./Box";
 import { Card, EmptyCard } from "./Card";
 import { nonNullableObj } from "../util/guard";
-import { useImmer } from "use-immer";
+import { Shortcut, App, StoreKey } from "../../share/interface";
+import { remote } from "electron";
+import Store from "electron-store";
 
 // ______________________________________________________
 //
@@ -41,9 +42,12 @@ const styles = {
 // @ Launcher View
 //
 export const Launcher: React.FC = () => {
-  // ショートカットのデータ
-  const [shortcutData, setShortcutData] = useImmer<Shortcut>(initialData);
-  const [draggedItem, setDraggedItem] = useImmer<DraggedItem>({
+  const store = remote.getGlobal("store") as Store<StoreKey>;
+
+  const [shortcutData, setShortcutData] = React.useState<Shortcut>(
+    store.get("shortcut")
+  );
+  const [draggedItem, setDraggedItem] = React.useState<DraggedItem>({
     boxKey: null,
     cardIndex: null
   });
@@ -55,92 +59,96 @@ export const Launcher: React.FC = () => {
     };
   }, []);
 
-  // ドラッグ開始イベントのハンドラ
   const onDragStart = (boxKey: string, cardIndex: number) => (
     cardId: string,
     ev: React.DragEvent<HTMLElement>
   ) => {
-    setDraggedItem(draft => {
-      draft.boxKey = boxKey;
-      draft.cardIndex = cardIndex;
+    console.log(`Start: ${boxKey}, ${cardIndex}`);
+    setDraggedItem({
+      boxKey,
+      cardIndex
     });
     const dragElm = document.querySelector(`#${cardId}`);
     dragElm && ev.dataTransfer.setDragImage(dragElm, 0, 0);
     ev.dataTransfer.effectAllowed = "move";
   };
 
-  // ドラッグ交差イベントのハンドラ
   const onDragEnter = (boxKey: string, cardIndex: number) => (
     cardId: string,
     ev: React.DragEvent<HTMLElement>
   ) => {
-    if (draggedItem === { boxKey, cardIndex }) return;
+    if (draggedItem.boxKey === boxKey && draggedItem.cardIndex === cardIndex)
+      return;
     if (ev.dataTransfer.effectAllowed === "all") return;
 
     if (nonNullableObj(draggedItem)) {
-      setShortcutData(draft => {
-        const removedData = draft[draggedItem.boxKey].splice(
-          draggedItem.cardIndex,
-          1
-        );
-        draft[boxKey].splice(cardIndex, 0, ...removedData);
+      const newData = { ...shortcutData };
+      const removed = newData[draggedItem.boxKey].splice(
+        draggedItem.cardIndex,
+        1
+      );
+      newData[boxKey].splice(cardIndex, 0, ...removed);
+      setShortcutData(newData);
+      store.set("shortcut", newData);
+
+      setDraggedItem({
+        boxKey,
+        cardIndex
       });
     }
-
-    setDraggedItem(draft => {
-      draft.boxKey = boxKey;
-      draft.cardIndex = cardIndex;
-    });
   };
 
-  // ドラッグ終了イベントのハンドラ
   const onDragEnd = (boxKey: string, cardIndex: number) => (
     cardId: string,
     ev: React.DragEvent<HTMLElement>
   ) => {
-    setDraggedItem(draft => {
-      draft.boxKey = draft.cardIndex = null;
+    console.log(`End: ${boxKey}, ${cardIndex}`);
+    setDraggedItem({
+      boxKey: null,
+      cardIndex: null
     });
   };
 
-  const updateShortcutData = (boxKey: string) => (newApp: AppInfo) => {
-    setShortcutData(draft => {
-      draft[boxKey].push(newApp);
-    });
+  const updateShortcut = (boxKey: string) => (newApp: App) => {
+    const newData = { ...shortcutData };
+    newData[boxKey].push(newApp);
+    setShortcutData(newData);
+    store.set("shortcut", newData);
   };
 
   // View
   return (
     <section className={styles.LauncherSection}>
-      {Object.keys(shortcutData).map((boxKey, boxIndex) => (
-        <Box
-          key={`box-${boxKey}`}
-          boxId={`box-${boxKey}`}
-          header={`Ctrl + ${boxKey}`}
-          updateShortcutData={updateShortcutData(boxKey)}
-        >
-          <div className={styles.CardContainer}>
-            {shortcutData[boxKey].length === 0 ? (
-              <EmptyCard
-                cardId={`card-${boxKey}0`}
-                onDragEnter={onDragEnter(boxKey, 0)}
-              />
-            ) : (
-              shortcutData[boxKey].map((app, cardIndex) => (
-                <Card
-                  key={`card-${app.name}`}
-                  cardId={`card-${boxKey}${cardIndex}`}
-                  icon={app.icon}
-                  name={app.name}
-                  onDragStart={onDragStart(boxKey, cardIndex)}
-                  onDragEnter={onDragEnter(boxKey, cardIndex)}
-                  onDragEnd={onDragEnd(boxKey, cardIndex)}
+      {shortcutData &&
+        Object.entries(shortcutData).map(([boxKey, appList], boxIndex) => (
+          <Box
+            key={`box-${boxKey}`}
+            boxId={`box-${boxKey}`}
+            header={`Ctrl + ${boxKey}`}
+            updateShortcut={updateShortcut(boxKey)}
+          >
+            <div className={styles.CardContainer}>
+              {shortcutData[boxKey].length === 0 ? (
+                <EmptyCard
+                  cardId={`empty-card-${boxKey}0`}
+                  onDragEnter={onDragEnter(boxKey, 0)}
                 />
-              ))
-            )}
-          </div>
-        </Box>
-      ))}
+              ) : (
+                appList.map((app, cardIndex) => (
+                  <Card
+                    key={`card-${app.name}`}
+                    cardId={`card-${app.name}`}
+                    icon={app.icon}
+                    name={app.name}
+                    onDragStart={onDragStart(boxKey, cardIndex)}
+                    onDragEnter={onDragEnter(boxKey, cardIndex)}
+                    onDragEnd={onDragEnd(boxKey, cardIndex)}
+                  />
+                ))
+              )}
+            </div>
+          </Box>
+        ))}
     </section>
   );
 };

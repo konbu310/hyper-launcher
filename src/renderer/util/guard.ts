@@ -7,7 +7,6 @@ export const nonNullableObj = <T, TKey extends keyof T>(
 ): obj is SomeNonNullable<T, TKey> => {
   for (const key in obj) {
     if (obj[key] == null) {
-      console.log(`${key} is missing`);
       return false;
     }
   }

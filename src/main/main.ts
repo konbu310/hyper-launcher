@@ -1,27 +1,42 @@
-import { app, globalShortcut, shell } from "electron";
+import { app } from "electron";
 import { createMainWindow } from "./windowManager";
-import { initialData } from "../renderer/util/initial-data";
 import { registerShortcut } from "./shortcutOps";
+import { createStore } from "./util/createStore";
+import { getAppIcon } from "./util/getAppIcon";
 
-app.setName("nine-launcher");
+app.setName("HyperLauncher");
 
-// 準備完了
+// ______________________________________________________
+//
+// @ Ready
+//
 app.on("ready", async () => {
-  await registerShortcut(initialData);
+  const store = createStore();
+  await registerShortcut(store.get("shortcut"));
+  global.getAppIcon = getAppIcon;
   createMainWindow();
 });
 
-// アプリをアクティブにした時
+// ______________________________________________________
+//
+// @ Activate
+//
 app.on("activate", () => {
   createMainWindow();
 });
 
-// アプリを終了した時
+// ______________________________________________________
+//
+// @ Quit
+//
 app.on("quit", () => {
   app.quit();
 });
 
-// 全てのウィンドウが閉じられた時
+// ______________________________________________________
+//
+// @ Closed
+//
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") app.quit();
 });

@@ -1,6 +1,7 @@
 import * as React from "react";
 import { css } from "emotion";
-import { AppInfo } from "../util/initial-data";
+import { App } from "../../share/interface";
+import { remote } from "electron";
 
 // ______________________________________________________
 //
@@ -9,7 +10,7 @@ import { AppInfo } from "../util/initial-data";
 type BoxProps = {
   boxId: string;
   header: string | React.ReactNode;
-  updateShortcutData: Function;
+  updateShortcut: Function;
 };
 
 // ______________________________________________________
@@ -37,17 +38,19 @@ const styles = {
 // @ Box View
 //
 export const Box: React.FC<BoxProps> = props => {
-  const handleDrop = (ev: React.DragEvent<HTMLElement>) => {
+  const handleDrop = async (ev: React.DragEvent<HTMLElement>) => {
     ev.preventDefault();
     if (ev.dataTransfer.effectAllowed === "move") return;
     const file = ev.dataTransfer.files[0];
     const fileName = file.name.slice(0, -4);
-    const appData: AppInfo = {
+    const getAppIcon = remote.getGlobal("getAppIcon");
+    const appIcon = await getAppIcon(file.path);
+    const appData: App = {
       name: fileName,
       path: file.path,
-      icon: ""
+      icon: appIcon
     };
-    props.updateShortcutData(appData);
+    props.updateShortcut(appData);
   };
 
   return (

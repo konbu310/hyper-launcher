@@ -1,5 +1,5 @@
 import { globalShortcut, shell } from "electron";
-import { AppInfo, initialData, Shortcut } from "../renderer/util/initial-data";
+import { Shortcut, App } from "../share/interface";
 import { getRunningApps, getFrontMostAppIndex } from "./util/osascript";
 
 // prettier-ignore
@@ -8,12 +8,14 @@ let prevIndex: {[key: string]: number} = {
 };
 
 export const registerShortcut = async (shortcutData: Shortcut) => {
-  Object.keys(shortcutData).map(key => {
-    registerHotKey(key, shortcutData[key]);
+  await globalShortcut.unregisterAll();
+
+  Object.entries(shortcutData).map(([key, appList]) => {
+    registerHotKey(key, appList);
   });
 };
 
-const registerHotKey = async (key: string, appList: AppInfo[]) => {
+const registerHotKey = async (key: string, appList: App[]) => {
   if (appList.length === 1) {
     globalShortcut.register(`Control+${key}`, async () => {
       shell.openItem(appList[0].path);
@@ -25,8 +27,7 @@ const registerHotKey = async (key: string, appList: AppInfo[]) => {
   }
 };
 
-const handleMultipleApps = async (key: string, appList: AppInfo[]) => {
-  console.log(prevIndex);
+const handleMultipleApps = async (key: string, appList: App[]) => {
   const rapps = await getRunningApps(...appList);
   switch (rapps.length) {
     case 0:
@@ -40,7 +41,6 @@ const handleMultipleApps = async (key: string, appList: AppInfo[]) => {
       break;
     default:
       const index = await getFrontMostAppIndex(...rapps);
-      console.log(index);
 
       index === null
         ? shell.openItem(appList[prevIndex[key]].path)

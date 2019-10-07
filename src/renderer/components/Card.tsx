@@ -74,7 +74,11 @@ export const Card: React.FC<CardProps> = props => {
     >
       <div className={styles.CardContent}>
         <p className={styles.CardText}>
-          <img className={styles.CardIcon} src={props.icon} alt="" />
+          <img
+            className={styles.CardIcon}
+            src={`data:image/png;base64,${props.icon}`}
+            alt="application icon"
+          />
           {props.name}
         </p>
       </div>
@@ -82,6 +86,10 @@ export const Card: React.FC<CardProps> = props => {
   );
 };
 
+// ______________________________________________________
+//
+// @ Empty Card
+//
 export const EmptyCard: React.FC<EmptyCardProps> = props => {
   return (
     <div

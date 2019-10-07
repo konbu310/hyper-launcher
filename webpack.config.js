@@ -1,6 +1,7 @@
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const TsConfigWebpackPlugin = require("ts-config-webpack-plugin");
+const CopyPlugin = require("copy-webpack-plugin");
 const path = require("path");
 
 // ______________________________________________________
@@ -14,7 +15,10 @@ const isProduction = process.env.NODE_ENV === "production";
 // @ Webpack Config
 //
 module.exports = [
-  // メインプロセス
+  // ______________________________________________________
+  //
+  // @ Main Process
+  //
   {
     name: "main",
     mode: isProduction ? "production" : "development",
@@ -36,7 +40,10 @@ module.exports = [
       new TsConfigWebpackPlugin()
     ]
   },
-  // レンダラープロセス
+  // ______________________________________________________
+  //
+  // @ Renderer Process
+  //
   {
     name: "renderer",
     mode: isProduction ? "production" : "development",
