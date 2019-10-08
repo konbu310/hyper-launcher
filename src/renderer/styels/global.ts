@@ -1,9 +1,9 @@
 import { injectGlobal } from "emotion";
-import path from "path";
 
 injectGlobal`
   * {
     box-sizing: border-box;
+    font-family: "Hiragino Maru Gothic ProN";
   }
   
   html {
