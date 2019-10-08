@@ -4,7 +4,7 @@ import { registerShortcut } from "./shortcutOps";
 import { createStore } from "./util/createStore";
 import { getAppIcon } from "./util/getAppIcon";
 
-app.setName("HyperLauncher");
+app.setName("Hyper Launcher");
 
 // ______________________________________________________
 //
