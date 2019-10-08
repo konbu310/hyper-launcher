@@ -1,4 +1,5 @@
 import { injectGlobal } from "emotion";
+import path from "path";
 
 injectGlobal`
   * {
@@ -10,8 +11,9 @@ injectGlobal`
   }
   
   body {
+  background-color: transparent;
    margin: 0;
    padding: 0;
-   background-color: #117864;
+   -webkit-app-region: drag;
   }
 `;

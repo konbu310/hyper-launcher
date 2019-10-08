@@ -1,3 +1,3 @@
 # Hyper Launcher
 
-[![Image from Gyazo](https://i.gyazo.com/06845ebbb306842d6369f1b4a2507ad7.png)](https://gyazo.com/06845ebbb306842d6369f1b4a2507ad7)
+[![Image from Gyazo](https://i.gyazo.com/0bf68bec06da7d3cdc09ff1cf472261d.png)](https://gyazo.com/0bf68bec06da7d3cdc09ff1cf472261d)

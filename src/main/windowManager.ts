@@ -18,9 +18,12 @@ export const createMainWindow = (): void => {
   if (mainWindow) return;
 
   mainWindow = new BrowserWindow({
-    width: 1050,
-    height: 910,
-    resizable: true,
+    width: 960,
+    height: 950,
+    frame: false,
+    transparent: true,
+    resizable: false,
+    titleBarStyle: "hidden",
     webPreferences: {
       nodeIntegration: true
     }

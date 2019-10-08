@@ -21,11 +21,13 @@ const styles = {
   Box: css`
     margin: 10px;
     padding: 5px;
+    width: 280px;
     border-radius: 5px;
     background-color: #fff;
     border: 1px solid #fff;
     display: flex;
     flex-direction: column;
+    -webkit-app-region: no-drag;
   `,
   BoxHeader: css`
     margin: 10px 20px;

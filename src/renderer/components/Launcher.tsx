@@ -114,8 +114,13 @@ export const Launcher: React.FC = () => {
     store.set("shortcut", newData);
   };
 
-  const removeShortcut = (boxKey: string) => (cardId: string) => {
-    console.log(boxKey, cardId);
+  const removeShortcut = (boxKey: string, cardIndex: number) => {
+    if (window.confirm("削除しますか？")) {
+      const newData = {...shortcutData};
+      newData[boxKey].splice(cardIndex, 1);
+      setShortcutData(newData);
+      store.set("shortcut", newData);
+    }
   };
 
   // View
@@ -142,7 +147,7 @@ export const Launcher: React.FC = () => {
                     cardId={`card-${app.name}`}
                     icon={app.icon}
                     name={app.name}
-                    removeShortcut={removeShortcut(boxKey)}
+                    removeShortcut={() => removeShortcut(boxKey, cardIndex)}
                     onDragStart={onDragStart(boxKey, cardIndex)}
                     onDragEnter={onDragEnter(boxKey, cardIndex)}
                     onDragEnd={onDragEnd(boxKey, cardIndex)}

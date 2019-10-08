@@ -9,15 +9,15 @@ const styles = {
     justify-content: center;
     width: 100vw;
     height: 100vh;
+    border-radius: 5px;
+    background-color: #117864;
   `
 };
 
 export const Root = () => {
   return (
-    <>
-      <section className={styles.LauncherContainer}>
-        <Launcher />
-      </section>
-    </>
+    <section className={styles.LauncherContainer}>
+      <Launcher />
+    </section>
   );
 };
