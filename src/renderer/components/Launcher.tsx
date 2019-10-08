@@ -114,6 +114,10 @@ export const Launcher: React.FC = () => {
     store.set("shortcut", newData);
   };
 
+  const removeShortcut = (boxKey: string) => (cardId: string) => {
+    console.log(boxKey, cardId);
+  };
+
   // View
   return (
     <section className={styles.LauncherSection}>
@@ -138,6 +142,7 @@ export const Launcher: React.FC = () => {
                     cardId={`card-${app.name}`}
                     icon={app.icon}
                     name={app.name}
+                    removeShortcut={removeShortcut(boxKey)}
                     onDragStart={onDragStart(boxKey, cardIndex)}
                     onDragEnter={onDragEnter(boxKey, cardIndex)}
                     onDragEnd={onDragEnd(boxKey, cardIndex)}

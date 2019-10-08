@@ -9,6 +9,7 @@ type CardProps = {
   cardId: string;
   icon: string;
   name: string;
+  removeShortcut: Function;
   onDragStart: Function;
   onDragEnter: Function;
   onDragEnd: Function;
@@ -64,7 +65,7 @@ const styles = {
 //
 export const Card: React.FC<CardProps> = props => {
   return (
-    <div
+    <section
       className={styles.Card}
       id={props.cardId}
       draggable
@@ -82,7 +83,7 @@ export const Card: React.FC<CardProps> = props => {
           {props.name}
         </p>
       </div>
-    </div>
+    </section>
   );
 };
 
