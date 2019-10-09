@@ -6,6 +6,8 @@ import { getAppIcon } from "./util/getAppIcon";
 
 app.setName("Hyper Launcher");
 
+global.mainWindow = null;
+
 // ______________________________________________________
 //
 // @ Ready
@@ -22,7 +24,11 @@ app.on("ready", async () => {
 // @ Activate
 //
 app.on("activate", () => {
-  createMainWindow();
+  if (global.mainWindow) {
+    app.show();
+  } else {
+    createMainWindow();
+  }
 });
 
 // ______________________________________________________

@@ -1,7 +1,9 @@
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const TsConfigWebpackPlugin = require("ts-config-webpack-plugin");
+const BundleAnalyzerPlugin = require("@bundle-analyzer/webpack-plugin");
 const path = require("path");
+require("dotenv").config();
 
 // ______________________________________________________
 //
@@ -36,7 +38,8 @@ module.exports = [
       new CleanWebpackPlugin({
         cleanOnceBeforeBuildPatterns: ["dist/main.js", "dist/main.js.map"]
       }),
-      new TsConfigWebpackPlugin()
+      new TsConfigWebpackPlugin(),
+      new BundleAnalyzerPlugin({ token: process.env.BUNDLE_ANALYZER_TOKEN })
     ]
   },
   // ______________________________________________________
@@ -58,14 +61,15 @@ module.exports = [
         cleanOnceBeforeBuildPatterns: [
           "dist/renderer.js",
           "dist/renderer.js.map",
-          "index.html"
+          "dist/index.html"
         ]
       }),
       new HtmlWebpackPlugin({
         filename: "index.html",
         template: "src/template/index.html"
       }),
-      new TsConfigWebpackPlugin()
+      new TsConfigWebpackPlugin(),
+      new BundleAnalyzerPlugin({ token: process.env.BUNDLE_ANALYZER_TOKEN })
     ]
   }
 ];

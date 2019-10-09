@@ -8,16 +8,14 @@ import * as path from "path";
 //
 const isProduction = process.env.NODE_ENV === "production";
 
-let mainWindow: BrowserWindow | null;
-
 // ______________________________________________________
 //
 // @ Create Main Window
 //
 export const createMainWindow = (): void => {
-  if (mainWindow) return;
+  if (global.mainWindow) return;
 
-  mainWindow = new BrowserWindow({
+  global.mainWindow = new BrowserWindow({
     width: 960,
     height: 950,
     frame: false,
@@ -31,13 +29,13 @@ export const createMainWindow = (): void => {
 
   //Devtoolの読み込み
   loadDevtool(loadDevtool.REACT_DEVELOPER_TOOLS);
-  !isProduction && mainWindow.webContents.openDevTools();
+  !isProduction && global.mainWindow.webContents.openDevTools();
 
-  mainWindow
+  global.mainWindow
     .loadFile(path.join(__dirname, "index.html"))
     .catch(e => console.error(e));
 
-  mainWindow.on("close", () => {
-    mainWindow = null;
+  global.mainWindow.on("close", () => {
+    global.mainWindow = null;
   });
 };
