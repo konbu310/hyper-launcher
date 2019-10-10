@@ -1,6 +1,7 @@
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const TsConfigWebpackPlugin = require("ts-config-webpack-plugin");
+const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
 const path = require("path");
 require("dotenv").config();
 
@@ -37,7 +38,7 @@ module.exports = [
       new CleanWebpackPlugin({
         cleanOnceBeforeBuildPatterns: ["dist/main.js", "dist/main.js.map"]
       }),
-      new TsConfigWebpackPlugin(),
+      new TsConfigWebpackPlugin()
     ]
   },
   // ______________________________________________________
@@ -66,7 +67,7 @@ module.exports = [
         filename: "index.html",
         template: "src/template/index.html"
       }),
-      new TsConfigWebpackPlugin(),
+      new TsConfigWebpackPlugin()
     ]
   }
 ];

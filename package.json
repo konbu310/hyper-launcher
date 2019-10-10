@@ -8,9 +8,9 @@
   "scripts": {
     "build": "webpack",
     "build:prod": "NODE_ENV=production webpack",
+    "build:mac": "yarn run build:prod && electron-builder",
     "watch": "webpack --watch",
-    "start": "electron .",
-    "pack": "yarn run build:prod && electron-builder"
+    "start": "electron ."
   },
   "dependencies": {
     "@jxa/run": "^1.3.0",
@@ -24,21 +24,22 @@
     "@jxa/global-type": "^1.3.0",
     "@types/electron": "^1.6.10",
     "@types/electron-load-devtool": "^1.0.1",
-    "@types/node": "^12.7.11",
+    "@types/node": "^12.7.12",
     "@types/react": "^16.9.5",
     "@types/react-dom": "^16.9.1",
     "@types/react-transition-group": "^4.2.3",
-    "@types/webpack": "^4.39.2",
+    "@types/webpack": "^4.39.3",
     "clean-webpack-plugin": "^3.0.0",
     "dotenv": "^8.1.0",
-    "electron": "^6.0.11",
+    "electron": "^6.0.12",
     "electron-builder": "^21.2.0",
     "electron-load-devtool": "^1.2.0",
     "html-webpack-plugin": "^3.2.0",
     "prettier": "^1.18.2",
     "ts-config-webpack-plugin": "^1.4.0",
-    "typescript": "^3.6.3",
+    "typescript": "^3.6.4",
     "webpack": "^4.41.0",
+    "webpack-bundle-analyzer": "^3.5.2",
     "webpack-cli": "^3.3.9"
   },
   "build": {
