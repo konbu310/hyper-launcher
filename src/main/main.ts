@@ -1,12 +1,10 @@
-import { app } from "electron";
+import { app, BrowserWindow } from "electron";
 import { createMainWindow } from "./windowManager";
 import { registerShortcut } from "./shortcutOps";
 import { createStore } from "./util/createStore";
 import { getAppIcon } from "./util/getAppIcon";
 
-app.setName("Hyper Launcher");
-
-global.mainWindow = null;
+let mainWindow: BrowserWindow | null = null;
 
 // ______________________________________________________
 //
@@ -16,7 +14,11 @@ app.on("ready", async () => {
   const store = createStore();
   await registerShortcut(store.get("shortcut"));
   global.getAppIcon = getAppIcon;
-  createMainWindow();
+  mainWindow = createMainWindow();
+
+  mainWindow.on("close", () => {
+    mainWindow = null;
+  });
 });
 
 // ______________________________________________________
@@ -24,7 +26,7 @@ app.on("ready", async () => {
 // @ Activate
 //
 app.on("activate", () => {
-  if (global.mainWindow) {
+  if (mainWindow) {
     app.show();
   } else {
     createMainWindow();

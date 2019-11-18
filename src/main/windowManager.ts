@@ -12,10 +12,8 @@ const isProduction = process.env.NODE_ENV === "production";
 //
 // @ Create Main Window
 //
-export const createMainWindow = (): void => {
-  if (global.mainWindow) return;
-
-  global.mainWindow = new BrowserWindow({
+export const createMainWindow = (): BrowserWindow => {
+  const mainWindow = new BrowserWindow({
     width: 960,
     height: 950,
     frame: false,
@@ -29,13 +27,11 @@ export const createMainWindow = (): void => {
 
   //Devtoolの読み込み
   loadDevtool(loadDevtool.REACT_DEVELOPER_TOOLS);
-  !isProduction && global.mainWindow.webContents.openDevTools();
+  !isProduction && mainWindow.webContents.openDevTools();
 
-  global.mainWindow
+  mainWindow
     .loadFile(path.join(__dirname, "index.html"))
     .catch(e => console.error(e));
 
-  global.mainWindow.on("close", () => {
-    global.mainWindow = null;
-  });
+  return mainWindow
 };
