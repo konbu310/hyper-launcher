@@ -3,7 +3,7 @@ import { injectGlobal } from "emotion";
 injectGlobal`
   * {
     box-sizing: border-box;
-    font-family: "Hiragino Maru Gothic ProN";
+    font-family: "Lato", sans-serif;
   }
   
   html {

@@ -94,7 +94,7 @@ const styles = {
   `,
   RemoveButtonExitDone: css`
     visibility: hidden;
-  `
+  `,
 };
 
 // ______________________________________________________
@@ -110,7 +110,7 @@ export const Card: React.FC<CardProps> = props => {
     enterDone: styles.RemoveButtonEnterDone,
     exit: styles.RemoveButtonExit,
     exitActive: styles.RemoveButtonExitActive,
-    exitDone: styles.RemoveButtonExitDone
+    exitDone: styles.RemoveButtonExitDone,
   };
 
   return (

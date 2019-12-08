@@ -25,6 +25,7 @@ const styles = {
     width: 280px;
     border-radius: 5px;
     background-color: #fff;
+    box-shadow: 0 0 2px #808080;
     border: 1px solid #fff;
     display: flex;
     flex-direction: column;
@@ -33,7 +34,7 @@ const styles = {
   BoxHeader: css`
     margin: 10px 20px;
     font-weight: bold;
-  `
+  `,
 };
 
 // ______________________________________________________
@@ -51,7 +52,7 @@ export const Box: React.FC<BoxProps> = props => {
     const appData: App = {
       name: fileName,
       path: file.path,
-      icon: appIcon
+      icon: appIcon,
     };
     props.updateShortcut(appData);
   };
@@ -61,19 +62,19 @@ export const Box: React.FC<BoxProps> = props => {
       properties: ["openFile"],
       title: "Select a Application",
       defaultPath: "/Applications",
-      filters: [{ name: "application file", extensions: ["app"] }]
+      filters: [{ name: "application file", extensions: ["app"] }],
     });
     console.log(fileNames);
     const appPath = fileNames.filePaths[0];
-    const kappName = appPath.match(/\/.+\/(.+[^\/])/)
-    const appName = kappName && kappName[1]
+    const kappName = appPath.match(/\/.+\/(.+[^\/])/);
+    const appName = kappName && kappName[1];
     const getAppIcon = remote.getGlobal("getAppIcon");
     const appIcon = await getAppIcon(appPath);
     if (appName) {
       const appData: App = {
         name: appName,
         path: appPath,
-        icon: appIcon
+        icon: appIcon,
       };
       props.updateShortcut(appData);
     } else {
