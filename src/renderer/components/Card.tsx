@@ -46,7 +46,6 @@ const styles = {
     vertical-align: middle;
     flex-basis: 40px;
     height: 40px;
-    border-radius: 50%;
     margin: 0 10px 0 5px;
   `,
   CardText: css`
