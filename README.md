@@ -13,4 +13,5 @@ WIP
 
 ## Note
 
-*Icons made by [Freepik](https://www.flaticon.com/authors/freepik) from [www.flation.com](https://www.flaticon.com)*
+* *Icons made by [Freepik](https://www.flaticon.com/authors/freepik) from [www.flation.com](https://www.flaticon.com)*
+* Thanks to [sindresorhus/file-icon](https://github.com/sindresorhus/file-icon) ❤️
