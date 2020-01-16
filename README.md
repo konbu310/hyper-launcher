@@ -8,7 +8,7 @@ WIP
 
 ## Screenshot
 
-![Image from Gyazo](https://i.gyazo.com/thumb/640/930d5d5365abdc47e1701bea308f5b2e-png.png)
+![Image from Gyazo](https://raw.githubusercontent.com/konbu310/hyper-launcher/master/assets/screenshot.png)
 
 
 ## Note
