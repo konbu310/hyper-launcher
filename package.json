@@ -1,8 +1,8 @@
 {
   "name": "hyper-launcher",
-  "description": "Hyper Launcher is future application launcher.",
+  "description": "Flexible and powerful application launcher for macOS.",
   "author": "konbu310",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "main": "dist/main.js",
   "license": "MIT",
   "scripts": {
