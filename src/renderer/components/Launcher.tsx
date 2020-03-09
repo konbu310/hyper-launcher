@@ -115,12 +115,10 @@ export const Launcher: React.FC = () => {
   };
 
   const removeShortcut = (boxKey: string, cardIndex: number) => {
-    if (window.confirm("削除しますか？")) {
-      const newData = {...shortcutData};
-      newData[boxKey].splice(cardIndex, 1);
-      setShortcutData(newData);
-      store.set("shortcut", newData);
-    }
+    const newData = { ...shortcutData };
+    newData[boxKey].splice(cardIndex, 1);
+    setShortcutData(newData);
+    store.set("shortcut", newData);
   };
 
   // View
