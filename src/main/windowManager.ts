@@ -33,5 +33,5 @@ export const createMainWindow = (): BrowserWindow => {
     .loadFile(path.join(__dirname, "index.html"))
     .catch(e => console.error(e));
 
-  return mainWindow
+  return mainWindow;
 };

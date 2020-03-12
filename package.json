@@ -10,7 +10,8 @@
     "build:prod": "NODE_ENV=production webpack",
     "build:mac": "yarn run build:prod && electron-builder",
     "watch": "webpack --watch",
-    "start": "electron ."
+    "start": "electron .",
+    "fmt": "yarn prettier --write '**/*.{ts,tsx}'"
   },
   "dependencies": {
     "@jxa/run": "^1.3.2",

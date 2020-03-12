@@ -34,7 +34,7 @@ const styles = {
   BoxHeader: css`
     margin: 10px 20px;
     font-weight: bold;
-  `,
+  `
 };
 
 // ______________________________________________________
@@ -52,7 +52,7 @@ export const Box: React.FC<BoxProps> = props => {
     const appData: App = {
       name: fileName,
       path: file.path,
-      icon: appIcon,
+      icon: appIcon
     };
     props.updateShortcut(appData);
   };
@@ -62,7 +62,7 @@ export const Box: React.FC<BoxProps> = props => {
       properties: ["openFile"],
       title: "Select a Application",
       defaultPath: "/Applications",
-      filters: [{ name: "application file", extensions: ["app"] }],
+      filters: [{ name: "application file", extensions: ["app"] }]
     });
     console.log(fileNames);
     const appPath = fileNames.filePaths[0];
@@ -74,7 +74,7 @@ export const Box: React.FC<BoxProps> = props => {
       const appData: App = {
         name: appName,
         path: appPath,
-        icon: appIcon,
+        icon: appIcon
       };
       props.updateShortcut(appData);
     } else {
