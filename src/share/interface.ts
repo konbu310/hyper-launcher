@@ -1,17 +1,13 @@
-export type App = {
+export type AppInfo = {
   name: string;
   path: string;
-  icon: string;
-};
-
-export type Shortcut = {
-  [key: string]: App[];
+  icon?: string;
 };
 
 export type HotKeyMap = {
-  [key: string]: App[];
+  [key: string]: AppInfo[];
 };
 
 export type StoreKey = {
-  shortcut: Shortcut;
+  hotKeyMap: HotKeyMap;
 };

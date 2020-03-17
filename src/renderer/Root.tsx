@@ -16,8 +16,8 @@ const styles = {
 
 export const Root = () => {
   return (
-    <section className={styles.LauncherContainer}>
+    <div className={styles.LauncherContainer}>
       <Launcher />
-    </section>
+    </div>
   );
 };

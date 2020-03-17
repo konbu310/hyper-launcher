@@ -10,7 +10,7 @@ type CardProps = {
   cardId: string;
   icon: string;
   name: string;
-  removeShortcut: Function;
+  removeHotKeyMap: Function;
   onDragStart: Function;
   onDragEnter: Function;
   onDragEnd: Function;
@@ -137,7 +137,7 @@ export const Card: React.FC<CardProps> = props => {
         >
           <span
             className={styles.RemoveButton}
-            onClick={ev => props.removeShortcut()}
+            onClick={ev => props.removeHotKeyMap()}
           >
             ×
           </span>

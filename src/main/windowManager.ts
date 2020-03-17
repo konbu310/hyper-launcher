@@ -1,5 +1,5 @@
 import { BrowserWindow } from "electron";
-import { join } from "path";
+import { join as joinPath } from "path";
 
 // ______________________________________________________
 //
@@ -24,10 +24,10 @@ export const createMainWindow = (): BrowserWindow => {
     }
   });
 
-  // !isProduction && mainWindow.webContents.openDevTools();
+  !isProduction && mainWindow.webContents.openDevTools();
 
   mainWindow
-    .loadFile(join(__dirname, "index.html"))
+    .loadFile(joinPath(__dirname, "index.html"))
     .catch(e => console.error(e));
 
   return mainWindow;

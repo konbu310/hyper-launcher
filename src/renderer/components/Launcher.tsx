@@ -3,7 +3,7 @@ import { css } from "emotion";
 import { Box } from "./Box";
 import { Card, EmptyCard } from "./Card";
 import { nonNullableObj } from "../util/guard";
-import { Shortcut, App, StoreKey } from "../../share/interface";
+import { AppInfo, StoreKey, HotKeyMap } from "../../share/interface";
 import { remote } from "electron";
 import Store from "electron-store";
 
@@ -44,8 +44,8 @@ const styles = {
 export const Launcher: React.FC = () => {
   const store = remote.getGlobal("store") as Store<StoreKey>;
 
-  const [shortcutData, setShortcutData] = React.useState<Shortcut>(
-    store.get("shortcut")
+  const [hotKeyData, setHotKeyData] = React.useState<HotKeyMap>(
+    store.get("hotKeyMap")
   );
   const [draggedItem, setDraggedItem] = React.useState<DraggedItem>({
     boxKey: null,
@@ -81,15 +81,14 @@ export const Launcher: React.FC = () => {
     if (ev.dataTransfer.effectAllowed === "all") return;
 
     if (nonNullableObj(draggedItem)) {
-      const newData = { ...shortcutData };
+      const newData = { ...hotKeyData };
       const removed = newData[draggedItem.boxKey].splice(
         draggedItem.cardIndex,
         1
       );
       newData[boxKey].splice(cardIndex, 0, ...removed);
-      setShortcutData(newData);
-      store.set("shortcut", newData);
-
+      setHotKeyData(newData);
+      store.set("hotKeyMap", newData);
       setDraggedItem({
         boxKey,
         cardIndex
@@ -107,33 +106,33 @@ export const Launcher: React.FC = () => {
     });
   };
 
-  const updateShortcut = (boxKey: string) => (newApp: App) => {
-    const newData = { ...shortcutData };
+  const updateHotKeyMap = (boxKey: string) => (newApp: AppInfo) => {
+    const newData = { ...hotKeyData };
     newData[boxKey].push(newApp);
-    setShortcutData(newData);
-    store.set("shortcut", newData);
+    setHotKeyData(newData);
+    store.set("hotKeyMap", newData);
   };
 
-  const removeShortcut = (boxKey: string, cardIndex: number) => {
-    const newData = { ...shortcutData };
+  const removeHotKeyMap = (boxKey: string, cardIndex: number) => {
+    const newData = { ...hotKeyData };
     newData[boxKey].splice(cardIndex, 1);
-    setShortcutData(newData);
-    store.set("shortcut", newData);
+    setHotKeyData(newData);
+    store.set("hotKeyMap", newData);
   };
 
   // View
   return (
-    <section className={styles.LauncherSection}>
-      {shortcutData &&
-        Object.entries(shortcutData).map(([boxKey, appList], boxIndex) => (
+    <div className={styles.LauncherSection}>
+      {hotKeyData &&
+        Object.entries(hotKeyData).map(([boxKey, appList], boxIndex) => (
           <Box
             key={`box-${boxKey}`}
             boxId={`box-${boxKey}`}
             header={`Ctrl + ${boxKey}`}
-            updateShortcut={updateShortcut(boxKey)}
+            updateHotKeyMap={updateHotKeyMap(boxKey)}
           >
             <div className={styles.CardContainer}>
-              {shortcutData[boxKey].length === 0 ? (
+              {hotKeyData[boxKey].length === 0 ? (
                 <EmptyCard
                   cardId={`empty-card-${boxKey}0`}
                   onDragEnter={onDragEnter(boxKey, 0)}
@@ -143,9 +142,9 @@ export const Launcher: React.FC = () => {
                   <Card
                     key={`card-${app.name}`}
                     cardId={`card-${app.name}`}
-                    icon={app.icon}
+                    icon={app.icon || ""}
                     name={app.name}
-                    removeShortcut={() => removeShortcut(boxKey, cardIndex)}
+                    removeHotKeyMap={() => removeHotKeyMap(boxKey, cardIndex)}
                     onDragStart={onDragStart(boxKey, cardIndex)}
                     onDragEnter={onDragEnter(boxKey, cardIndex)}
                     onDragEnd={onDragEnd(boxKey, cardIndex)}
@@ -155,6 +154,6 @@ export const Launcher: React.FC = () => {
             </div>
           </Box>
         ))}
-    </section>
+    </div>
   );
 };

@@ -1,6 +1,6 @@
 import { globalShortcut, shell } from "electron";
-import { App, HotKeyMap } from "../share/interface";
-import { getRunningApps, getFrontmostAppIndex } from "./util/appInfo";
+import { AppInfo, HotKeyMap } from "../share/interface";
+import { getRunningApps, getFrontmostApp } from "./util/appInfo";
 
 // prettier-ignore
 const prevIndex: {[key: string]: number} = {
@@ -22,7 +22,7 @@ export const registerHotKey = async (hotKeyData: HotKeyMap) => {
     }
   });
 
-  const handleMultipleApps = async (key: string, appList: App[]) => {
+  const handleMultipleApps = async (key: string, appList: AppInfo[]) => {
     const runningApps = await getRunningApps(appList);
     switch (runningApps.length) {
       case 0:
@@ -34,19 +34,22 @@ export const registerHotKey = async (hotKeyData: HotKeyMap) => {
         shell.openItem(runningApps[0].path);
         break;
       default:
-        const index = await getFrontmostAppIndex(runningApps);
-        if (index === -1) {
+        const frontmostAppName = await getFrontmostApp();
+        const frontmostAppIndex = runningApps.findIndex(
+          ({ name }) => name === frontmostAppName
+        );
+        if (frontmostAppIndex === -1) {
           shell.openItem(appList[prevIndex[key]].path);
-        } else if (index === runningApps.length - 1) {
+        } else if (frontmostAppIndex === runningApps.length - 1) {
           prevIndex[key] =
             appList.findIndex(({ name }) => name === runningApps[0].name) || 0;
           shell.openItem(runningApps[0].path);
         } else {
           prevIndex[key] =
             appList.findIndex(
-              ({ name }) => name === runningApps[index + 1].name
+              ({ name }) => name === runningApps[frontmostAppIndex + 1].name
             ) || 0;
-          shell.openItem(runningApps[index + 1].path);
+          shell.openItem(runningApps[frontmostAppIndex + 1].path);
         }
     }
   };

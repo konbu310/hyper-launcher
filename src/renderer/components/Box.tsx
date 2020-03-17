@@ -1,7 +1,9 @@
 import * as React from "react";
 import { css } from "emotion";
-import { App } from "../../share/interface";
+import { AppInfo } from "../../share/interface";
 import { remote } from "electron";
+import { path2name } from "../../main/util/appInfo";
+
 const dialog = remote.dialog;
 
 // ______________________________________________________
@@ -11,7 +13,7 @@ const dialog = remote.dialog;
 type BoxProps = {
   boxId: string;
   header: string | React.ReactNode;
-  updateShortcut: Function;
+  updateHotKeyMap: Function;
 };
 
 // ______________________________________________________
@@ -46,15 +48,15 @@ export const Box: React.FC<BoxProps> = props => {
     ev.preventDefault();
     if (ev.dataTransfer.effectAllowed === "move") return;
     const file = ev.dataTransfer.files[0];
-    const fileName = file.name.slice(0, -4);
+    const appName = file.name.slice(0, -4);
     const getAppIcon = remote.getGlobal("getAppIcon");
     const appIcon = await getAppIcon(file.path);
-    const appData: App = {
-      name: fileName,
+    const appData: AppInfo = {
+      name: appName,
       path: file.path,
       icon: appIcon
     };
-    props.updateShortcut(appData);
+    props.updateHotKeyMap(appData);
   };
 
   const handleFileDialog = async () => {
@@ -65,17 +67,16 @@ export const Box: React.FC<BoxProps> = props => {
       filters: [{ name: "application file", extensions: ["app"] }]
     });
     const appPath = fileNames.filePaths[0];
-    const kappName = appPath.match(/\/.+\/(.+[^\/])/);
-    const appName = kappName && kappName[1];
+    const appName = path2name(appPath);
     const getAppIcon = remote.getGlobal("getAppIcon");
     const appIcon = await getAppIcon(appPath);
     if (appName) {
-      const appData: App = {
+      const appData: AppInfo = {
         name: appName,
         path: appPath,
         icon: appIcon
       };
-      props.updateShortcut(appData);
+      props.updateHotKeyMap(appData);
     } else {
       return;
     }

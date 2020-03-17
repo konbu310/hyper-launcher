@@ -4,10 +4,10 @@ import { emptyData } from "../../share/initial-data";
 import { registerHotKey } from "../hotKeyHandler";
 
 export const createStore = (): Store<StoreKey> => {
-  const store = new Store<StoreKey>({ defaults: { shortcut: emptyData } });
+  const store = new Store<StoreKey>({ defaults: { hotKeyMap: emptyData } });
   global.store = store;
 
-  store.onDidChange("shortcut", async (newData, _) => {
+  store.onDidChange("hotKeyMap", async (newData, _) => {
     newData && (await registerHotKey(newData));
   });
 

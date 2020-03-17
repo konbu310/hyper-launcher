@@ -13,7 +13,7 @@ app.allowRendererProcessReuse = true;
 //
 app.on("ready", async () => {
   const store = createStore();
-  await registerHotKey(store.get("shortcut"));
+  await registerHotKey(store.get("hotKeyMap"));
   global.getAppIcon = getAppIcon;
   mainWindow = createMainWindow();
 
