@@ -126,25 +126,6 @@
   resolved "https://registry.yarnpkg.com/@emotion/weak-memoize/-/weak-memoize-0.2.5.tgz#8eed982e2ee6f7f4e44c253e12962980791efd46"
   integrity sha512-6U71C2Wp7r5XtFtQzYrW5iKFT67OixrSxjI4MptCHzdSVlgabczzqLe0ZSgnub/5Kp4hSbpDB1tMytZY9pwxxA==
 
-"@jxa/global-type@^1.3.1":
-  version "1.3.1"
-  resolved "https://registry.yarnpkg.com/@jxa/global-type/-/global-type-1.3.1.tgz#484a7fe3a1e9f39ec87d0c912e0d4c21c0f3582d"
-  integrity sha512-rrXDYrxFYf1PTkGWYXO5tNRh3onJ6/8m3F7vPlSOjXn2eOtW+lXktCu77wiJhanyedb9yJbwMI/V8tAGAbQbzw==
-  dependencies:
-    "@jxa/types" "^1.3.1"
-
-"@jxa/run@^1.3.2":
-  version "1.3.2"
-  resolved "https://registry.yarnpkg.com/@jxa/run/-/run-1.3.2.tgz#56146d1e851b7c47e3797a702968c4f91113e418"
-  integrity sha512-xvIPTTRYJlcA8v9HDvmG24NbhS57vvFgMurpgRs8VRPel8/p5iZKRJX/IR5ZRffwcy67jFKj5oolodc3hgc+nA==
-  dependencies:
-    macos-version "^5.2.0"
-
-"@jxa/types@^1.3.1":
-  version "1.3.1"
-  resolved "https://registry.yarnpkg.com/@jxa/types/-/types-1.3.1.tgz#ab20a40e5ef9933d27fbe1ab3f0901682f46db28"
-  integrity sha512-qlfMfrNNIiV0Uklda1DrZnI95EpqkkHp9zVmlbPwEoHov2dzslqN6fNcWFytMWW3byP2o8XfBTixqTaMs73X6Q==
-
 "@sindresorhus/is@^0.14.0":
   version "0.14.0"
   resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-0.14.0.tgz#9fb3a3cf3132328151f353de4632e01e52102bea"
@@ -171,11 +152,6 @@
   version "4.1.5"
   resolved "https://registry.yarnpkg.com/@types/debug/-/debug-4.1.5.tgz#b14efa8852b7768d898906613c23f688713e02cd"
   integrity sha512-Q1y515GcOdTHgagaVFhHnIFQ38ygs/kmxdNpvpou+raI9UO3YZcHDngBSYKQklcKlvA7iuQlmIKbzvmxcOE9CQ==
-
-"@types/electron-load-devtool@^1.2.0":
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/@types/electron-load-devtool/-/electron-load-devtool-1.2.0.tgz#cceed303049b3cc825bce3d98c2afe544dbda162"
-  integrity sha512-+XI2K4Q+XhG/Jobq0ffR+Q67O3lrWKk2DBGuKhcw3fCqKMfXyh0IZoD2UPnNCwnz7ZxLhp0hMKwaPpI2pJpVLg==
 
 "@types/events@*":
   version "3.0.0"
@@ -1634,18 +1610,6 @@ electron-builder@^22.4.0:
     update-notifier "^4.1.0"
     yargs "^15.1.0"
 
-electron-is-dev@^1.0.1:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/electron-is-dev/-/electron-is-dev-1.1.0.tgz#b15a2a600bdc48a51a857d460e05f15b19a2522c"
-  integrity sha512-Z1qA/1oHNowGtSBIcWk0pcLEqYT/j+13xUw/MYOrBUOL4X7VN0i0KCTf5SqyvMPmW5pSPKbo28wkxMxzZ20YnQ==
-
-electron-load-devtool@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/electron-load-devtool/-/electron-load-devtool-1.2.0.tgz#78bea4a57b70b247c959d86ba8ffd6727967a077"
-  integrity sha512-ify+P5BGvi13Qqs+tlgwRkbtyq/Llv06udbhAEdL9Iuux7i2FNU0gkD+BcsbdpgcGs5dmU9UlBSAb3CezuQwPg==
-  dependencies:
-    electron-is-dev "^1.0.1"
-
 electron-publish@22.4.0:
   version "22.4.0"
   resolved "https://registry.yarnpkg.com/electron-publish/-/electron-publish-22.4.0.tgz#65fffae3c6a6f5bf68cf90127c2d2b21a2cf2bd3"
@@ -2937,13 +2901,6 @@ lru-cache@^5.1.1:
   integrity sha512-KpNARQA3Iwv+jTA0utUVVbrh+Jlrr1Fv0e56GGzAFOXN7dk/FviaDW8LHmK52DlcH4WP2n6gI8vN1aesBFgo9w==
   dependencies:
     yallist "^3.0.2"
-
-macos-version@^5.2.0:
-  version "5.2.0"
-  resolved "https://registry.yarnpkg.com/macos-version/-/macos-version-5.2.0.tgz#ae3a25155877902bbc5f5ae6b2d57b1ddce2e79e"
-  integrity sha512-egt1bqVE1evUjCup2QN2F0g42AuVcumdM31xNbABz+uXquYPzWP4OrqDm+HpCfM+6t4JzWrzABQW+MZM+FW+Jg==
-  dependencies:
-    semver "^5.6.0"
 
 make-dir@^2.0.0:
   version "2.1.0"

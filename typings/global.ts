@@ -1,12 +1,18 @@
 import * as Store from "electron-store";
 import { StoreKey } from "../src/share/interface";
-import { GetAppIcon } from "../src/main/util/getAppIcon";
+import {
+  GetAppIcon,
+  GetFrontmostApp,
+  GetRunningApps
+} from "../src/main/util/appInfo";
 
 declare global {
   namespace NodeJS {
     interface Global {
       store: Store<StoreKey>;
       getAppIcon: GetAppIcon;
+      getFrontmostApp: GetFrontmostApp;
+      getRunningApps: GetRunningApps;
     }
   }
 }

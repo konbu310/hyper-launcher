@@ -1,10 +1,11 @@
 import { app, BrowserWindow } from "electron";
 import { createMainWindow } from "./windowManager";
-import { registerShortcut } from "./shortcutOps";
+import { registerHotKey } from "./hotKeyHandler";
 import { createStore } from "./util/createStore";
-import { getAppIcon } from "./util/getAppIcon";
+import { getAppIcon } from "./util/appInfo";
 
 let mainWindow: BrowserWindow | null = null;
+app.allowRendererProcessReuse = true;
 
 // ______________________________________________________
 //
@@ -12,7 +13,7 @@ let mainWindow: BrowserWindow | null = null;
 //
 app.on("ready", async () => {
   const store = createStore();
-  await registerShortcut(store.get("shortcut"));
+  await registerHotKey(store.get("shortcut"));
   global.getAppIcon = getAppIcon;
   mainWindow = createMainWindow();
 

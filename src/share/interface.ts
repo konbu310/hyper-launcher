@@ -8,6 +8,10 @@ export type Shortcut = {
   [key: string]: App[];
 };
 
+export type HotKeyMap = {
+  [key: string]: App[];
+};
+
 export type StoreKey = {
   shortcut: Shortcut;
 };

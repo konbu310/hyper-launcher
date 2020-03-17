@@ -2,7 +2,6 @@ const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const TsConfigWebpackPlugin = require("ts-config-webpack-plugin");
 const path = require("path");
-require("dotenv").config();
 
 // ______________________________________________________
 //
@@ -23,7 +22,7 @@ module.exports = [
     name: "main",
     mode: isProduction ? "production" : "development",
     target: "electron-main",
-    devtool: isProduction ? "" : "source-map",
+    devtool: isProduction ? false : "source-map",
     entry: path.join(__dirname, "src/main/main.ts"),
     node: {
       __dirname: false,
@@ -48,7 +47,7 @@ module.exports = [
     name: "renderer",
     mode: isProduction ? "production" : "development",
     target: "electron-renderer",
-    devtool: isProduction ? "" : "source-map",
+    devtool: isProduction ? false : "source-map",
     entry: path.join(__dirname, "src/renderer/index.tsx"),
     output: {
       path: path.join(__dirname, "dist/"),

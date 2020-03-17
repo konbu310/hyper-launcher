@@ -64,7 +64,6 @@ export const Box: React.FC<BoxProps> = props => {
       defaultPath: "/Applications",
       filters: [{ name: "application file", extensions: ["app"] }]
     });
-    console.log(fileNames);
     const appPath = fileNames.filePaths[0];
     const kappName = appPath.match(/\/.+\/(.+[^\/])/);
     const appName = kappName && kappName[1];
