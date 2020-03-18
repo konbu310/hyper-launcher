@@ -11,7 +11,7 @@ $ git clone https://github.com/konbu310/hyper-launcher
 $ npx degit konbu310/hyper-launcher hyper-launcher
 
 # change dir
-cd ./hyper-launcher
+$ cd ./hyper-launcher
 
 # build for macOS
 $ yarn run build:mac
