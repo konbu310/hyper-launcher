@@ -3,7 +3,21 @@
 
 ## Usage
 
-WIP
+```bash
+# clone repo
+$ git clone https://github.com/konbu310/hyper-launcher
+
+# or degit repo
+$ npx degit konbu310/hyper-launcher hyper-launcher
+
+# change dir
+cd ./hyper-launcher
+
+# build for macOS
+$ yarn run build:mac
+
+# you will get app in "build/Hyper Launcher.xxx.dmg"
+```
 
 ## Future works
 
