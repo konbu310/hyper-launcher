@@ -1,5 +1,6 @@
 ![logo](/assets/Hyper&#32;Launcher&#32;LP.png)
 
+### This App is beta version. Specification may change.
 
 ## Usage
 
