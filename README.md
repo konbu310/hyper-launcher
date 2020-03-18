@@ -5,6 +5,12 @@
 
 WIP
 
+## Future works
+
+* Test
+* Release with Github Actions
+* and more...
+
 
 ## Screenshot
 
