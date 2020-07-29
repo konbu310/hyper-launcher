@@ -1,8 +1,8 @@
 import { app, BrowserWindow } from "electron";
 import { createMainWindow } from "./windowManager";
 import { registerHotKey } from "./hotKeyHandler";
-import { createStore } from "./util/createStore";
-import { getAppIcon } from "./util/appInfo";
+import { createStore } from "./util/store";
+import { getAppIcon } from "./util/application";
 
 let mainWindow: BrowserWindow | null = null;
 app.allowRendererProcessReuse = true;

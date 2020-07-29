@@ -7,9 +7,14 @@ import { join as joinPath } from "path";
 //
 // @ COMMON
 //
-const execP = promisify(cp.exec);
-const execFileP = promisify(cp.execFile);
+const execAsync = promisify(cp.exec);
+const execFileAsync = promisify(cp.execFile);
+const frontmostApp = joinPath(__dirname, "bin/frontmost-app");
 
+// ______________________________________________________
+//
+// @ パスからアプリ名を取得する
+//
 export const path2name = (path: string): string => {
   const match = path.match(/\/.+\/(.+[^\/]).app/);
   return (match && match[1]) || "";
@@ -22,16 +27,14 @@ export const path2name = (path: string): string => {
 const fileIcon = joinPath(__dirname, "bin/file-icon");
 
 const execFileIcon = async (appPath: string): Promise<Buffer> => {
-  const { stdout } = await execFileP(fileIcon, [appPath, "48", "false"], {
+  const { stdout } = await execFileAsync(fileIcon, [appPath, "48", "false"], {
     encoding: null,
-    maxBuffer: 1024 * 1024 * 100
+    maxBuffer: 1024 * 1024 * 100,
   });
   return stdout;
 };
 
-export type GetAppIcon = (appPath: string) => Promise<string>;
-
-export const getAppIcon: GetAppIcon = async appPath => {
+export const getAppIcon = async (appPath: string): Promise<string> => {
   const buffer = await execFileIcon(appPath);
   return buffer.toString("base64");
 };
@@ -40,24 +43,21 @@ export const getAppIcon: GetAppIcon = async appPath => {
 //
 // @ 最前面にあるアプリケーションを取得する
 //
-const frontmostApp = joinPath(__dirname, "bin/frontmost-app");
-
 const execFrontmostApp = async () => {
-  const [
-    localizedName,
-    bundleId,
-    bundlePath,
-    executablePath,
-    isLaunched,
-    pid
-  ] = (await execFileP(frontmostApp, { timeout: 2000 })).stdout.split("\x07");
-  return bundlePath;
+  try {
+    const data = (
+      await execFileAsync(frontmostApp, { timeout: 2000 })
+    ).stdout.split("\x07");
+    return data[2] || "";
+  } catch (e) {
+    console.error(e);
+    return "";
+  }
 };
 
-export type GetFrontmostApp = () => Promise<string>;
-
-export const getFrontmostApp: GetFrontmostApp = async () => {
-  const path = await execFrontmostApp();
+export const getFrontmostApp = async (): Promise<string> => {
+  const path = await execFrontmostApp().catch((e) => console.error(e));
+  if (path == null) return "";
   return path2name(path);
   // return appList.findIndex(({ name }) => name === appName);
 };
@@ -66,25 +66,25 @@ export const getFrontmostApp: GetFrontmostApp = async () => {
 //
 // @ 起動中のアプリケーションを取得する
 //
-export type GetRunningApps = (appList: AppInfo[]) => Promise<AppInfo[]>;
-
-export const getRunningApps: GetRunningApps = async (appList: AppInfo[]) => {
-  const kAppList = appList.map(app => ({
+export const getRunningApps = async (
+  appList: AppInfo[]
+): Promise<AppInfo[]> => {
+  const kAppList = appList.map((app) => ({
     path: app.path,
-    name: app.name.replace(/.app/, "")
+    name: app.name.replace(/.app/, ""),
   }));
-  const { stdout } = await execP(
+  const { stdout } = await execAsync(
     "ps ax -o command | { sed -ne 's/.*\\(\\/Applications\\/[^/]*\\.app\\)\\/.*/\\1/p' ; echo '/System/Library/CoreServices/Finder.app' ; } | sort -u"
   );
   const res = stdout
     .split("\n")
     .filter(Boolean)
-    .map(path => {
+    .map((path) => {
       const name = path2name(path);
       return {
         name,
-        path
+        path,
       };
     });
-  return kAppList.filter(({ name }) => res.some(app => app.name === name));
+  return kAppList.filter(({ name }) => res.some((app) => app.name === name));
 };

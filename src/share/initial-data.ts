@@ -9,5 +9,5 @@ export const emptyData: HotKeyMap = {
   6: [],
   7: [],
   8: [],
-  9: []
+  9: [],
 };

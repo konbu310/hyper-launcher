@@ -1,11 +1,18 @@
 import { globalShortcut, shell } from "electron";
 import { AppInfo, HotKeyMap } from "../share/interface";
-import { getRunningApps, getFrontmostApp } from "./util/appInfo";
+import { getRunningApps, getFrontmostApp } from "./util/application";
 
-// prettier-ignore
-const prevIndex: {[key: string]: number} = {
-  1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0
-};
+const prevIndexMap: Map<string, number> = new Map([
+  ["1", 0],
+  ["2", 0],
+  ["3", 0],
+  ["4", 0],
+  ["5", 0],
+  ["6", 0],
+  ["7", 0],
+  ["8", 0],
+  ["9", 0],
+]);
 
 export const registerHotKey = async (hotKeyData: HotKeyMap) => {
   await globalShortcut.unregisterAll();
@@ -26,11 +33,13 @@ export const registerHotKey = async (hotKeyData: HotKeyMap) => {
     const runningApps = await getRunningApps(appList);
     switch (runningApps.length) {
       case 0:
-        shell.openItem(appList[prevIndex[key]].path);
+        shell.openItem(appList[prevIndexMap.get(key) || 0].path);
         break;
       case 1:
-        prevIndex[key] =
-          appList.findIndex(({ name }) => name === runningApps[0].name) || 0;
+        prevIndexMap.set(
+          key,
+          appList.findIndex(({ name }) => name === runningApps[0].name) || 0
+        );
         shell.openItem(runningApps[0].path);
         break;
       default:
@@ -39,16 +48,20 @@ export const registerHotKey = async (hotKeyData: HotKeyMap) => {
           ({ name }) => name === frontmostAppName
         );
         if (frontmostAppIndex === -1) {
-          shell.openItem(appList[prevIndex[key]].path);
+          shell.openItem(appList[prevIndexMap.get(key) || 0].path);
         } else if (frontmostAppIndex === runningApps.length - 1) {
-          prevIndex[key] =
-            appList.findIndex(({ name }) => name === runningApps[0].name) || 0;
+          prevIndexMap.set(
+            key,
+            appList.findIndex(({ name }) => name === runningApps[0].name) || 0
+          );
           shell.openItem(runningApps[0].path);
         } else {
-          prevIndex[key] =
+          prevIndexMap.set(
+            key,
             appList.findIndex(
               ({ name }) => name === runningApps[frontmostAppIndex + 1].name
-            ) || 0;
+            ) || 0
+          );
           shell.openItem(runningApps[frontmostAppIndex + 1].path);
         }
     }

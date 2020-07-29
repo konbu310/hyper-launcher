@@ -27,7 +27,7 @@ export const saveToLocalStorage = <T>(args: SaveArgs<T>): boolean => {
       const o: LocalStorageObject<T> = {
         ...args.object,
         storedAt: new Date(),
-        expiredAt: args.expiredAt
+        expiredAt: args.expiredAt,
       };
       localStorage.setItem(args.key, JSON.stringify(o));
       return true;

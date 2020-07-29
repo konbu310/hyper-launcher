@@ -2,7 +2,7 @@ import * as React from "react";
 import { css } from "emotion";
 import { AppInfo } from "../../share/interface";
 import { remote } from "electron";
-import { path2name } from "../../main/util/appInfo";
+import { path2name } from "../../main/util/application";
 
 const dialog = remote.dialog;
 
@@ -36,14 +36,14 @@ const styles = {
   BoxHeader: css`
     margin: 10px 20px;
     font-weight: bold;
-  `
+  `,
 };
 
 // ______________________________________________________
 //
 // @ Box View
 //
-export const Box: React.FC<BoxProps> = props => {
+export const Box: React.FC<BoxProps> = (props) => {
   const handleDrop = async (ev: React.DragEvent<HTMLElement>) => {
     ev.preventDefault();
     if (ev.dataTransfer.effectAllowed === "move") return;
@@ -54,7 +54,7 @@ export const Box: React.FC<BoxProps> = props => {
     const appData: AppInfo = {
       name: appName,
       path: file.path,
-      icon: appIcon
+      icon: appIcon,
     };
     props.updateHotKeyMap(appData);
   };
@@ -64,7 +64,7 @@ export const Box: React.FC<BoxProps> = props => {
       properties: ["openFile"],
       title: "Select a Application",
       defaultPath: "/Applications",
-      filters: [{ name: "application file", extensions: ["app"] }]
+      filters: [{ name: "application file", extensions: ["app"] }],
     });
     const appPath = fileNames.filePaths[0];
     const appName = path2name(appPath);
@@ -74,7 +74,7 @@ export const Box: React.FC<BoxProps> = props => {
       const appData: AppInfo = {
         name: appName,
         path: appPath,
-        icon: appIcon
+        icon: appIcon,
       };
       props.updateHotKeyMap(appData);
     } else {
@@ -83,7 +83,7 @@ export const Box: React.FC<BoxProps> = props => {
   };
 
   return (
-    <div className={styles.Box} onDrop={ev => handleDrop(ev)}>
+    <div className={styles.Box} onDrop={(ev) => handleDrop(ev)}>
       <header className={styles.BoxHeader}>
         {props.header}
         <button

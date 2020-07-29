@@ -20,15 +20,15 @@ export const createMainWindow = (): BrowserWindow => {
     resizable: false,
     titleBarStyle: "hidden",
     webPreferences: {
-      nodeIntegration: true
-    }
+      nodeIntegration: true,
+    },
   });
 
   !isProduction && mainWindow.webContents.openDevTools();
 
   mainWindow
     .loadFile(joinPath(__dirname, "index.html"))
-    .catch(e => console.error(e));
+    .catch((e) => console.error(e));
 
   return mainWindow;
 };

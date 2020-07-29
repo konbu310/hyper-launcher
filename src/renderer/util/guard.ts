@@ -15,7 +15,7 @@ export const nonNullableObj = <T, TKey extends keyof T>(
 };
 
 export const isObjectHasNull = (obj: { [key: string]: any }): boolean => {
-  return Object.keys(obj).some(key => {
+  return Object.keys(obj).some((key) => {
     if (obj[key] === null) return true;
   });
 };

@@ -3,8 +3,8 @@ import { StoreKey } from "../src/share/interface";
 import {
   GetAppIcon,
   GetFrontmostApp,
-  GetRunningApps
-} from "../src/main/util/appInfo";
+  GetRunningApps,
+} from "../src/main/util/application";
 
 declare global {
   namespace NodeJS {

@@ -93,14 +93,14 @@ const styles = {
   `,
   RemoveButtonExitDone: css`
     visibility: hidden;
-  `
+  `,
 };
 
 // ______________________________________________________
 //
 // @ Card View
 //
-export const Card: React.FC<CardProps> = props => {
+export const Card: React.FC<CardProps> = (props) => {
   const [isShow, setIsShow] = React.useState<boolean>(false);
 
   const removeButtonClassname = {
@@ -109,7 +109,7 @@ export const Card: React.FC<CardProps> = props => {
     enterDone: styles.RemoveButtonEnterDone,
     exit: styles.RemoveButtonExit,
     exitActive: styles.RemoveButtonExitActive,
-    exitDone: styles.RemoveButtonExitDone
+    exitDone: styles.RemoveButtonExitDone,
   };
 
   return (
@@ -117,9 +117,9 @@ export const Card: React.FC<CardProps> = props => {
       className={styles.Card}
       id={props.cardId}
       draggable
-      onDragStart={ev => props.onDragStart(props.cardId, ev)}
-      onDragEnter={ev => props.onDragEnter(props.cardId, ev)}
-      onDragEnd={ev => props.onDragEnd(props.cardId, ev)}
+      onDragStart={(ev) => props.onDragStart(props.cardId, ev)}
+      onDragEnter={(ev) => props.onDragEnter(props.cardId, ev)}
+      onDragEnd={(ev) => props.onDragEnd(props.cardId, ev)}
       onMouseEnter={() => setIsShow(true)}
       onMouseLeave={() => setIsShow(false)}
     >
@@ -137,7 +137,7 @@ export const Card: React.FC<CardProps> = props => {
         >
           <span
             className={styles.RemoveButton}
-            onClick={ev => props.removeHotKeyMap()}
+            onClick={(ev) => props.removeHotKeyMap()}
           >
             ×
           </span>
@@ -151,12 +151,12 @@ export const Card: React.FC<CardProps> = props => {
 //
 // @ Empty Card
 //
-export const EmptyCard: React.FC<EmptyCardProps> = props => {
+export const EmptyCard: React.FC<EmptyCardProps> = (props) => {
   return (
     <div
       id={props.cardId}
       className={styles.EmptyCard}
-      onDragEnter={ev => props.onDragEnter(props.cardId, ev)}
+      onDragEnter={(ev) => props.onDragEnter(props.cardId, ev)}
     />
   );
 };

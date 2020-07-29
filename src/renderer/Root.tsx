@@ -11,7 +11,7 @@ const styles = {
     height: 100vh;
     border-radius: 5px;
     background-image: linear-gradient(45deg, #fa709a 0%, #fee140 100%);
-  `
+  `,
 };
 
 export const Root = () => {

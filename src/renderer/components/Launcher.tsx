@@ -34,7 +34,7 @@ const styles = {
     height: 100%;
     overflow-y: auto;
     overflow-x: hidden;
-  `
+  `,
 };
 
 // ______________________________________________________
@@ -49,11 +49,11 @@ export const Launcher: React.FC = () => {
   );
   const [draggedItem, setDraggedItem] = React.useState<DraggedItem>({
     boxKey: null,
-    cardIndex: null
+    cardIndex: null,
   });
 
   React.useEffect(() => {
-    document.ondragover = document.ondrop = ev => {
+    document.ondragover = document.ondrop = (ev) => {
       ev.preventDefault();
       return;
     };
@@ -65,7 +65,7 @@ export const Launcher: React.FC = () => {
   ) => {
     setDraggedItem({
       boxKey,
-      cardIndex
+      cardIndex,
     });
     const dragElm = document.querySelector(`#${cardId}`);
     dragElm && ev.dataTransfer.setDragImage(dragElm, 0, 0);
@@ -91,7 +91,7 @@ export const Launcher: React.FC = () => {
       store.set("hotKeyMap", newData);
       setDraggedItem({
         boxKey,
-        cardIndex
+        cardIndex,
       });
     }
   };
@@ -102,7 +102,7 @@ export const Launcher: React.FC = () => {
   ) => {
     setDraggedItem({
       boxKey: null,
-      cardIndex: null
+      cardIndex: null,
     });
   };
 
