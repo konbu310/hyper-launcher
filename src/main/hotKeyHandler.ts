@@ -20,7 +20,7 @@ export const registerHotKey = async (hotKeyData: HotKeyMap) => {
   Object.entries(hotKeyData).map(([key, appList]) => {
     if (appList.length === 1) {
       globalShortcut.register(`Control+${key}`, async () => {
-        shell.openItem(appList[0].path);
+        await shell.openPath(appList[0].path);
       });
     } else {
       globalShortcut.register(`Control+${key}`, async () => {
@@ -33,14 +33,14 @@ export const registerHotKey = async (hotKeyData: HotKeyMap) => {
     const runningApps = await getRunningApps(appList);
     switch (runningApps.length) {
       case 0:
-        shell.openItem(appList[prevIndexMap.get(key) || 0].path);
+        await shell.openPath(appList[prevIndexMap.get(key) || 0].path);
         break;
       case 1:
         prevIndexMap.set(
           key,
           appList.findIndex(({ name }) => name === runningApps[0].name) || 0
         );
-        shell.openItem(runningApps[0].path);
+        await shell.openPath(runningApps[0].path);
         break;
       default:
         const frontmostAppName = await getFrontmostApp();
@@ -48,13 +48,13 @@ export const registerHotKey = async (hotKeyData: HotKeyMap) => {
           ({ name }) => name === frontmostAppName
         );
         if (frontmostAppIndex === -1) {
-          shell.openItem(appList[prevIndexMap.get(key) || 0].path);
+          await shell.openPath(appList[prevIndexMap.get(key) || 0].path);
         } else if (frontmostAppIndex === runningApps.length - 1) {
           prevIndexMap.set(
             key,
             appList.findIndex(({ name }) => name === runningApps[0].name) || 0
           );
-          shell.openItem(runningApps[0].path);
+          await shell.openPath(runningApps[0].path);
         } else {
           prevIndexMap.set(
             key,
@@ -62,7 +62,7 @@ export const registerHotKey = async (hotKeyData: HotKeyMap) => {
               ({ name }) => name === runningApps[frontmostAppIndex + 1].name
             ) || 0
           );
-          shell.openItem(runningApps[frontmostAppIndex + 1].path);
+          await shell.openPath(runningApps[frontmostAppIndex + 1].path);
         }
     }
   };
