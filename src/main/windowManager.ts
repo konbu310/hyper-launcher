@@ -13,6 +13,8 @@ export const createMainWindow = (): BrowserWindow => {
     titleBarStyle: "hidden",
     webPreferences: {
       nodeIntegration: true,
+      worldSafeExecuteJavaScript: true,
+      enableRemoteModule: false,
     },
   });
 

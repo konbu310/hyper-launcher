@@ -2,6 +2,7 @@ import { globalShortcut, shell } from "electron";
 import { AppInfo, HotKeyMap } from "../share/interface";
 import { getRunningApps } from "./util/application";
 import { getFrontmostApp } from "./util/application";
+import { pathToName } from "../share/util";
 
 const prevIndexMap: Map<string, number> = new Map([
   ["1", 0],
@@ -49,11 +50,9 @@ export const registerHotKey = async (hotKeyData: HotKeyMap) => {
         await shell.openPath(runningApps[0].path);
         break;
       default:
-        const frontmostAppName = await getFrontmostApp().catch((err) =>
-          console.error("frontEndError", err)
-        );
+        const frontmostApp = await getFrontmostApp();
         const frontmostAppIndex = runningApps.findIndex(
-          ({ name }) => name === frontmostAppName
+          ({ name }) => name === frontmostApp.name
         );
         if (frontmostAppIndex === -1) {
           await shell.openPath(appList[prevIndexMap.get(key) || 0].path);

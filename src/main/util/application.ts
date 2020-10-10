@@ -26,14 +26,21 @@ export const getAppIcon = async (
 //
 // @ 最前面にあるアプリケーションを取得する
 //
-export const getFrontmostApp = async (): Promise<string> => {
+export const getFrontmostApp = async (): Promise<AppInfo> => {
   try {
-    return (await execFileAsync(frontmostApp, { timeout: 2000 })).stdout.split(
-      "\x07"
-    )[2];
+    const appPath = (
+      await execFileAsync(frontmostApp, { timeout: 2000 })
+    ).stdout.split("\x07")[2];
+    return {
+      name: pathToName(appPath),
+      path: appPath,
+    };
   } catch (err) {
     console.error(err);
-    return "";
+    return {
+      name: "",
+      path: "",
+    };
   }
 };
 
