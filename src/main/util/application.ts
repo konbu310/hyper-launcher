@@ -27,7 +27,6 @@ export const getAppIcon = async (
 // @ 最前面にあるアプリケーションを取得する
 //
 export const getFrontmostApp = async (): Promise<string> => {
-  console.log("getFrontmostApp");
   try {
     return (await execFileAsync(frontmostApp, { timeout: 2000 })).stdout.split(
       "\x07"

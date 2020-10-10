@@ -3,7 +3,6 @@ import { OpenDialogReturnValue, IpcRenderer } from "electron";
 const ipcRenderer: IpcRenderer = window.require("electron").ipcRenderer;
 
 export const invokeGetHotKeyMap = async (): Promise<HotKeyMap> => {
-  console.log(ipcRenderer);
   return await ipcRenderer.invoke("getHotKeyMap");
 };
 
