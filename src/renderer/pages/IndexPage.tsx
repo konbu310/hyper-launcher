@@ -1,11 +1,11 @@
 import * as React from "react";
-import { css } from "emotion";
-import { Box } from "./Box";
-import { Card, EmptyCard } from "./Card";
+import { css } from "linaria";
+import { Box } from "../components/Box";
+import { Card, EmptyCard } from "../components/Card";
 import { nonNullableObj } from "../util/guard";
-import { AppInfo, StoreKey, HotKeyMap } from "../../share/interface";
-import { remote } from "electron";
-import Store from "electron-store";
+import { AppInfo, HotKeyMap } from "../../share/interface";
+import { useEffect, useState, FC, DragEvent } from "react";
+import { invokeGetHotKeyMap, invokeSetHotKeyMap } from "../util/ipcRenderer";
 
 // ______________________________________________________
 //
@@ -39,29 +39,35 @@ const styles = {
 
 // ______________________________________________________
 //
-// @ Launcher View
+// @ View
 //
-export const Launcher: React.FC = () => {
-  const store = remote.getGlobal("store") as Store<StoreKey>;
-
-  const [hotKeyData, setHotKeyData] = React.useState<HotKeyMap>(
-    store.get("hotKeyMap")
-  );
-  const [draggedItem, setDraggedItem] = React.useState<DraggedItem>({
+export const IndexPage: FC = () => {
+  const [hotKeyData, setHotKeyData] = useState<HotKeyMap | null>(null);
+  const [draggedItem, setDraggedItem] = useState<DraggedItem>({
     boxKey: null,
     cardIndex: null,
   });
 
-  React.useEffect(() => {
+  useEffect(() => {
+    invokeGetHotKeyMap().then((res) => {
+      setHotKeyData(res);
+    });
+  }, []);
+
+  useEffect(() => {
     document.ondragover = document.ondrop = (ev) => {
       ev.preventDefault();
       return;
     };
   }, []);
 
+  if (!hotKeyData) {
+    return <div>Loading...</div>;
+  }
+
   const onDragStart = (boxKey: string, cardIndex: number) => (
     cardId: string,
-    ev: React.DragEvent<HTMLElement>
+    ev: DragEvent<HTMLElement>
   ) => {
     setDraggedItem({
       boxKey,
@@ -74,7 +80,7 @@ export const Launcher: React.FC = () => {
 
   const onDragEnter = (boxKey: string, cardIndex: number) => (
     cardId: string,
-    ev: React.DragEvent<HTMLElement>
+    ev: DragEvent<HTMLElement>
   ) => {
     if (draggedItem.boxKey === boxKey && draggedItem.cardIndex === cardIndex)
       return;
@@ -87,18 +93,19 @@ export const Launcher: React.FC = () => {
         1
       );
       newData[boxKey].splice(cardIndex, 0, ...removed);
-      setHotKeyData(newData);
-      store.set("hotKeyMap", newData);
-      setDraggedItem({
-        boxKey,
-        cardIndex,
+      invokeSetHotKeyMap(newData).then(() => {
+        setHotKeyData(newData);
+        setDraggedItem({
+          boxKey,
+          cardIndex,
+        });
       });
     }
   };
 
   const onDragEnd = (boxKey: string, cardIndex: number) => (
     cardId: string,
-    ev: React.DragEvent<HTMLElement>
+    ev: DragEvent<HTMLElement>
   ) => {
     setDraggedItem({
       boxKey: null,
@@ -109,15 +116,17 @@ export const Launcher: React.FC = () => {
   const updateHotKeyMap = (boxKey: string) => (newApp: AppInfo) => {
     const newData = { ...hotKeyData };
     newData[boxKey].push(newApp);
-    setHotKeyData(newData);
-    store.set("hotKeyMap", newData);
+    invokeSetHotKeyMap(newData).then(() => {
+      setHotKeyData(newData);
+    });
   };
 
   const removeHotKeyMap = (boxKey: string, cardIndex: number) => {
     const newData = { ...hotKeyData };
     newData[boxKey].splice(cardIndex, 1);
-    setHotKeyData(newData);
-    store.set("hotKeyMap", newData);
+    invokeSetHotKeyMap(newData).then(() => {
+      setHotKeyData(newData);
+    });
   };
 
   // View

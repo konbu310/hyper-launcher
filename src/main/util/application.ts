@@ -2,40 +2,23 @@ import { promisify } from "util";
 import * as cp from "child_process";
 import { AppInfo } from "../../share/interface";
 import { join as joinPath } from "path";
+import { IpcMainInvokeEvent } from "electron";
+import { pathToName } from "../../share/util";
 
-// ______________________________________________________
-//
-// @ COMMON
-//
 const execAsync = promisify(cp.exec);
 const execFileAsync = promisify(cp.execFile);
-const frontmostApp = joinPath(__dirname, "bin/frontmost-app");
-
-// ______________________________________________________
-//
-// @ パスからアプリ名を取得する
-//
-export const path2name = (path: string): string => {
-  const match = path.match(/\/.+\/(.+[^\/]).app/);
-  return (match && match[1]) || "";
-};
+const frontmostApp = joinPath(__dirname, "frontmost-app");
+const fileIcon = require("file-icon");
 
 // ______________________________________________________
 //
 // @ アプリケーションのアイコンを取得する
 //
-const fileIcon = joinPath(__dirname, "bin/file-icon");
-
-const execFileIcon = async (appPath: string): Promise<Buffer> => {
-  const { stdout } = await execFileAsync(fileIcon, [appPath, "48", "false"], {
-    encoding: null,
-    maxBuffer: 1024 * 1024 * 100,
-  });
-  return stdout;
-};
-
-export const getAppIcon = async (appPath: string): Promise<string> => {
-  const buffer = await execFileIcon(appPath);
+export const getAppIcon = async (
+  ev: IpcMainInvokeEvent,
+  appPath: string
+): Promise<string> => {
+  const buffer = (await fileIcon.buffer(appPath)) as Buffer;
   return buffer.toString("base64");
 };
 
@@ -43,23 +26,16 @@ export const getAppIcon = async (appPath: string): Promise<string> => {
 //
 // @ 最前面にあるアプリケーションを取得する
 //
-const execFrontmostApp = async () => {
+export const getFrontmostApp = async (): Promise<string> => {
+  console.log("getFrontmostApp");
   try {
-    const data = (
-      await execFileAsync(frontmostApp, { timeout: 2000 })
-    ).stdout.split("\x07");
-    return data[2] || "";
-  } catch (e) {
-    console.error(e);
+    return (await execFileAsync(frontmostApp, { timeout: 2000 })).stdout.split(
+      "\x07"
+    )[2];
+  } catch (err) {
+    console.error(err);
     return "";
   }
-};
-
-export const getFrontmostApp = async (): Promise<string> => {
-  const path = await execFrontmostApp().catch((e) => console.error(e));
-  if (path == null) return "";
-  return path2name(path);
-  // return appList.findIndex(({ name }) => name === appName);
 };
 
 // ______________________________________________________
@@ -80,7 +56,7 @@ export const getRunningApps = async (
     .split("\n")
     .filter(Boolean)
     .map((path) => {
-      const name = path2name(path);
+      const name = pathToName(path);
       return {
         name,
         path,

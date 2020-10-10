@@ -1,6 +1,7 @@
 import { globalShortcut, shell } from "electron";
 import { AppInfo, HotKeyMap } from "../share/interface";
-import { getRunningApps, getFrontmostApp } from "./util/application";
+import { getRunningApps } from "./util/application";
+import { getFrontmostApp } from "./util/application";
 
 const prevIndexMap: Map<string, number> = new Map([
   ["1", 0],
@@ -18,14 +19,19 @@ export const registerHotKey = async (hotKeyData: HotKeyMap) => {
   await globalShortcut.unregisterAll();
 
   Object.entries(hotKeyData).map(([key, appList]) => {
-    if (appList.length === 1) {
-      globalShortcut.register(`Control+${key}`, async () => {
-        await shell.openPath(appList[0].path);
-      });
-    } else {
-      globalShortcut.register(`Control+${key}`, async () => {
-        await handleMultipleApps(key, appList);
-      });
+    switch (appList.length) {
+      case 0:
+        break;
+      case 1:
+        globalShortcut.register(`Control+${key}`, async () => {
+          await shell.openPath(appList[0].path);
+        });
+        break;
+      default:
+        globalShortcut.register(`Control+${key}`, async () => {
+          await handleMultipleApps(key, appList);
+        });
+        break;
     }
   });
 
@@ -43,7 +49,9 @@ export const registerHotKey = async (hotKeyData: HotKeyMap) => {
         await shell.openPath(runningApps[0].path);
         break;
       default:
-        const frontmostAppName = await getFrontmostApp();
+        const frontmostAppName = await getFrontmostApp().catch((err) =>
+          console.error("frontEndError", err)
+        );
         const frontmostAppIndex = runningApps.findIndex(
           ({ name }) => name === frontmostAppName
         );

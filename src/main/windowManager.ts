@@ -1,16 +1,8 @@
 import { BrowserWindow } from "electron";
-import { join as joinPath } from "path";
+import * as path from "path";
 
-// ______________________________________________________
-//
-// @ CONSTANTS
-//
 const isProduction = process.env.NODE_ENV === "production";
 
-// ______________________________________________________
-//
-// @ Create Main Window
-//
 export const createMainWindow = (): BrowserWindow => {
   const mainWindow = new BrowserWindow({
     width: 960,
@@ -27,7 +19,7 @@ export const createMainWindow = (): BrowserWindow => {
   !isProduction && mainWindow.webContents.openDevTools();
 
   mainWindow
-    .loadFile(joinPath(__dirname, "index.html"))
+    .loadFile(path.join(__dirname, "index.html"))
     .catch((e) => console.error(e));
 
   return mainWindow;

@@ -1,9 +1,9 @@
 import * as React from "react";
-import { Launcher } from "./components/Launcher";
-import { css } from "emotion";
+import { IndexPage } from "./pages/IndexPage";
+import { css } from "linaria";
 
 const styles = {
-  LauncherContainer: css`
+  MainWindow: css`
     display: flex;
     align-items: center;
     justify-content: center;
@@ -14,10 +14,10 @@ const styles = {
   `,
 };
 
-export const Root = () => {
+export const MainWindow = () => {
   return (
-    <div className={styles.LauncherContainer}>
-      <Launcher />
+    <div className={styles.MainWindow}>
+      <IndexPage />
     </div>
   );
 };

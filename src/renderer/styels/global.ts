@@ -1,19 +1,21 @@
-import { injectGlobal } from "emotion";
+import { css } from "linaria";
 
-injectGlobal`
-  * {
-    box-sizing: border-box;
-    font-family: "Lato", sans-serif;
-  }
-  
-  html {
-    font-size: calc(112.5% + 0.25vw);
-  }
-  
-  body {
-  background-color: transparent;
-   margin: 0;
-   padding: 0;
-   -webkit-app-region: drag;
+export const globals = css`
+  :global() {
+    * {
+      box-sizing: border-box;
+      font-family: "Lato", sans-serif;
+    }
+
+    html {
+      font-size: calc(112.5% + 0.25vw);
+    }
+
+    body {
+      background-color: transparent;
+      margin: 0;
+      padding: 0;
+      -webkit-app-region: drag;
+    }
   }
 `;

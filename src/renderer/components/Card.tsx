@@ -1,5 +1,6 @@
 import * as React from "react";
-import { css } from "emotion";
+import { FC, useCallback, useState } from "react";
+import { css } from "linaria";
 import { CSSTransition } from "react-transition-group";
 
 // ______________________________________________________
@@ -68,49 +69,50 @@ const styles = {
       color: rgba(169, 50, 38, 0.9);
     }
   `,
+  RemoveButtonAnim: {
+    enter: css`
+      visibility: visible;
+      opacity: 0;
+    `,
+    enterActive: css`
+      opacity: 1;
+      transition: opacity 300ms linear;
+    `,
+    enterDone: css`
+      visibility: visible;
+    `,
+    exit: css`
+      visibility: visible;
+      opacity: 1;
+    `,
+    exitActive: css`
+      opacity: 0;
+      transition: opacity 300ms linear;
+    `,
+    exitDone: css`
+      visibility: hidden;
+    `,
+  },
   EmptyCard: css`
     position: relative;
     flex: 0 0 180px;
-  `,
-  RemoveButtonEnter: css`
-    visibility: visible;
-    opacity: 0;
-  `,
-  RemoveButtonEnterActive: css`
-    opacity: 1;
-    transition: opacity 300ms linear;
-  `,
-  RemoveButtonEnterDone: css`
-    visibility: visible;
-  `,
-  RemoveButtonExit: css`
-    visibility: visible;
-    opacity: 1;
-  `,
-  RemoveButtonExitActive: css`
-    opacity: 0;
-    transition: opacity 300ms linear;
-  `,
-  RemoveButtonExitDone: css`
-    visibility: hidden;
   `,
 };
 
 // ______________________________________________________
 //
-// @ Card View
+// @ View
 //
-export const Card: React.FC<CardProps> = (props) => {
-  const [isShow, setIsShow] = React.useState<boolean>(false);
+export const Card: FC<CardProps> = (props) => {
+  const [isShowDeleteButton, setIsShowDeleteButton] = useState<boolean>(false);
 
-  const removeButtonClassname = {
-    enter: styles.RemoveButtonEnter,
-    enterActive: styles.RemoveButtonEnterActive,
-    enterDone: styles.RemoveButtonEnterDone,
-    exit: styles.RemoveButtonExit,
-    exitActive: styles.RemoveButtonExitActive,
-    exitDone: styles.RemoveButtonExitDone,
-  };
+  const showDeleteButton = useCallback(() => setIsShowDeleteButton(true), [
+    setIsShowDeleteButton,
+  ]);
+
+  const hideDeleteButton = useCallback(() => setIsShowDeleteButton(false), [
+    setIsShowDeleteButton,
+  ]);
 
   return (
     <section
@@ -120,8 +122,8 @@ export const Card: React.FC<CardProps> = (props) => {
       onDragStart={(ev) => props.onDragStart(props.cardId, ev)}
       onDragEnter={(ev) => props.onDragEnter(props.cardId, ev)}
       onDragEnd={(ev) => props.onDragEnd(props.cardId, ev)}
-      onMouseEnter={() => setIsShow(true)}
-      onMouseLeave={() => setIsShow(false)}
+      onMouseEnter={showDeleteButton}
+      onMouseLeave={hideDeleteButton}
     >
       <div className={styles.CardContent}>
         <img
@@ -131,9 +133,9 @@ export const Card: React.FC<CardProps> = (props) => {
         />
         <span className={styles.CardText}>{props.name}</span>
         <CSSTransition
-          classNames={removeButtonClassname}
+          classNames={{ ...styles.RemoveButtonAnim }}
           timeout={300}
-          in={isShow}
+          in={isShowDeleteButton}
         >
           <span
             className={styles.RemoveButton}
@@ -147,11 +149,7 @@ export const Card: React.FC<CardProps> = (props) => {
   );
 };
 
-// ______________________________________________________
-//
-// @ Empty Card
-//
-export const EmptyCard: React.FC<EmptyCardProps> = (props) => {
+export const EmptyCard: FC<EmptyCardProps> = (props) => {
   return (
     <div
       id={props.cardId}

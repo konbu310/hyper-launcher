@@ -4,13 +4,13 @@
     "module": "ESNext",
     "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "jsx": "react",
+    "outDir": "dist-tsc",
     "sourceMap": true,
     "skipLibCheck": true,
     "strict": true,
     "moduleResolution": "node",
-    "esModuleInterop": true
-  },
-  "include": ["src/**/*.ts", "src/**/*.tsx"],
-  "exclude": ["node_modules", "config"],
-  "files": ["typings/global.ts"]
+    "esModuleInterop": true,
+    "baseUrl": "./",
+    "typeRoots": ["types", "node_modules/@types"]
+  }
 }

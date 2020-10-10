@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { Root } from "./Root";
+import { MainWindow } from "./MainWindow";
 import "./styels/global";
 
-ReactDOM.render(<Root />, document.getElementById("root"));
+ReactDOM.render(<MainWindow />, document.getElementById("root"));

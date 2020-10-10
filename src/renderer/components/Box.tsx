@@ -1,10 +1,9 @@
 import * as React from "react";
-import { css } from "emotion";
+import { css } from "linaria";
 import { AppInfo } from "../../share/interface";
-import { remote } from "electron";
-import { path2name } from "../../main/util/application";
-
-const dialog = remote.dialog;
+import { invokeGetAppIcon, invokeOpenFileDialog } from "../util/ipcRenderer";
+import { pathToName } from "../../share/util";
+import { DragEventHandler, useCallback, FC, ReactNode } from "react";
 
 // ______________________________________________________
 //
@@ -12,7 +11,7 @@ const dialog = remote.dialog;
 //
 type BoxProps = {
   boxId: string;
-  header: string | React.ReactNode;
+  header: string | ReactNode;
   updateHotKeyMap: Function;
 };
 
@@ -37,39 +36,38 @@ const styles = {
     margin: 10px 20px;
     font-weight: bold;
   `,
+  AddButton: css`
+    float: right;
+  `,
 };
 
 // ______________________________________________________
 //
-// @ Box View
+// @ View
 //
-export const Box: React.FC<BoxProps> = (props) => {
-  const handleDrop = async (ev: React.DragEvent<HTMLElement>) => {
-    ev.preventDefault();
-    if (ev.dataTransfer.effectAllowed === "move") return;
-    const file = ev.dataTransfer.files[0];
-    const appName = file.name.slice(0, -4);
-    const getAppIcon = remote.getGlobal("getAppIcon");
-    const appIcon = await getAppIcon(file.path);
-    const appData: AppInfo = {
-      name: appName,
-      path: file.path,
-      icon: appIcon,
-    };
-    props.updateHotKeyMap(appData);
-  };
+export const Box: FC<BoxProps> = (props) => {
+  const handleAppDrop: DragEventHandler = useCallback(
+    async (ev) => {
+      ev.preventDefault();
+      if (ev.dataTransfer.effectAllowed === "move") return;
+      const file = ev.dataTransfer.files[0];
+      const appName = file.name.slice(0, -4);
+      const appIcon = await invokeGetAppIcon(file.path);
+      const appData: AppInfo = {
+        name: appName,
+        path: file.path,
+        icon: appIcon,
+      };
+      props.updateHotKeyMap(appData);
+    },
+    [invokeGetAppIcon]
+  );
 
-  const handleFileDialog = async () => {
-    const fileNames = await dialog.showOpenDialog(remote.getCurrentWindow(), {
-      properties: ["openFile"],
-      title: "Select a Application",
-      defaultPath: "/Applications",
-      filters: [{ name: "application file", extensions: ["app"] }],
-    });
+  const handleOpenFileDialog = useCallback(async () => {
+    const fileNames = await invokeOpenFileDialog();
     const appPath = fileNames.filePaths[0];
-    const appName = path2name(appPath);
-    const getAppIcon = remote.getGlobal("getAppIcon");
-    const appIcon = await getAppIcon(appPath);
+    const appName = pathToName(appPath);
+    const appIcon = await invokeGetAppIcon(appPath);
     if (appName) {
       const appData: AppInfo = {
         name: appName,
@@ -80,16 +78,18 @@ export const Box: React.FC<BoxProps> = (props) => {
     } else {
       return;
     }
-  };
+  }, [
+    invokeOpenFileDialog,
+    pathToName,
+    invokeGetAppIcon,
+    props.updateHotKeyMap,
+  ]);
 
   return (
-    <div className={styles.Box} onDrop={(ev) => handleDrop(ev)}>
+    <div className={styles.Box} onDrop={handleAppDrop}>
       <header className={styles.BoxHeader}>
         {props.header}
-        <button
-          style={{ float: "right" }}
-          onClick={async () => await handleFileDialog()}
-        >
+        <button className={styles.AddButton} onClick={handleOpenFileDialog}>
           +
         </button>
       </header>

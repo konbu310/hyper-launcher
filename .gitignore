@@ -4,6 +4,7 @@ node_modules
 .idea
 .vscode
 dist
-!/dist/bin
+dist-tsc
 build
 .env
+.linaria-cache/
