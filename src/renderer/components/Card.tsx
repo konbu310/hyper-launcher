@@ -1,6 +1,6 @@
 import * as React from "react";
 import { FC, useCallback, useState } from "react";
-import { css } from "linaria";
+import { css } from "goober";
 import { CSSTransition } from "react-transition-group";
 
 // ______________________________________________________

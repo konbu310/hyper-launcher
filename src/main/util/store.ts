@@ -1,6 +1,6 @@
 import Store from "electron-store";
-import { StoreKey } from "../../share/interface";
-import { emptyData } from "../../share/initial-data";
+import { StoreKey } from "../../common/interface";
+import { emptyData } from "../../common/initial-data";
 import { registerHotKey } from "../hotKeyHandler";
 
 export const createStore = (): Store<StoreKey> => {

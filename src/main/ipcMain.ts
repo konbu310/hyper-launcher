@@ -5,14 +5,15 @@ import {
   OpenDialogReturnValue,
 } from "electron";
 import { mainWindow } from "./main";
-import { HotKeyMap, IpcKey, ipcKeys } from "../share/interface";
-import { getAppIcon, getFrontmostApp } from "./util/application";
+import { HotKeyMap, IpcKey, ipcKeys } from "../common/interface";
+import { getAppIcon, getFrontmostAppId, getBundleId } from "./util/application";
 
 const ipcEvents: {
   [key in IpcKey]: (ev: IpcMainInvokeEvent, ...args: any) => Promise<any>;
 } = {
   getAppIcon,
-  getFrontmostApp,
+  getFrontmostAppId,
+  getBundleId,
   openFileDialog: async (
     ev: IpcMainInvokeEvent
   ): Promise<OpenDialogReturnValue> => {

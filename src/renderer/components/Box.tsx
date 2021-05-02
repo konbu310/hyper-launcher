@@ -1,8 +1,12 @@
-import * as React from "react";
-import { css } from "linaria";
-import { AppInfo } from "../../share/interface";
-import { invokeGetAppIcon, invokeOpenFileDialog } from "../util/ipcRenderer";
-import { pathToName } from "../../share/util";
+import React from "react";
+import { css } from "goober";
+import { AppInfo } from "../../common/interface";
+import {
+  invokeGetAppIcon,
+  invokeGetBundleId,
+  invokeOpenFileDialog,
+} from "../util/ipcRenderer";
+import { pathToName } from "../../common/util";
 import { DragEventHandler, useCallback, FC, ReactNode } from "react";
 
 // ______________________________________________________
@@ -51,12 +55,15 @@ export const Box: FC<BoxProps> = (props) => {
       ev.preventDefault();
       if (ev.dataTransfer.effectAllowed === "move") return;
       const file = ev.dataTransfer.files[0];
-      const appName = file.name.slice(0, -4);
-      const appIcon = await invokeGetAppIcon(file.path);
+      const path = file.path;
+      const name = file.name.slice(0, -4);
+      const icon = await invokeGetAppIcon(path);
+      const bundleId = await invokeGetBundleId(path);
       const appData: AppInfo = {
-        name: appName,
-        path: file.path,
-        icon: appIcon,
+        bundleId,
+        name,
+        path,
+        icon,
       };
       props.updateHotKeyMap(appData);
     },
@@ -65,14 +72,16 @@ export const Box: FC<BoxProps> = (props) => {
 
   const handleOpenFileDialog = useCallback(async () => {
     const fileNames = await invokeOpenFileDialog();
-    const appPath = fileNames.filePaths[0];
-    const appName = pathToName(appPath);
-    const appIcon = await invokeGetAppIcon(appPath);
-    if (appName) {
+    const path = fileNames.filePaths[0];
+    const name = pathToName(path);
+    const icon = await invokeGetAppIcon(path);
+    const bundleId = await invokeGetBundleId(path);
+    if (name) {
       const appData: AppInfo = {
-        name: appName,
-        path: appPath,
-        icon: appIcon,
+        bundleId,
+        name,
+        path,
+        icon,
       };
       props.updateHotKeyMap(appData);
     } else {

@@ -1,4 +1,5 @@
 export type AppInfo = {
+  bundleId: string;
   name: string;
   path: string;
   icon?: string;
@@ -14,10 +15,11 @@ export type StoreKey = {
 
 export const ipcKeys = [
   "getAppIcon",
-  "getFrontmostApp",
+  "getFrontmostAppId",
   "openFileDialog",
   "getHotKeyMap",
   "setHotKeyMap",
+  "getBundleId",
 ] as const;
 
 export type IpcKey = typeof ipcKeys[number];

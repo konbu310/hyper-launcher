@@ -1,72 +1,81 @@
 import { promisify } from "util";
-import * as cp from "child_process";
-import { AppInfo } from "../../share/interface";
-import { join as joinPath } from "path";
+import cp from "child_process";
+import { AppInfo } from "../../common/interface";
 import { IpcMainInvokeEvent } from "electron";
-import { pathToName } from "../../share/util";
+import { pathToName } from "../../common/util";
+import fileIcon from "extract-file-icon";
 
 const execAsync = promisify(cp.exec);
-const execFileAsync = promisify(cp.execFile);
-const frontmostApp = joinPath(__dirname, "frontmost-app");
-const fileIcon = require("file-icon");
 
-// ______________________________________________________
-//
-// @ アプリケーションのアイコンを取得する
-//
-export const getAppIcon = async (
+/**
+ * アプリケーションのbundleIDを取得する
+ */
+export const getBundleId = async (
   ev: IpcMainInvokeEvent,
-  appPath: string
+  appSpecifier: string
 ): Promise<string> => {
-  const buffer = (await fileIcon.buffer(appPath)) as Buffer;
-  return buffer.toString("base64");
+  const result = await execAsync(
+    `osascript -e 'id of application "${appSpecifier}"'`
+  );
+  return (result.stdout as string) ?? "";
 };
 
-// ______________________________________________________
-//
-// @ 最前面にあるアプリケーションを取得する
-//
-export const getFrontmostApp = async (): Promise<AppInfo> => {
-  try {
-    const appPath = (
-      await execFileAsync(frontmostApp, { timeout: 2000 })
-    ).stdout.split("\x07")[2];
-    return {
-      name: pathToName(appPath),
-      path: appPath,
-    };
-  } catch (err) {
-    console.error(err);
-    return {
-      name: "",
-      path: "",
-    };
+/**
+ * アプリケーションのアイコンを取得する
+ */
+export const getAppIcon = async (ev: IpcMainInvokeEvent, appPath: string) => {
+  const iconBuf = fileIcon(appPath) as Buffer;
+  return iconBuf.toString("base64");
+};
+
+/**
+ * アプリケーションが最前面にあるかどうか判定する
+ */
+export const checkIsFrontmostApp = async (
+  appSpecifier: string
+): Promise<boolean> => {
+  const result =
+    (await execAsync(`lsappinfo info ${appSpecifier}`)).stdout ?? "";
+  if (result === "") return false;
+  return result.includes("(in front)");
+};
+
+/**
+ * 最前面のアプリケーションを取得する
+ */
+export const getFrontmostAppId = async (): Promise<string> => {
+  const result =
+    (await execAsync(`lsappinfo info -only bundleID \`lsappinfo front\``))
+      .stdout ?? "";
+  if (result === "") {
+    throw new Error();
   }
+  return result.split("=")[1] as string;
 };
 
 // ______________________________________________________
 //
 // @ 起動中のアプリケーションを取得する
 //
-export const getRunningApps = async (
-  appList: AppInfo[]
-): Promise<AppInfo[]> => {
-  const kAppList = appList.map((app) => ({
-    path: app.path,
-    name: app.name.replace(/.app/, ""),
-  }));
-  const { stdout } = await execAsync(
-    "ps ax -o command | { sed -ne 's/.*\\(\\/Applications\\/[^/]*\\.app\\)\\/.*/\\1/p' ; echo '/System/Library/CoreServices/Finder.app' ; } | sort -u"
-  );
-  const res = stdout
-    .split("\n")
-    .filter(Boolean)
-    .map((path) => {
-      const name = pathToName(path);
-      return {
-        name,
-        path,
-      };
-    });
-  return kAppList.filter(({ name }) => res.some((app) => app.name === name));
-};
+// export const getRunningApps = async (
+//   appList: AppInfo[]
+// ): Promise<AppInfo[]> => {
+//   const kAppList = appList.map((app) => ({
+//     path: app.path,
+//     name: app.name.replace(/.app/, ""),
+//   }));
+//   const { stdout } = await execAsync(
+//     "ps ax -o command | { sed -ne 's/.*\\(\\/Applications\\/[^/]*\\.app\\)\\/.*/\\1/p' ; echo '/System/Library/CoreServices/Finder.app' ; } | sort -u"
+//   );
+//   const res = stdout
+//     .split("\n")
+//     .filter(Boolean)
+//     .map((path) => {
+//       const name = pathToName(path);
+//       return {
+//         name,
+//         path,
+//       };
+//     });
+//   return kAppList.filter(({ name }) => res.some((app) => app.name === name));
+// };

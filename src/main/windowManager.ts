@@ -1,5 +1,5 @@
 import { BrowserWindow } from "electron";
-import * as path from "path";
+import path from "path";
 
 const isProduction = process.env.NODE_ENV === "production";
 
@@ -12,9 +12,7 @@ export const createMainWindow = (): BrowserWindow => {
     resizable: false,
     titleBarStyle: "hidden",
     webPreferences: {
-      nodeIntegration: true,
-      worldSafeExecuteJavaScript: true,
-      enableRemoteModule: false,
+      preload: path.join(__dirname, "preload.js"),
     },
   });
 

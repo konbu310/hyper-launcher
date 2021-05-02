@@ -1,15 +1,14 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const TsConfigWebpackPlugin = require("ts-config-webpack-plugin");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const isProduction = process.env.NODE_ENV === "production";
+const mode = isProduction ? "production" : "development";
 
 module.exports = [
   // メインプロセス
   {
     name: "main",
-    mode: isProduction ? "production" : "development",
+    mode,
     target: "electron-main",
     entry: path.join(__dirname, "src/main/main.ts"),
     node: {
@@ -21,51 +20,75 @@ module.exports = [
       filename: "main.js",
     },
     devtool: isProduction ? void 0 : "source-map",
-    plugins: [new TsConfigWebpackPlugin()],
+    module: {
+      rules: [
+        {
+          test: /\.tsx?$/,
+          use: "ts-loader",
+          exclude: /node_modules/,
+        },
+        {
+          test: /\.node$/,
+          loader: "node-loader",
+        },
+      ],
+    },
+    resolve: {
+      extensions: [".tsx", ".ts", ".js", ".jsx"],
+    },
   },
   // レンダラープロセス
   {
     name: "renderer",
-    mode: isProduction ? "production" : "development",
-    target: "web",
+    mode,
+    target: "electron-renderer",
     entry: path.join(__dirname, "src/renderer/index.tsx"),
     output: {
       path: path.join(__dirname, "dist/"),
       filename: "renderer.js",
     },
-    devtool: isProduction ? void 0 : "source-map",
+    devtool: isProduction ? undefined : "eval-source-map",
     module: {
       rules: [
         {
-          test: /.tsx?$/,
-          use: {
-            loader: "linaria/loader",
-            options: {
-              sourceMap: !isProduction,
-            },
-          },
-        },
-        {
-          test: /.css$/,
-          use: [
-            {
-              loader: MiniCssExtractPlugin.loader,
-              options: {
-                hmr: !isProduction,
-              },
-            },
-            { loader: "css-loader" },
-          ],
+          test: /\.tsx?$/,
+          use: "ts-loader",
+          exclude: /node_modules/,
         },
       ],
     },
+    resolve: {
+      extensions: [".tsx", ".ts", ".js", ".jsx"],
+    },
     plugins: [
-      new MiniCssExtractPlugin(),
       new HtmlWebpackPlugin({
         filename: "index.html",
         template: "src/template/index.html",
       }),
-      new TsConfigWebpackPlugin(),
     ],
+  },
+  // preload
+  {
+    name: "preload",
+    mode,
+    target: "electron-preload",
+    entry: path.join(__dirname, "src/common/preload.ts"),
+    output: {
+      path: path.join(__dirname, "dist/"),
+      filename: "preload.js",
+    },
+    devtool: isProduction ? undefined : "eval-source-map",
+    module: {
+      rules: [
+        {
+          test: /\.ts$/,
+          use: "ts-loader",
+          exclude: /node_modules/,
+        },
+      ],
+    },
+    resolve: {
+      extensions: ["ts"],
+    },
   },
 ];

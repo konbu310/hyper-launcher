@@ -1,6 +1,14 @@
-import * as React from "react";
-import * as ReactDOM from "react-dom";
+import React from "react";
+import ReactDOM from "react-dom";
 import { MainWindow } from "./MainWindow";
+import { setup } from "goober";
 import "./styels/global";
 
-ReactDOM.render(<MainWindow />, document.getElementById("root"));
+setup(React.createElement);
+
+ReactDOM.render(
+  <React.StrictMode>
+    <MainWindow />
+  </React.StrictMode>,
+  document.getElementById("root")
+);

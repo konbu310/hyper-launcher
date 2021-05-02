@@ -1,14 +1,11 @@
 {
   "compilerOptions": {
     "target": "ESNext",
-    "module": "ESNext",
-    "lib": ["ESNext", "DOM", "DOM.Iterable"],
+    "module": "CommonJS",
     "jsx": "react",
-    "outDir": "dist-tsc",
     "sourceMap": true,
     "skipLibCheck": true,
     "strict": true,
-    "moduleResolution": "node",
     "esModuleInterop": true,
     "baseUrl": "./",
     "typeRoots": ["types", "node_modules/@types"]
