@@ -5,7 +5,12 @@ import { Card, EmptyCard } from "../components/Card";
 import { nonNullableObj } from "../util/guard";
 import { AppInfo, HotKeyMap } from "../../common/interface";
 import { useEffect, useState, FC, DragEvent } from "react";
-import { invokeGetHotKeyMap, invokeSetHotKeyMap } from "../util/ipcRenderer";
+
+// ______________________________________________________
+//
+// @ Constants
+//
+const api = window.electron;
 
 // ______________________________________________________
 //
@@ -49,7 +54,7 @@ export const IndexPage: FC = () => {
   });
 
   useEffect(() => {
-    invokeGetHotKeyMap().then((res) => {
+    api.getHotKeyMap().then((res) => {
       setHotKeyData(res);
     });
   }, []);
@@ -93,7 +98,7 @@ export const IndexPage: FC = () => {
         1
       );
       newData[boxKey].splice(cardIndex, 0, ...removed);
-      invokeSetHotKeyMap(newData).then(() => {
+      api.setHotKeyMap(newData).then(() => {
         setHotKeyData(newData);
         setDraggedItem({
           boxKey,
@@ -116,7 +121,7 @@ export const IndexPage: FC = () => {
   const updateHotKeyMap = (boxKey: string) => (newApp: AppInfo) => {
     const newData = { ...hotKeyData };
     newData[boxKey].push(newApp);
-    invokeSetHotKeyMap(newData).then(() => {
+    api.setHotKeyMap(newData).then(() => {
       setHotKeyData(newData);
     });
   };
@@ -124,7 +129,7 @@ export const IndexPage: FC = () => {
   const removeHotKeyMap = (boxKey: string, cardIndex: number) => {
     const newData = { ...hotKeyData };
     newData[boxKey].splice(cardIndex, 1);
-    invokeSetHotKeyMap(newData).then(() => {
+    api.setHotKeyMap(newData).then(() => {
       setHotKeyData(newData);
     });
   };

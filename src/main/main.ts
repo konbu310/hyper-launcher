@@ -1,34 +1,69 @@
-import { app, BrowserWindow } from "electron";
-import { createMainWindow } from "./windowManager";
-import { registerHotKey } from "./hotKeyHandler";
+import { app, BrowserWindow, session } from "electron";
 import { createStore } from "./util/store";
 import { initializeIpcEvents, releaseIpcEvents } from "./ipcMain";
+import os from "os";
+import path from "path";
+import { HotKeyManager } from "./hotkeyManager";
+
+const isProduction = process.env.NODE_ENV === "production";
 
 export let mainWindow: BrowserWindow | null = null;
-app.allowRendererProcessReuse = true;
 
-app.on("ready", async () => {
+export const hotKey = new HotKeyManager();
+
+const reactDevToolsPath = path.join(
+  os.homedir(),
+  "/Library/Application Support/Google/Chrome/Default/Extensions/fmkadmapgofadopljbjfkapdkoienihi/4.10.1_0"
+);
+
+const loadReactExtension = async () => {
+  await session.defaultSession
+    .loadExtension(reactDevToolsPath, {
+      allowFileAccess: true,
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+};
+
+const createWindow = () => {
+  mainWindow = new BrowserWindow({
+    width: 960,
+    height: 950,
+    frame: false,
+    transparent: true,
+    resizable: false,
+    titleBarStyle: "hidden",
+    webPreferences: {
+      preload: path.join(__dirname, "preload.js"),
+    },
+  });
+
+  if (!isProduction) {
+    mainWindow.webContents.openDevTools;
+  }
+
+  mainWindow
+    .loadFile(path.join(__dirname, "index.html"))
+    .catch((e) => console.error(e));
+};
+
+app.whenReady().then(async () => {
   const store = createStore();
   global.store = store;
-  await registerHotKey(store.get("hotKeyMap"));
-  mainWindow = createMainWindow();
+  await hotKey.initialize(store.get("hotKeyMap"));
+  createWindow();
   initializeIpcEvents();
 
-  mainWindow.on("close", () => {
-    mainWindow = null;
-  });
-});
-
-app.on("activate", () => {
-  if (mainWindow) {
-    app.show();
-  } else {
-    createMainWindow();
+  if (!isProduction) {
+    loadReactExtension();
   }
-});
 
-app.on("quit", () => {
-  app.quit();
+  app.on("activate", () => {
+    if (!mainWindow) {
+      createWindow();
+    }
+  });
 });
 
 app.on("window-all-closed", () => {

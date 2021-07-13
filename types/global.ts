@@ -1,19 +1,15 @@
-import { IpcRenderer } from "electron";
 import * as Store from "electron-store";
 import { StoreKey } from "../src/common/interface";
-// import { getRunningApps } from "../src/main/util/application";
+import type { GlobalApi } from "../src/common/preload";
 
 declare global {
   namespace NodeJS {
     interface Global {
       store: Store<StoreKey>;
-      // getRunningApps: typeof getRunningApps;
     }
   }
 
   interface Window {
-    electron: {
-      ipcRenderer: IpcRenderer;
-    };
+    electron: GlobalApi;
   }
 }

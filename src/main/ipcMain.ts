@@ -6,14 +6,12 @@ import {
 } from "electron";
 import { mainWindow } from "./main";
 import { HotKeyMap, IpcKey, ipcKeys } from "../common/interface";
-import { getAppIcon, getFrontmostAppId, getBundleId } from "./util/application";
+import { getAppIcon } from "./util/application";
 
 const ipcEvents: {
   [key in IpcKey]: (ev: IpcMainInvokeEvent, ...args: any) => Promise<any>;
 } = {
   getAppIcon,
-  getFrontmostAppId,
-  getBundleId,
   openFileDialog: async (
     ev: IpcMainInvokeEvent
   ): Promise<OpenDialogReturnValue> => {

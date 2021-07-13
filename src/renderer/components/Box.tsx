@@ -1,13 +1,14 @@
 import React from "react";
 import { css } from "goober";
 import { AppInfo } from "../../common/interface";
-import {
-  invokeGetAppIcon,
-  invokeGetBundleId,
-  invokeOpenFileDialog,
-} from "../util/ipcRenderer";
 import { pathToName } from "../../common/util";
 import { DragEventHandler, useCallback, FC, ReactNode } from "react";
+
+// ______________________________________________________
+//
+// @ Constants
+//
+const api = window.electron
 
 // ______________________________________________________
 //
@@ -57,28 +58,24 @@ export const Box: FC<BoxProps> = (props) => {
       const file = ev.dataTransfer.files[0];
       const path = file.path;
       const name = file.name.slice(0, -4);
-      const icon = await invokeGetAppIcon(path);
-      const bundleId = await invokeGetBundleId(path);
+      const icon = await api.getAppIcon(path);
       const appData: AppInfo = {
-        bundleId,
         name,
         path,
         icon,
       };
       props.updateHotKeyMap(appData);
     },
-    [invokeGetAppIcon]
+    [api.getAppIcon]
   );
 
   const handleOpenFileDialog = useCallback(async () => {
-    const fileNames = await invokeOpenFileDialog();
+    const fileNames = await api.openFileDialog();
     const path = fileNames.filePaths[0];
     const name = pathToName(path);
-    const icon = await invokeGetAppIcon(path);
-    const bundleId = await invokeGetBundleId(path);
+    const icon = await api.getAppIcon(path);
     if (name) {
       const appData: AppInfo = {
-        bundleId,
         name,
         path,
         icon,
@@ -88,9 +85,9 @@ export const Box: FC<BoxProps> = (props) => {
       return;
     }
   }, [
-    invokeOpenFileDialog,
+    api.openFileDialog,
     pathToName,
-    invokeGetAppIcon,
+    api.getAppIcon,
     props.updateHotKeyMap,
   ]);
 
