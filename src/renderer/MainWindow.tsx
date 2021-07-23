@@ -9,8 +9,11 @@ const styles = {
     justify-content: center;
     width: 100vw;
     height: 100vh;
-    border-radius: 5px;
-    background-image: linear-gradient(45deg, #fa709a 0%, #fee140 100%);
+    backdrop-filter: blur(25px) saturate(200%);
+    -webkit-backdrop-filter: blur(25px) saturate(200%);
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 12px;
+    border: 1px solid rgba(209, 213, 219, 0.3);
   `,
 };
 

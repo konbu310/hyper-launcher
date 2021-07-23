@@ -8,7 +8,7 @@ import { DragEventHandler, useCallback, FC, ReactNode } from "react";
 //
 // @ Constants
 //
-const api = window.electron
+const api = window.electron;
 
 // ______________________________________________________
 //
@@ -30,7 +30,7 @@ const styles = {
     padding: 5px;
     width: 280px;
     border-radius: 5px;
-    background-color: #fff;
+    background-color: #f6f8fa;
     box-shadow: 0 0 2px #808080;
     border: 1px solid #fff;
     display: flex;
@@ -84,12 +84,7 @@ export const Box: FC<BoxProps> = (props) => {
     } else {
       return;
     }
-  }, [
-    api.openFileDialog,
-    pathToName,
-    api.getAppIcon,
-    props.updateHotKeyMap,
-  ]);
+  }, [api.openFileDialog, pathToName, api.getAppIcon, props.updateHotKeyMap]);
 
   return (
     <div className={styles.Box} onDrop={handleAppDrop}>

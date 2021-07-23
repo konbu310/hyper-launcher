@@ -13,7 +13,7 @@ export const hotKey = new HotKeyManager();
 
 const reactDevToolsPath = path.join(
   os.homedir(),
-  "/Library/Application Support/Google/Chrome/Default/Extensions/fmkadmapgofadopljbjfkapdkoienihi/4.10.1_0"
+  "/Library/Application Support/Google/Chrome/Default/Extensions/fmkadmapgofadopljbjfkapdkoienihi/4.14.0_1"
 );
 
 const loadReactExtension = async () => {

@@ -10,8 +10,10 @@
     "build:prod": "NODE_ENV=production webpack",
     "build:mac": "yarn run build:prod && electron-builder",
     "watch": "webpack --watch",
-    "start": "electron .",
-    "fmt": "yarn prettier --write '**/*.{ts,tsx}'"
+    "start": "electron-forge start",
+    "fmt": "yarn prettier --write '**/*.{ts,tsx}'",
+    "package": "electron-forge package",
+    "make": "electron-forge make"
   },
   "dependencies": {
     "@jxa/run": "^1.3.4",
@@ -23,6 +25,8 @@
     "react-transition-group": "^4.4.1"
   },
   "devDependencies": {
+    "@electron-forge/cli": "^6.0.0-beta.58",
+    "@electron-forge/maker-zip": "^6.0.0-beta.58",
     "@jxa/global-type": "^1.3.4",
     "@jxa/types": "^1.3.4",
     "@types/node": "^15.0.1",
@@ -30,8 +34,7 @@
     "@types/react-dom": "^17.0.3",
     "@types/react-transition-group": "^4.4.1",
     "@types/webpack": "^5.28.0",
-    "electron": "^12.0.6",
-    "electron-builder": "^22.10.5",
+    "electron": "^13.1.7",
     "html-webpack-plugin": "^5.3.1",
     "node-loader": "^2.0.0",
     "prettier": "^2.2.1",
@@ -40,31 +43,16 @@
     "webpack": "^5.36.2",
     "webpack-cli": "^4.6.0"
   },
-  "build": {
-    "productName": "Hyper Launcher",
-    "appId": "com.electron.hyper-launcher",
-    "directories": {
-      "output": "build"
-    },
-    "dmg": {
-      "contents": [
+  "config": {
+    "forge": {
+      "packagerConfig": {},
+      "makers": [
         {
-          "x": 410,
-          "y": 150,
-          "type": "link",
-          "path": "/Applications"
-        },
-        {
-          "x": 130,
-          "y": 150,
-          "type": "file"
+          "name": "@electron-forge/maker-zip",
+          "platforms": [
+            "darwin"
+          ]
         }
-      ]
-    },
-    "mac": {
-      "icon": "icons/icon.icns",
-      "target": [
-        "dmg"
       ]
     }
   }

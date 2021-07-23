@@ -28,7 +28,7 @@ type EmptyCardProps = {
 //
 const styles = {
   Card: css`
-    background-color: #ecf0f1;
+    background-color: #ffffff;
     margin: 5px;
     padding: 2px;
     border-radius: 5px;
