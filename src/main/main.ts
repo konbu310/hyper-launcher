@@ -3,13 +3,11 @@ import { createStore } from "./util/store";
 import { initializeIpcEvents, releaseIpcEvents } from "./ipcMain";
 import os from "os";
 import path from "path";
-import { HotKeyManager } from "./hotkeyManager";
+import { registerHotKey } from "./hotKeyHandler";
 
 const isProduction = process.env.NODE_ENV === "production";
 
 export let mainWindow: BrowserWindow | null = null;
-
-export const hotKey = new HotKeyManager();
 
 const reactDevToolsPath = path.join(
   os.homedir(),
@@ -51,7 +49,7 @@ const createWindow = () => {
 app.whenReady().then(async () => {
   const store = createStore();
   global.store = store;
-  await hotKey.initialize(store.get("hotKeyMap"));
+  await registerHotKey(store.get("hotKeyMap"));
   createWindow();
   initializeIpcEvents();
 
