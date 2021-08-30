@@ -1,11 +1,11 @@
 import * as React from "react";
-import { css } from "linaria";
+import { css } from "goober";
 import { Box } from "../components/Box";
 import { Card, EmptyCard } from "../components/Card";
-import { nonNullableObj } from "../util/guard";
-import { AppInfo, HotKeyMap } from "../../share/interface";
+import { nonNullableObj } from "../guard";
+import { AppInfo, HotKeyMap } from "../../common/interface";
 import { useEffect, useState, FC, DragEvent } from "react";
-import { invokeGetHotKeyMap, invokeSetHotKeyMap } from "../util/ipcRenderer";
+import { invokeGetHotKeyMap, invokeSetHotKeyMap } from "../ipcRenderer";
 
 // ______________________________________________________
 //
@@ -50,7 +50,9 @@ export const IndexPage: FC = () => {
 
   useEffect(() => {
     invokeGetHotKeyMap().then((res) => {
-      setHotKeyData(res);
+      if (res) {
+        setHotKeyData(res);
+      }
     });
   }, []);
 

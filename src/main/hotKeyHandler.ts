@@ -1,5 +1,5 @@
 import { globalShortcut, shell } from "electron";
-import { AppInfo, HotKeyMap } from "../share/interface";
+import { AppInfo, HotKeyMap } from "../common/interface";
 import { getRunningApps } from "./util/application";
 import { getFrontmostApp } from "./util/application";
 

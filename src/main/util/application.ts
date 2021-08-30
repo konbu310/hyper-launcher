@@ -1,9 +1,9 @@
 import { promisify } from "util";
 import * as cp from "child_process";
-import { AppInfo } from "../../share/interface";
+import { AppInfo } from "../../common/interface";
 import { join as joinPath } from "path";
 import { IpcMainInvokeEvent } from "electron";
-import { pathToName } from "../../share/util";
+import { pathToName } from "../../common/util";
 
 const execAsync = promisify(cp.exec);
 const execFileAsync = promisify(cp.execFile);

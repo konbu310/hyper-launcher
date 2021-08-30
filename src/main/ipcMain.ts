@@ -4,8 +4,8 @@ import {
   IpcMainInvokeEvent,
   OpenDialogReturnValue,
 } from "electron";
-import { mainWindow } from "./main";
-import { HotKeyMap, IpcKey, ipcKeys } from "../share/interface";
+import { mainWindow, store } from "./main";
+import { HotKeyMap, IpcKey, ipcKeys } from "../common/interface";
 import { getAppIcon, getFrontmostApp } from "./util/application";
 
 const ipcEvents: {
@@ -24,14 +24,16 @@ const ipcEvents: {
       filters: [{ name: "application file", extensions: ["app"] }],
     });
   },
-  getHotKeyMap: async (ev: IpcMainInvokeEvent): Promise<HotKeyMap> => {
-    return global.store.get("hotKeyMap");
+  getHotKeyMap: async (
+    ev: IpcMainInvokeEvent
+  ): Promise<HotKeyMap | undefined> => {
+    return store?.get("hotKeyMap");
   },
   setHotKeyMap: async (
     ev: IpcMainInvokeEvent,
     data: HotKeyMap
   ): Promise<boolean> => {
-    global.store.set("hotKeyMap", data);
+    store?.set("hotKeyMap", data);
     return true;
   },
 };
