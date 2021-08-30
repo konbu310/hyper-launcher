@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { css } from "goober";
 import { Box } from "../components/Box";
 import { Card, EmptyCard } from "../components/Card";
@@ -67,53 +67,50 @@ export const IndexPage: FC = () => {
     return <div>Loading...</div>;
   }
 
-  const onDragStart = (boxKey: string, cardIndex: number) => (
-    cardId: string,
-    ev: DragEvent<HTMLElement>
-  ) => {
-    setDraggedItem({
-      boxKey,
-      cardIndex,
-    });
-    const dragElm = document.querySelector(`#${cardId}`);
-    dragElm && ev.dataTransfer.setDragImage(dragElm, 0, 0);
-    ev.dataTransfer.effectAllowed = "move";
-  };
-
-  const onDragEnter = (boxKey: string, cardIndex: number) => (
-    cardId: string,
-    ev: DragEvent<HTMLElement>
-  ) => {
-    if (draggedItem.boxKey === boxKey && draggedItem.cardIndex === cardIndex)
-      return;
-    if (ev.dataTransfer.effectAllowed === "all") return;
-
-    if (nonNullableObj(draggedItem)) {
-      const newData = { ...hotKeyData };
-      const removed = newData[draggedItem.boxKey].splice(
-        draggedItem.cardIndex,
-        1
-      );
-      newData[boxKey].splice(cardIndex, 0, ...removed);
-      invokeSetHotKeyMap(newData).then(() => {
-        setHotKeyData(newData);
-        setDraggedItem({
-          boxKey,
-          cardIndex,
-        });
+  const onDragStart =
+    (boxKey: string, cardIndex: number) =>
+    (cardId: string, ev: DragEvent<HTMLElement>) => {
+      setDraggedItem({
+        boxKey,
+        cardIndex,
       });
-    }
-  };
+      const dragElm = document.querySelector(`#${cardId}`);
+      dragElm && ev.dataTransfer.setDragImage(dragElm, 0, 0);
+      ev.dataTransfer.effectAllowed = "move";
+    };
 
-  const onDragEnd = (boxKey: string, cardIndex: number) => (
-    cardId: string,
-    ev: DragEvent<HTMLElement>
-  ) => {
-    setDraggedItem({
-      boxKey: null,
-      cardIndex: null,
-    });
-  };
+  const onDragEnter =
+    (boxKey: string, cardIndex: number) =>
+    (cardId: string, ev: DragEvent<HTMLElement>) => {
+      if (draggedItem.boxKey === boxKey && draggedItem.cardIndex === cardIndex)
+        return;
+      if (ev.dataTransfer.effectAllowed === "all") return;
+
+      if (nonNullableObj(draggedItem)) {
+        const newData = { ...hotKeyData };
+        const removed = newData[draggedItem.boxKey].splice(
+          draggedItem.cardIndex,
+          1
+        );
+        newData[boxKey].splice(cardIndex, 0, ...removed);
+        invokeSetHotKeyMap(newData).then(() => {
+          setHotKeyData(newData);
+          setDraggedItem({
+            boxKey,
+            cardIndex,
+          });
+        });
+      }
+    };
+
+  const onDragEnd =
+    (boxKey: string, cardIndex: number) =>
+    (cardId: string, ev: DragEvent<HTMLElement>) => {
+      setDraggedItem({
+        boxKey: null,
+        cardIndex: null,
+      });
+    };
 
   const updateHotKeyMap = (boxKey: string) => (newApp: AppInfo) => {
     const newData = { ...hotKeyData };

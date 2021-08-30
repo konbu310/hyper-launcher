@@ -1,14 +1,14 @@
 import { promisify } from "util";
-import * as cp from "child_process";
+import { exec, execFile } from "child_process";
 import { AppInfo } from "../../common/interface";
 import { join as joinPath } from "path";
 import { IpcMainInvokeEvent } from "electron";
 import { pathToName } from "../../common/util";
 
-const execAsync = promisify(cp.exec);
-const execFileAsync = promisify(cp.execFile);
+const execAsync = promisify(exec);
+const execFileAsync = promisify(execFile);
 const frontmostApp = joinPath(__dirname, "frontmost-app");
-const fileIcon = require("file-icon");
+const fileIcon = require("extract-file-icon");
 
 // ______________________________________________________
 //
@@ -18,8 +18,8 @@ export const getAppIcon = async (
   ev: IpcMainInvokeEvent,
   appPath: string
 ): Promise<string> => {
-  const buffer = (await fileIcon.buffer(appPath)) as Buffer;
-  return buffer.toString("base64");
+  const icon = fileIcon(appPath, 32);
+  return icon.toString("base64");
 };
 
 // ______________________________________________________

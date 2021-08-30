@@ -453,14 +453,6 @@ acorn@^8.4.1:
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-8.4.1.tgz#56c36251fc7cabc7096adc18f05afe814321a28c"
   integrity sha512-asabaBSkEKosYKMITunzX177CXxQ4Q8BSSzMTKD+FefUhipQC70gfW5SiUDhYQ3vk8G+81HqQk7Fv9OXwwn9KA==
 
-aggregate-error@^3.0.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/aggregate-error/-/aggregate-error-3.1.0.tgz#92670ff50f5359bdb7a3e0d40d0ec30c5737687a"
-  integrity sha512-4I7Td01quW/RpocfNayFdFVk1qSuoh0E7JrbRJ16nH01HhKFQ88INq9Sd+nd72zqRySlr9BmDA8xlEJ6vJMrYA==
-  dependencies:
-    clean-stack "^2.0.0"
-    indent-string "^4.0.0"
-
 ajv-keywords@^3.4.1, ajv-keywords@^3.5.2:
   version "3.5.2"
   resolved "https://registry.yarnpkg.com/ajv-keywords/-/ajv-keywords-3.5.2.tgz#31f29da5ab6e00d1c2d329acf7b5929614d5014d"
@@ -853,11 +845,6 @@ clean-css@^4.2.3:
   integrity sha512-VcMWDN54ZN/DS+g58HYL5/n4Zrqe8vHJpGA8KdgUXFU4fuP/aHNw8eld9SyEIyabIMJX/0RaY/fplOo5hYLSFA==
   dependencies:
     source-map "~0.6.0"
-
-clean-stack@^2.0.0:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/clean-stack/-/clean-stack-2.2.0.tgz#ee8472dbb129e727b31e8a10a427dee9dfe4008b"
-  integrity sha512-4diC9HaTE+KRAMWhDhrGOECgWZxoevMc5TlkObMqNSsVU62PYzXZ/SMTjzyGAFF1YusgxGcSWTEXBhp0CPwQ1A==
 
 clean-webpack-plugin@^4.0.0-alpha.0:
   version "4.0.0-alpha.0"
@@ -1500,6 +1487,13 @@ execa@^5.0.0:
     signal-exit "^3.0.3"
     strip-final-newline "^2.0.0"
 
+extract-file-icon@^0.3.2:
+  version "0.3.2"
+  resolved "https://registry.yarnpkg.com/extract-file-icon/-/extract-file-icon-0.3.2.tgz#9d95bf1aef4125c6a5844b1898492847868e569e"
+  integrity sha512-We5/HaMDlioOx3c9zDjit8RtKWEvT94sJF8jTujaKVOyWL8Kkqu4QGnwDr5fID6XsbKvWT0JJNuWuV2Tmr7yiw==
+  dependencies:
+    node-addon-api "1.7.1"
+
 extract-zip@^1.0.3:
   version "1.7.0"
   resolved "https://registry.yarnpkg.com/extract-zip/-/extract-zip-1.7.0.tgz#556cc3ae9df7f452c493a0cfb51cc30277940927"
@@ -1536,13 +1530,6 @@ fd-slicer@~1.1.0:
   integrity sha1-JcfInLH5B3+IkbvmHY85Dq4lbx4=
   dependencies:
     pend "~1.2.0"
-
-file-icon@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/file-icon/-/file-icon-4.0.0.tgz#40e2efd0ca88002f180c0ebfa587bba64adfd673"
-  integrity sha512-e3L0RlV1Wq2EiJg5d3vHUJdGY5mMhmxqOKSzUfktsLtBCKFcXH5PzpJ5wMgwgW2D2DbKzOg8i2ptFJjAOlA4Pw==
-  dependencies:
-    p-map "^4.0.0"
 
 filelist@^1.0.1:
   version "1.0.2"
@@ -1903,11 +1890,6 @@ imurmurhash@^0.1.4:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/imurmurhash/-/imurmurhash-0.1.4.tgz#9218b9b2b928a238b13dc4fb6b6d576f231453ea"
   integrity sha1-khi5srkoojixPcT7a21XbyMUU+o=
-
-indent-string@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/indent-string/-/indent-string-4.0.0.tgz#624f8f4497d619b2d9768531d58f4122854d7251"
-  integrity sha512-EdDDZu4A2OyIK7Lr/2zG+w5jmbuk1DVBnEwREQvBzspBJkCEbRa8GxU1lghYcaGJCnRWibjDXlq779X1/y5xwg==
 
 inflight@^1.0.4:
   version "1.0.6"
@@ -2388,10 +2370,22 @@ no-case@^3.0.4:
     lower-case "^2.0.2"
     tslib "^2.0.3"
 
+node-addon-api@1.7.1:
+  version "1.7.1"
+  resolved "https://registry.yarnpkg.com/node-addon-api/-/node-addon-api-1.7.1.tgz#cf813cd69bb8d9100f6bdca6755fc268f54ac492"
+  integrity sha512-2+DuKodWvwRTrCfKOeR24KIc5unKjOh8mz17NCzVnHWfjAdDqbfbjqh7gUT+BkXBRQM52+xCHciKWonJ3CbJMQ==
+
 node-addon-api@^1.6.3:
   version "1.7.2"
   resolved "https://registry.yarnpkg.com/node-addon-api/-/node-addon-api-1.7.2.tgz#3df30b95720b53c24e59948b49532b662444f54d"
   integrity sha512-ibPK3iA+vaY1eEjESkQkM0BbCqFOaZMiXRTtdB0u7b4djtY6JnsjvPdUHVMg6xQt3B8fpTTWHI9A+ADjM9frzg==
+
+node-loader@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/node-loader/-/node-loader-2.0.0.tgz#9109a6d828703fd3e0aa03c1baec12a798071562"
+  integrity sha512-I5VN34NO4/5UYJaUBtkrODPWxbobrE4hgDqPrjB25yPkonFhCmZ146vTH+Zg417E9Iwoh1l/MbRs1apc5J295Q==
+  dependencies:
+    loader-utils "^2.0.0"
 
 node-releases@^1.1.75:
   version "1.1.75"
@@ -2491,13 +2485,6 @@ p-map@^2.0.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/p-map/-/p-map-2.1.0.tgz#310928feef9c9ecc65b68b17693018a665cea175"
   integrity sha512-y3b8Kpd8OAN444hxfBbFfj1FY/RjtTd8tzYwhUqNYXx0fXx2iX4maP4Qr6qhIKbQXI02wTLAda4fYUbDagTUFw==
-
-p-map@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/p-map/-/p-map-4.0.0.tgz#bb2f95a5eda2ec168ec9274e06a747c3e2904d2b"
-  integrity sha512-/bjOqmgETBYB5BoEeGVea8dmvHb2m9GLy1E9W43yeyfP6QQCZGFNa+XRceJEuDB6zqr+gKpIAmlLebMpykw/MQ==
-  dependencies:
-    aggregate-error "^3.0.0"
 
 p-try@^2.0.0:
   version "2.2.0"

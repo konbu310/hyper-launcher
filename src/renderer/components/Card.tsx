@@ -1,7 +1,6 @@
-import * as React from "react";
-import { FC, useCallback, useState } from "react";
+import React from "react";
+import { FC } from "react";
 import { css } from "goober";
-import { CSSTransition } from "react-transition-group";
 
 // ______________________________________________________
 //
@@ -11,7 +10,7 @@ type CardProps = {
   cardId: string;
   icon: string;
   name: string;
-  removeHotKeyMap: Function;
+  removeHotKeyMap: VoidFunction;
   onDragStart: Function;
   onDragEnter: Function;
   onDragEnd: Function;
@@ -36,6 +35,12 @@ const styles = {
     box-shadow: 0 0 5px lightgrey;
     flex: 0 0 60px;
     -webkit-app-region: no-drag;
+    cursor: pointer;
+    &:hover {
+      span {
+        opacity: 1;
+      }
+    }
   `,
   CardContent: css`
     height: 100%;
@@ -56,43 +61,22 @@ const styles = {
     text-overflow: ellipsis;
   `,
   RemoveButton: css`
-    visibility: hidden;
     font-size: 25px;
     margin-left: 10px;
     flex-basis: 30px;
     color: rgba(192, 57, 43, 0.9);
     cursor: pointer;
+    opacity: 0;
+    transition: all 200ms;
     &:hover {
       color: rgba(217, 136, 128, 0.9);
+      opacity: 1;
+      transition: all 200ms;
     }
     &:active {
       color: rgba(169, 50, 38, 0.9);
     }
   `,
-  RemoveButtonAnim: {
-    enter: css`
-      visibility: visible;
-      opacity: 0;
-    `,
-    enterActive: css`
-      opacity: 1;
-      transition: opacity 300ms linear;
-    `,
-    enterDone: css`
-      visibility: visible;
-    `,
-    exit: css`
-      visibility: visible;
-      opacity: 1;
-    `,
-    exitActive: css`
-      opacity: 0;
-      transition: opacity 300ms linear;
-    `,
-    exitDone: css`
-      visibility: hidden;
-    `,
-  },
   EmptyCard: css`
     position: relative;
     flex: 0 0 180px;
@@ -104,16 +88,6 @@ const styles = {
 // @ View
 //
 export const Card: FC<CardProps> = (props) => {
-  const [isShowDeleteButton, setIsShowDeleteButton] = useState<boolean>(false);
-
-  const showDeleteButton = useCallback(() => setIsShowDeleteButton(true), [
-    setIsShowDeleteButton,
-  ]);
-
-  const hideDeleteButton = useCallback(() => setIsShowDeleteButton(false), [
-    setIsShowDeleteButton,
-  ]);
-
   return (
     <section
       className={styles.Card}
@@ -122,8 +96,6 @@ export const Card: FC<CardProps> = (props) => {
       onDragStart={(ev) => props.onDragStart(props.cardId, ev)}
       onDragEnter={(ev) => props.onDragEnter(props.cardId, ev)}
       onDragEnd={(ev) => props.onDragEnd(props.cardId, ev)}
-      onMouseEnter={showDeleteButton}
-      onMouseLeave={hideDeleteButton}
     >
       <div className={styles.CardContent}>
         <img
@@ -132,18 +104,9 @@ export const Card: FC<CardProps> = (props) => {
           alt="application icon"
         />
         <span className={styles.CardText}>{props.name}</span>
-        <CSSTransition
-          classNames={{ ...styles.RemoveButtonAnim }}
-          timeout={300}
-          in={isShowDeleteButton}
-        >
-          <span
-            className={styles.RemoveButton}
-            onClick={(ev) => props.removeHotKeyMap()}
-          >
-            ×
-          </span>
-        </CSSTransition>
+        <span className={styles.RemoveButton} onClick={props.removeHotKeyMap}>
+          ×
+        </span>
       </div>
     </section>
   );
