@@ -18,8 +18,7 @@ export const invokeGetFrontmostApp = async (): Promise<AppInfo> => {
   return await ipcRenderer.invoke("getFrontmostApp");
 };
 
-export const invokeOpenFileDialog = async (): Promise<
-  OpenDialogReturnValue
-> => {
-  return await ipcRenderer.invoke("openFileDialog");
-};
+export const invokeOpenFileDialog =
+  async (): Promise<OpenDialogReturnValue> => {
+    return await ipcRenderer.invoke("openFileDialog");
+  };
