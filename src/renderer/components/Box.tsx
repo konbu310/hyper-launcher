@@ -1,8 +1,8 @@
 import * as React from "react";
-import { css } from "linaria";
-import { AppInfo } from "../../share/interface";
-import { invokeGetAppIcon, invokeOpenFileDialog } from "../util/ipcRenderer";
-import { pathToName } from "../../share/util";
+import { css } from "goober";
+import { AppInfo } from "../../common/interface";
+import { invokeGetAppIcon, invokeOpenFileDialog } from "../ipcRenderer";
+import { pathToName } from "../../common/util";
 import { DragEventHandler, useCallback, FC, ReactNode } from "react";
 
 // ______________________________________________________

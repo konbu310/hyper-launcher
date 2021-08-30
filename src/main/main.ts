@@ -1,15 +1,17 @@
 import { app, BrowserWindow } from "electron";
+import EStore from "electron-store";
+import { StoreKey } from "../common/interface";
 import { createMainWindow } from "./windowManager";
 import { registerHotKey } from "./hotKeyHandler";
 import { createStore } from "./util/store";
 import { initializeIpcEvents, releaseIpcEvents } from "./ipcMain";
 
+export let store: EStore<StoreKey> | null = null;
+
 export let mainWindow: BrowserWindow | null = null;
-app.allowRendererProcessReuse = true;
 
 app.on("ready", async () => {
-  const store = createStore();
-  global.store = store;
+  store = createStore();
   await registerHotKey(store.get("hotKeyMap"));
   mainWindow = createMainWindow();
   initializeIpcEvents();

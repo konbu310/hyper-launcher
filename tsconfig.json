@@ -4,7 +4,7 @@
     "module": "ESNext",
     "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "jsx": "react",
-    "outDir": "dist-tsc",
+    "outDir": "dist",
     "sourceMap": true,
     "skipLibCheck": true,
     "strict": true,

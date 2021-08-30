@@ -1,6 +1,6 @@
 import * as React from "react";
 import { IndexPage } from "./pages/IndexPage";
-import { css } from "linaria";
+import { css } from "goober";
 
 const styles = {
   MainWindow: css`

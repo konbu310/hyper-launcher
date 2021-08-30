@@ -1,8 +1,8 @@
-import { AppInfo, HotKeyMap } from "../../share/interface";
+import { AppInfo, HotKeyMap } from "../common/interface";
 import { OpenDialogReturnValue, IpcRenderer } from "electron";
 const ipcRenderer: IpcRenderer = window.require("electron").ipcRenderer;
 
-export const invokeGetHotKeyMap = async (): Promise<HotKeyMap> => {
+export const invokeGetHotKeyMap = async (): Promise<HotKeyMap | undefined> => {
   return await ipcRenderer.invoke("getHotKeyMap");
 };
 
