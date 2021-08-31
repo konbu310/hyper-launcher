@@ -2,11 +2,7 @@
   "compilerOptions": {
     "target": "ESNext",
     "module": "ESNext",
-    "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "jsx": "react",
-    "outDir": "dist",
-    "sourceMap": true,
-    "skipLibCheck": true,
     "strict": true,
     "moduleResolution": "node",
     "esModuleInterop": true,

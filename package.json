@@ -6,12 +6,12 @@
   "main": "dist/main.js",
   "license": "MIT",
   "scripts": {
-    "build": "webpack",
-    "build:prod": "NODE_ENV=production webpack",
-    "build:mac": "yarn run build:prod && electron-builder",
+    "build": "webpack --node-env production",
     "prewatch": "bash ./scripts/copy-bins.sh",
     "watch": "webpack --watch",
-    "start": "electron .",
+    "start": "electron-forge start",
+    "package": "electron-forge package",
+    "make": "electron-forge make",
     "fmt": "yarn prettier --write '**/*.{ts,tsx}'"
   },
   "dependencies": {
@@ -24,6 +24,8 @@
     "react-transition-group": "^4.4.2"
   },
   "devDependencies": {
+    "@electron-forge/cli": "^6.0.0-beta.60",
+    "@electron-forge/maker-zip": "^6.0.0-beta.60",
     "@types/mini-css-extract-plugin": "2.2.0",
     "@types/node": "^16.7.6",
     "@types/react": "^17.0.19",
@@ -33,7 +35,6 @@
     "clean-webpack-plugin": "^4.0.0-alpha.0",
     "css-loader": "^6.2.0",
     "electron": "11.x",
-    "electron-builder": "^22.11.7",
     "esbuild-loader": "^2.13.1",
     "fork-ts-checker-webpack-plugin": "^6.3.2",
     "html-webpack-plugin": "^5.3.2",
@@ -46,31 +47,18 @@
     "webpack": "^5.51.1",
     "webpack-cli": "^4.8.0"
   },
-  "build": {
-    "productName": "Hyper Launcher",
-    "appId": "com.electron.hyper-launcher",
-    "directories": {
-      "output": "build"
-    },
-    "dmg": {
-      "contents": [
+  "config": {
+    "forge": {
+      "packagerConfig": {
+        "icon": "./assets/Hyper Launcher.icns"
+      },
+      "makers": [
         {
-          "x": 410,
-          "y": 150,
-          "type": "link",
-          "path": "/Applications"
-        },
-        {
-          "x": 130,
-          "y": 150,
-          "type": "file"
+          "name": "@electron-forge/maker-zip",
+          "platforms": [
+            "darwin"
+          ]
         }
-      ]
-    },
-    "mac": {
-      "icon": "icons/icon.icns",
-      "target": [
-        "dmg"
       ]
     }
   }

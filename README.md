@@ -1,41 +1,33 @@
-![logo](/assets/Hyper&#32;Launcher&#32;LP.png)
+![logo](</assets/Hyper Launcher LP.png>)
 
 ### This App is beta version. Specification may change.
 
 ## Usage
 
 ```bash
-# clone repo
-$ git clone https://github.com/konbu310/hyper-launcher
+# transpile and bundle
+$ yarn run build
 
-# or degit repo
-$ npx degit konbu310/hyper-launcher hyper-launcher
+# make app
+$ yarn run make
 
-# change dir
-$ cd ./hyper-launcher
-
-# build for macOS
-$ yarn run build:mac
-
-# you will get app in "build/Hyper Launcher.xxx.dmg"
+# you will get an app in ./out directory
 ```
 
 ## Future works
 
-* Test
-* Release with Github Actions
-* and more...
-
+- Test
+- Release with Github Actions
+- and more...
 
 ## Screenshot
 
 ![Image from Gyazo](https://raw.githubusercontent.com/konbu310/hyper-launcher/master/assets/screenshot.png)
 
-
 ## Note
 
-* *Icons made by [Freepik](https://www.flaticon.com/authors/freepik) from [www.flation.com](https://www.flaticon.com)*
-* Special Thanks ❤️
-  * [sentialx/extract-file-icon](https://github.com/sentialx/extract-file-icon)
-  * [shinnn/frontmost-app](https://github.com/shinnn/frontmost-app)
-  * [takano32/4153310](https://gist.github.com/takano32/4153310)
+- _Icons made by [Freepik](https://www.flaticon.com/authors/freepik) from [www.flation.com](https://www.flaticon.com)_
+- Special Thanks ❤️
+  - [sentialx/extract-file-icon](https://github.com/sentialx/extract-file-icon)
+  - [shinnn/frontmost-app](https://github.com/shinnn/frontmost-app)
+  - [takano32/4153310](https://gist.github.com/takano32/4153310)

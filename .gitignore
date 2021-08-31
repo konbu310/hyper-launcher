@@ -8,3 +8,4 @@ dist-tsc
 build
 .env
 .linaria-cache/
+out/
