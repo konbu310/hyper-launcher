@@ -1,7 +1,6 @@
 import { globalShortcut, shell } from "electron";
 import { AppInfo, HotKeyMap } from "../common/interface";
-import { getRunningApps } from "./util/application";
-import { getFrontmostApp } from "./util/application";
+import { getRunningApps, getFrontmostApp } from "./application";
 
 const prevIndexMap: Map<string, number> = new Map([
   ["1", 0],

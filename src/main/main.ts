@@ -3,7 +3,7 @@ import EStore from "electron-store";
 import { StoreKey } from "../common/interface";
 import { createMainWindow } from "./windowManager";
 import { registerHotKey } from "./hotKeyHandler";
-import { createStore } from "./util/store";
+import { createStore } from "./store";
 import { initializeIpcEvents, releaseIpcEvents } from "./ipcMain";
 
 export let store: EStore<StoreKey> | null = null;

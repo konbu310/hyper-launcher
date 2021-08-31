@@ -6,7 +6,7 @@ import {
 } from "electron";
 import { mainWindow, store } from "./main";
 import { HotKeyMap, IpcKey, ipcKeys } from "../common/interface";
-import { getAppIcon, getFrontmostApp } from "./util/application";
+import { getAppIcon, getFrontmostApp } from "./application";
 
 const ipcEvents: {
   [key in IpcKey]: (ev: IpcMainInvokeEvent, ...args: any) => Promise<any>;
