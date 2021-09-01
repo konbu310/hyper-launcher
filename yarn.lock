@@ -2083,13 +2083,6 @@ form-data@~2.3.2:
     combined-stream "^1.0.6"
     mime-types "^2.1.12"
 
-frontmost-app@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/frontmost-app/-/frontmost-app-1.0.0.tgz#05ef4cebe3c4383cee622ee23c99667713fcefb0"
-  integrity sha512-MtdNuW2ZsHiRNW8VCaaJPS6w27AJbrNITaadqoSYVBSkJWCf+057UM75lpp4LwNfmpCLaQForQrhSHRbGZh+mg==
-  dependencies:
-    platform-name "^1.0.0"
-
 fs-extra@^10.0.0:
   version "10.0.0"
   resolved "https://registry.yarnpkg.com/fs-extra/-/fs-extra-10.0.0.tgz#9ff61b655dde53fb34a82df84bb214ce802e17c1"
@@ -2604,13 +2597,6 @@ inquirer@^8.0.0:
     string-width "^4.1.0"
     strip-ansi "^6.0.0"
     through "^2.3.6"
-
-inspect-with-kind@^1.0.4:
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/inspect-with-kind/-/inspect-with-kind-1.0.5.tgz#fce151d4ce89722c82ca8e9860bb96f9167c316c"
-  integrity sha512-MAQUJuIo7Xqk8EVNP+6d3CKq9c80hi4tjIbIAT6lmGW9W6WzlHiu9PS8uSuUYU+Do+j1baiFp3H25XEVxDIG2g==
-  dependencies:
-    kind-of "^6.0.2"
 
 interpret@^2.2.0:
   version "2.2.0"
@@ -3807,13 +3793,6 @@ pkg-up@^3.1.0:
   integrity sha512-nDywThFk1i4BQK4twPQ6TA4RT8bDY96yeuCVBWL3ePARCiEKDRSrNGbFIgUJpLp+XeIR65v8ra7WuJOFUBtkMA==
   dependencies:
     find-up "^3.0.0"
-
-platform-name@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/platform-name/-/platform-name-1.0.0.tgz#3396ea7bfea3a68aedd13483e055100f9e609755"
-  integrity sha512-ZRbqJ30uRRKGKW2O1XnG/Ls1K/aBGlnyjq1Z0BbjqDPTNN+XZKFaugCsCm3/mq6XGR5DZNVdV75afpQEvNNY3Q==
-  dependencies:
-    inspect-with-kind "^1.0.4"
 
 plist@^3.0.0, plist@^3.0.1:
   version "3.0.4"
