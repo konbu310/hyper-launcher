@@ -51,6 +51,7 @@
   "config": {
     "forge": {
       "packagerConfig": {
+        "name": "Hyper Launcher",
         "icon": "./assets/Hyper Launcher.icns"
       },
       "makers": [
