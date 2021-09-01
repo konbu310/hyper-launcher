@@ -79,7 +79,11 @@ module.exports = [
     plugins: [
       new ForkTsCheckerWebpackPlugin(),
       new CleanWebpackPlugin({
-        cleanOnceBeforeBuildPatterns: ["dist/main.js", "dist/main.js.map"],
+        cleanOnceBeforeBuildPatterns: [
+          "dist/main.js",
+          "dist/main.js.map",
+          "dist/*.node",
+        ],
       }),
     ],
   },
