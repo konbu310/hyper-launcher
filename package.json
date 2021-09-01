@@ -19,8 +19,7 @@
     "extract-file-icon": "^0.3.2",
     "goober": "^2.0.41",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-transition-group": "^4.4.2"
+    "react-dom": "^17.0.2"
   },
   "devDependencies": {
     "@electron-forge/cli": "^6.0.0-beta.60",
@@ -29,7 +28,6 @@
     "@types/node": "^16.7.6",
     "@types/react": "^17.0.19",
     "@types/react-dom": "^17.0.9",
-    "@types/react-transition-group": "^4.4.2",
     "@types/webpack": "^5.28.0",
     "clean-webpack-plugin": "^4.0.0-alpha.0",
     "css-loader": "^6.2.0",
