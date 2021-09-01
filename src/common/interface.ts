@@ -14,7 +14,6 @@ export type StoreKey = {
 
 export const ipcKeys = [
   "getAppIcon",
-  "getFrontmostApp",
   "openFileDialog",
   "getHotKeyMap",
   "setHotKeyMap",
