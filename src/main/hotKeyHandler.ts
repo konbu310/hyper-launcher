@@ -1,6 +1,6 @@
+import { run } from "@jxa/run";
 import { globalShortcut, shell } from "electron";
 import { AppInfo, HotKeyMap } from "../common/interface";
-import { getRunningApps, getFrontmostApp } from "./application";
 
 const prevIndexMap: Map<string, number> = new Map([
   ["1", 0],
@@ -28,47 +28,65 @@ export const registerHotKey = async (hotKeyData: HotKeyMap) => {
         break;
       default:
         globalShortcut.register(`Control+${key}`, async () => {
-          await handleMultipleApps(key, appList);
+          await handleMultiApps(key, appList);
         });
         break;
     }
   });
+};
 
-  const handleMultipleApps = async (key: string, appList: AppInfo[]) => {
-    const runningApps = await getRunningApps(appList);
-    switch (runningApps.length) {
-      case 0:
-        await shell.openPath(appList[prevIndexMap.get(key) || 0].path);
-        break;
-      case 1:
-        prevIndexMap.set(
-          key,
-          appList.findIndex(({ name }) => name === runningApps[0].name) || 0
-        );
-        await shell.openPath(runningApps[0].path);
-        break;
-      default:
-        const frontmostApp = await getFrontmostApp();
-        const frontmostAppIndex = runningApps.findIndex(
-          ({ name }) => name === frontmostApp.name
-        );
-        if (frontmostAppIndex === -1) {
-          await shell.openPath(appList[prevIndexMap.get(key) || 0].path);
-        } else if (frontmostAppIndex === runningApps.length - 1) {
-          prevIndexMap.set(
-            key,
-            appList.findIndex(({ name }) => name === runningApps[0].name) || 0
-          );
-          await shell.openPath(runningApps[0].path);
-        } else {
-          prevIndexMap.set(
-            key,
-            appList.findIndex(
-              ({ name }) => name === runningApps[frontmostAppIndex + 1].name
-            ) || 0
-          );
-          await shell.openPath(runningApps[frontmostAppIndex + 1].path);
-        }
-    }
+type AppClass = {
+  running: () => boolean;
+  frontmost: () => boolean;
+};
+function Application(appPath: string): AppClass;
+function Application() {
+  return {
+    running: () => false,
+    frontmost: () => false,
   };
+}
+
+const handleMultiApps = async (key: string, appList: AppInfo[]) => {
+  try {
+    const prevIndex = prevIndexMap.get(key) ?? 0;
+    const [nextPrevIndex, targetAppPath] = await run<[number, string]>(
+      (appList: AppInfo[], prevIndex: number) => {
+        let runningApps: [number, AppInfo][] = [];
+        let frontmostFlag = false;
+
+        // 登録されたアプリが起動中か最前面にあるかどうかなどを取得する
+        for (let index = 0, length = appList.length; index < length; index++) {
+          const app = appList[index];
+          if (!app) continue;
+          const appCls = Application(app.path);
+          const isRunning = appCls.running();
+          const isFrontmost = appCls.frontmost();
+          if (!isRunning) continue;
+          if (frontmostFlag) {
+            return [index, app.path];
+          }
+          frontmostFlag = isFrontmost;
+          runningApps.push([index, app]);
+        }
+
+        if (frontmostFlag || runningApps.length === 0) {
+          return [0, appList[0].path];
+        }
+
+        if (runningApps.length === 1) {
+          const target = runningApps[0];
+          return [target[0], target[1].path];
+        }
+
+        return [prevIndex, appList[prevIndex].path];
+      },
+      appList,
+      prevIndex
+    );
+    prevIndexMap.set(key, nextPrevIndex);
+    await shell.openPath(targetAppPath);
+  } catch (err) {
+    console.error(err);
+  }
 };

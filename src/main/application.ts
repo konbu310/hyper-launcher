@@ -1,13 +1,4 @@
-import { promisify } from "util";
-import { exec, execFile } from "child_process";
-import { AppInfo } from "../common/interface";
-import { join as joinPath } from "path";
 import { IpcMainInvokeEvent } from "electron";
-import { pathToName } from "../common/util";
-
-const execAsync = promisify(exec);
-const execFileAsync = promisify(execFile);
-const frontmostApp = joinPath(__dirname, "frontmost-app");
 const fileIcon = require("extract-file-icon");
 
 // ______________________________________________________
@@ -20,53 +11,4 @@ export const getAppIcon = async (
 ): Promise<string> => {
   const icon = fileIcon(appPath, 32);
   return icon.toString("base64");
-};
-
-// ______________________________________________________
-//
-// @ 最前面にあるアプリケーションを取得する
-//
-export const getFrontmostApp = async (): Promise<AppInfo> => {
-  try {
-    const appPath = (
-      await execFileAsync(frontmostApp, { timeout: 2000 })
-    ).stdout.split("\x07")[2];
-    return {
-      name: pathToName(appPath),
-      path: appPath,
-    };
-  } catch (err) {
-    console.error(err);
-    return {
-      name: "",
-      path: "",
-    };
-  }
-};
-
-// ______________________________________________________
-//
-// @ 起動中のアプリケーションを取得する
-//
-export const getRunningApps = async (
-  appList: AppInfo[]
-): Promise<AppInfo[]> => {
-  const kAppList = appList.map((app) => ({
-    path: app.path,
-    name: app.name.replace(/.app/, ""),
-  }));
-  const { stdout } = await execAsync(
-    "ps ax -o command | { sed -ne 's/.*\\(\\/Applications\\/[^/]*\\.app\\)\\/.*/\\1/p' ; echo '/System/Library/CoreServices/Finder.app' ; } | sort -u"
-  );
-  const res = stdout
-    .split("\n")
-    .filter(Boolean)
-    .map((path) => {
-      const name = pathToName(path);
-      return {
-        name,
-        path,
-      };
-    });
-  return kAppList.filter(({ name }) => res.some((app) => app.name === name));
 };
