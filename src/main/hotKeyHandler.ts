@@ -87,7 +87,7 @@ const createHandleMultiAppScript = (
     }
     if (runningApps.length === 1) {
       const target = runningApps[0];
-      return JSON.stringify([target[0], target[1].path]);
+      return JSON.stringify([target[0], target[1]]);
     }
     return JSON.stringify([prevIndex, appPaths[prevIndex]]);
   })();
