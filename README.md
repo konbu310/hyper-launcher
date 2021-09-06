@@ -23,6 +23,5 @@ $ yarn run make
 - _Icons made by [Freepik](https://www.flaticon.com/authors/freepik) from [www.flation.com](https://www.flaticon.com)_
 - Special Thanks ❤️
   - [sentialx/extract-file-icon](https://github.com/sentialx/extract-file-icon)
-  - [JXA-userlang/JXA](https://github.com/JXA-userland/JXA)
   - [sindresorhus/electron-store](https://github.com/sindresorhus/electron-store)
   - [cristianbote/goober](https://github.com/cristianbote/goober)
