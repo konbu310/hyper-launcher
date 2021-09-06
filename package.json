@@ -10,7 +10,7 @@
     "watch": "webpack --watch",
     "start": "electron-forge start",
     "package": "electron-forge package",
-    "make": "electron-forge make",
+    "make": "yarn run build && electron-forge make",
     "fmt": "yarn prettier --write '**/*.{ts,tsx}'"
   },
   "dependencies": {
