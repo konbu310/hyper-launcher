@@ -37,9 +37,6 @@ const common = {
   devtool: isProduction ? "hidden-nosources-source-map" : "eval-source-map",
   resolve: {
     modules: [path.resolve(__dirname, "node_modules")],
-    alias: {
-      "@": path.resolve(__dirname, "./src"),
-    },
     extensions: [".ts", ".tsx", ".js", ".jsx"],
   },
 };
