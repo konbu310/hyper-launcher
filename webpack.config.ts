@@ -2,6 +2,8 @@ const path = require("path");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
+const { VanillaExtractPlugin } = require("@vanilla-extract/webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const isProduction = process.env.NODE_ENV === "production";
 
@@ -98,6 +100,16 @@ module.exports = [
     module: {
       rules: [
         {
+          test: /\.vanilla\.css$/i,
+          use: [
+            MiniCssExtractPlugin.loader,
+            {
+              loader: require.resolve("css-loader"),
+              options: { url: false },
+            },
+          ],
+        },
+        {
           test: /.ts$/,
           exclude: /node_modules/,
           use: [
@@ -116,6 +128,8 @@ module.exports = [
       ],
     },
     plugins: [
+      new VanillaExtractPlugin(),
+      new MiniCssExtractPlugin(),
       new ForkTsCheckerWebpackPlugin(),
       new CleanWebpackPlugin({
         cleanOnceBeforeBuildPatterns: [

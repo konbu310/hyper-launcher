@@ -1,9 +1,10 @@
 {
   "compilerOptions": {
+    "strict": true,
     "target": "ESNext",
     "module": "ESNext",
+    "noEmit": true,
     "jsx": "react",
-    "strict": true,
     "moduleResolution": "node",
     "esModuleInterop": true,
     "baseUrl": "./",

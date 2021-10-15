@@ -2,7 +2,6 @@
 *.log*
 node_modules
 .idea
-.vscode
 dist
 dist-tsc
 build
