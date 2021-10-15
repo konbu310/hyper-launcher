@@ -4,6 +4,7 @@ import { AppInfo } from "../../common/interface";
 import { invokeGetAppIcon, invokeOpenFileDialog } from "../ipcRenderer";
 import { pathToName } from "../../common/util";
 import { DragEventHandler, useCallback, FC, ReactNode } from "react";
+import { DroppableProvided } from "react-beautiful-dnd";
 
 // ______________________________________________________
 //
@@ -13,6 +14,7 @@ type BoxProps = {
   boxId: string;
   header: string | ReactNode;
   updateHotKeyMap: Function;
+  provided?: DroppableProvided;
 };
 
 // ______________________________________________________
@@ -86,7 +88,11 @@ export const Box: FC<BoxProps> = (props) => {
   ]);
 
   return (
-    <div className={styles.Box} onDrop={handleAppDrop}>
+    <div
+      className={styles.Box}
+      onDrop={handleAppDrop}
+      {...props.provided?.droppableProps}
+    >
       <header className={styles.BoxHeader}>
         {props.header}
         <button className={styles.AddButton} onClick={handleOpenFileDialog}>

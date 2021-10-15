@@ -1,25 +1,18 @@
 import React from "react";
 import { css } from "goober";
 import { Box } from "../components/Box";
-import { Card, EmptyCard } from "../components/Card";
-import { nonNullableObj } from "../guard";
+import { Card } from "../components/Card";
 import { AppInfo, HotKeyMap } from "../../common/interface";
-import { useEffect, useState, FC, DragEvent } from "react";
+import { useEffect, useState, FC } from "react";
 import { invokeGetHotKeyMap, invokeSetHotKeyMap } from "../ipcRenderer";
+import {
+  DragDropContext,
+  DragDropContextProps,
+  Draggable,
+  Droppable,
+} from "react-beautiful-dnd";
+import update from "immutability-helper";
 
-// ______________________________________________________
-//
-// @ Types
-//
-type DraggedItem = {
-  boxKey: string | null;
-  cardIndex: number | null;
-};
-
-// ______________________________________________________
-//
-// @ Styles
-//
 const styles = {
   LauncherSection: css`
     width: 900px;
@@ -37,16 +30,48 @@ const styles = {
   `,
 };
 
-// ______________________________________________________
-//
-// @ View
-//
 export const IndexPage: FC = () => {
   const [hotKeyData, setHotKeyData] = useState<HotKeyMap | null>(null);
-  const [draggedItem, setDraggedItem] = useState<DraggedItem>({
-    boxKey: null,
-    cardIndex: null,
-  });
+
+  const onDragEnd: DragDropContextProps["onDragEnd"] = async (result) => {
+    const { source, destination } = result;
+    if (!destination || !hotKeyData) return;
+    const { droppableId: srcKey, index: srcIndex } = source;
+    const { droppableId: destKey, index: destIndex } = destination;
+    const srcItem = hotKeyData[srcKey][srcIndex];
+    let nData: HotKeyMap;
+    if (srcKey === destKey) {
+      nData = update(hotKeyData, {
+        [srcKey]: {
+          $splice: [
+            [srcIndex, 1],
+            [destIndex, 0, srcItem],
+          ],
+        },
+      });
+    } else {
+      nData = update(hotKeyData, {
+        [srcKey]: { $splice: [[srcIndex, 1]] },
+        [destKey]: { $splice: [[destIndex, 1, srcItem]] },
+      });
+    }
+    setHotKeyData(nData);
+    invokeSetHotKeyMap(nData);
+  };
+
+  const updateHotKeyMap = (boxKey: string) => (newApp: AppInfo) => {
+    const nData = { ...hotKeyData };
+    nData[boxKey].push(newApp);
+    setHotKeyData(nData);
+    invokeSetHotKeyMap(nData);
+  };
+
+  const removeHotKeyMap = (boxKey: string, cardIndex: number) => {
+    const nData = { ...hotKeyData };
+    nData[boxKey].splice(cardIndex, 1);
+    setHotKeyData(nData);
+    invokeSetHotKeyMap(nData);
+  };
 
   useEffect(() => {
     invokeGetHotKeyMap().then((res) => {
@@ -56,112 +81,56 @@ export const IndexPage: FC = () => {
     });
   }, []);
 
-  useEffect(() => {
-    document.ondragover = document.ondrop = (ev) => {
-      ev.preventDefault();
-      return;
-    };
-  }, []);
-
   if (!hotKeyData) {
     return <div>Loading...</div>;
   }
 
-  const onDragStart =
-    (boxKey: string, cardIndex: number) =>
-    (cardId: string, ev: DragEvent<HTMLElement>) => {
-      setDraggedItem({
-        boxKey,
-        cardIndex,
-      });
-      const dragElm = document.querySelector(`#${cardId}`);
-      dragElm && ev.dataTransfer.setDragImage(dragElm, 0, 0);
-      ev.dataTransfer.effectAllowed = "move";
-    };
-
-  const onDragEnter =
-    (boxKey: string, cardIndex: number) =>
-    (cardId: string, ev: DragEvent<HTMLElement>) => {
-      if (draggedItem.boxKey === boxKey && draggedItem.cardIndex === cardIndex)
-        return;
-      if (ev.dataTransfer.effectAllowed === "all") return;
-
-      if (nonNullableObj(draggedItem)) {
-        const newData = { ...hotKeyData };
-        const removed = newData[draggedItem.boxKey].splice(
-          draggedItem.cardIndex,
-          1
-        );
-        newData[boxKey].splice(cardIndex, 0, ...removed);
-        invokeSetHotKeyMap(newData).then(() => {
-          setHotKeyData(newData);
-          setDraggedItem({
-            boxKey,
-            cardIndex,
-          });
-        });
-      }
-    };
-
-  const onDragEnd =
-    (boxKey: string, cardIndex: number) =>
-    (cardId: string, ev: DragEvent<HTMLElement>) => {
-      setDraggedItem({
-        boxKey: null,
-        cardIndex: null,
-      });
-    };
-
-  const updateHotKeyMap = (boxKey: string) => (newApp: AppInfo) => {
-    const newData = { ...hotKeyData };
-    newData[boxKey].push(newApp);
-    invokeSetHotKeyMap(newData).then(() => {
-      setHotKeyData(newData);
-    });
-  };
-
-  const removeHotKeyMap = (boxKey: string, cardIndex: number) => {
-    const newData = { ...hotKeyData };
-    newData[boxKey].splice(cardIndex, 1);
-    invokeSetHotKeyMap(newData).then(() => {
-      setHotKeyData(newData);
-    });
-  };
-
   // View
   return (
-    <div className={styles.LauncherSection}>
-      {hotKeyData &&
-        Object.entries(hotKeyData).map(([boxKey, appList], boxIndex) => (
-          <Box
-            key={`box-${boxKey}`}
-            boxId={`box-${boxKey}`}
-            header={`Ctrl + ${boxKey}`}
-            updateHotKeyMap={updateHotKeyMap(boxKey)}
-          >
-            <div className={styles.CardContainer}>
-              {hotKeyData[boxKey].length === 0 ? (
-                <EmptyCard
-                  cardId={`empty-card-${boxKey}0`}
-                  onDragEnter={onDragEnter(boxKey, 0)}
-                />
-              ) : (
-                appList.map((app, cardIndex) => (
-                  <Card
-                    key={`card-${app.name}`}
-                    cardId={`card-${app.name}`}
-                    icon={app.icon || ""}
-                    name={app.name}
-                    removeHotKeyMap={() => removeHotKeyMap(boxKey, cardIndex)}
-                    onDragStart={onDragStart(boxKey, cardIndex)}
-                    onDragEnter={onDragEnter(boxKey, cardIndex)}
-                    onDragEnd={onDragEnd(boxKey, cardIndex)}
-                  />
-                ))
-              )}
-            </div>
-          </Box>
+    <DragDropContext onDragEnd={onDragEnd}>
+      <div className={styles.LauncherSection}>
+        {Object.entries(hotKeyData).map(([boxKey, appList]) => (
+          <Droppable key={boxKey} droppableId={boxKey}>
+            {(provided) => (
+              <Box
+                key={`box-${boxKey}`}
+                boxId={`box-${boxKey}`}
+                header={`Ctrl + ${boxKey}`}
+                updateHotKeyMap={updateHotKeyMap(boxKey)}
+                provided={provided}
+              >
+                <div
+                  ref={provided.innerRef}
+                  className={styles.CardContainer}
+                  {...provided.droppableProps}
+                >
+                  {appList.map((app, cardIndex) => (
+                    <Draggable
+                      key={app.path}
+                      draggableId={app.path}
+                      index={cardIndex}
+                    >
+                      {(provided) => (
+                        <Card
+                          key={`card-${app.name}`}
+                          cardId={`card-${app.name}`}
+                          icon={app.icon || ""}
+                          name={app.name}
+                          removeHotKeyMap={() =>
+                            removeHotKeyMap(boxKey, cardIndex)
+                          }
+                          provided={provided}
+                        />
+                      )}
+                    </Draggable>
+                  ))}
+                  {provided.placeholder}
+                </div>
+              </Box>
+            )}
+          </Droppable>
         ))}
-    </div>
+      </div>
+    </DragDropContext>
   );
 };

@@ -1,6 +1,7 @@
 import React from "react";
 import { FC } from "react";
 import { css } from "goober";
+import { DraggableProvided } from "react-beautiful-dnd";
 
 // ______________________________________________________
 //
@@ -11,9 +12,7 @@ type CardProps = {
   icon: string;
   name: string;
   removeHotKeyMap: VoidFunction;
-  onDragStart: Function;
-  onDragEnter: Function;
-  onDragEnd: Function;
+  provided: DraggableProvided;
 };
 
 type EmptyCardProps = {
@@ -90,12 +89,11 @@ const styles = {
 export const Card: FC<CardProps> = (props) => {
   return (
     <section
+      ref={props.provided.innerRef}
       className={styles.Card}
       id={props.cardId}
-      draggable
-      onDragStart={(ev) => props.onDragStart(props.cardId, ev)}
-      onDragEnter={(ev) => props.onDragEnter(props.cardId, ev)}
-      onDragEnd={(ev) => props.onDragEnd(props.cardId, ev)}
+      {...props.provided.draggableProps}
+      {...props.provided.dragHandleProps}
     >
       <div className={styles.CardContent}>
         <img
