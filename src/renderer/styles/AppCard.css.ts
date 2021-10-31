@@ -7,19 +7,21 @@ export const cardContainer = style({
   width: "280px",
   borderRadius: "5px",
   backgroundColor: vars.color.background,
-  boxShadow: "0 0 2px lightgrey",
-  border: "1px solid #fff",
+  border: "1px solid lightgrey",
   display: "flex",
   flexDirection: "column",
+  boxShadow: "1.2px 2.4px 2.4px hsl(0deg 0% 0% / 0.46)",
 });
 
 export const header = style({
-  margin: "10px 20px",
-  fontWeight: "bold",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "space-between",
+  margin: "0 0.25rem",
+  color: "black",
 });
 
 export const addButton = style({
-  float: "right",
   cursor: "pointer",
 });
 
@@ -28,10 +30,11 @@ export const cardMain = style({
   margin: "5px",
   padding: "2px",
   borderRadius: "5px",
+  border: "1px solid lightgrey",
   position: "relative",
-  boxShadow: "0 0 5px lightgrey",
   flex: "0 0 60px",
   cursor: "pointer",
+  boxShadow: "0.8px 1.6px 1.6px hsl(0deg 0% 0% / 0.48)",
 });
 
 export const cardContent = style({
