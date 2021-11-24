@@ -15,11 +15,6 @@ type CardProps = {
   provided: DraggableProvided;
 };
 
-type EmptyCardProps = {
-  cardId: string;
-  onDragEnter: Function;
-};
-
 // ______________________________________________________
 //
 // @ Styles
@@ -76,10 +71,6 @@ const styles = {
       color: rgba(169, 50, 38, 0.9);
     }
   `,
-  EmptyCard: css`
-    position: relative;
-    flex: 0 0 180px;
-  `,
 };
 
 // ______________________________________________________
@@ -107,15 +98,5 @@ export const Card: FC<CardProps> = (props) => {
         </span>
       </div>
     </section>
-  );
-};
-
-export const EmptyCard: FC<EmptyCardProps> = (props) => {
-  return (
-    <div
-      id={props.cardId}
-      className={styles.EmptyCard}
-      onDragEnter={(ev) => props.onDragEnter(props.cardId, ev)}
-    />
   );
 };
