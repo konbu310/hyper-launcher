@@ -52,7 +52,7 @@ export const IndexPage: FC = () => {
     } else {
       nData = update(hotKeyData, {
         [srcKey]: { $splice: [[srcIndex, 1]] },
-        [destKey]: { $splice: [[destIndex, 1, srcItem]] },
+        [destKey]: { $splice: [[destIndex, 0, srcItem]] },
       });
     }
     setHotKeyData(nData);
