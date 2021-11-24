@@ -24,3 +24,4 @@ $ yarn run make
 - Special Thanks ❤️
   - [sentialx/extract-file-icon](https://github.com/sentialx/extract-file-icon)
   - [sindresorhus/electron-store](https://github.com/sindresorhus/electron-store)
+  - [cristianbote/goober](https://github.com/cristianbote/goober)
