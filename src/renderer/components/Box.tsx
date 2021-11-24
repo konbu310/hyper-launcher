@@ -4,8 +4,6 @@ import { invokeGetAppIcon, invokeOpenFileDialog } from "../ipcRenderer";
 import { pathToName } from "../../common/util";
 import { DroppableProvided } from "react-beautiful-dnd";
 import { addButton, cardContainer, header } from "../styles/AppCard.css";
-import { Plus } from "react-iconly";
-import { Divider } from "./Divider";
 
 export const Box: FC<{
   boxId: string;
@@ -41,13 +39,10 @@ export const Box: FC<{
     <div className={cardContainer} {...droppableProvided.droppableProps}>
       <header className={header}>
         {props.header}
-        <span onClick={handleOpenFileDialog} className={addButton}>
-          <Plus set="light" primaryColor="black" size="large" />
-        </span>
+        <button className={addButton} onClick={handleOpenFileDialog}>
+          +
+        </button>
       </header>
-
-      <Divider axis="horizontal" inset="0.25rem" />
-
       {props.children}
     </div>
   );

@@ -7,7 +7,6 @@ export const createMainWindow = (): BrowserWindow => {
   const mainWindow = new BrowserWindow({
     width: 960,
     height: 950,
-    resizable: false,
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
