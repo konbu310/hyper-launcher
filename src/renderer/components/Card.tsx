@@ -1,6 +1,7 @@
 import React from "react";
 import { FC } from "react";
 import { css } from "goober";
+import { DraggableProvided } from "react-beautiful-dnd";
 
 // ______________________________________________________
 //
@@ -11,14 +12,7 @@ type CardProps = {
   icon: string;
   name: string;
   removeHotKeyMap: VoidFunction;
-  onDragStart: Function;
-  onDragEnter: Function;
-  onDragEnd: Function;
-};
-
-type EmptyCardProps = {
-  cardId: string;
-  onDragEnter: Function;
+  provided: DraggableProvided;
 };
 
 // ______________________________________________________
@@ -77,10 +71,6 @@ const styles = {
       color: rgba(169, 50, 38, 0.9);
     }
   `,
-  EmptyCard: css`
-    position: relative;
-    flex: 0 0 180px;
-  `,
 };
 
 // ______________________________________________________
@@ -90,12 +80,11 @@ const styles = {
 export const Card: FC<CardProps> = (props) => {
   return (
     <section
+      ref={props.provided.innerRef}
       className={styles.Card}
       id={props.cardId}
-      draggable
-      onDragStart={(ev) => props.onDragStart(props.cardId, ev)}
-      onDragEnter={(ev) => props.onDragEnter(props.cardId, ev)}
-      onDragEnd={(ev) => props.onDragEnd(props.cardId, ev)}
+      {...props.provided.draggableProps}
+      {...props.provided.dragHandleProps}
     >
       <div className={styles.CardContent}>
         <img
@@ -109,15 +98,5 @@ export const Card: FC<CardProps> = (props) => {
         </span>
       </div>
     </section>
-  );
-};
-
-export const EmptyCard: FC<EmptyCardProps> = (props) => {
-  return (
-    <div
-      id={props.cardId}
-      className={styles.EmptyCard}
-      onDragEnter={(ev) => props.onDragEnter(props.cardId, ev)}
-    />
   );
 };

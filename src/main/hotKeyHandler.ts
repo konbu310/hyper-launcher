@@ -19,12 +19,12 @@ const prevIndexMap: Map<string, number> = new Map([
 
 export const registerHotKey = async (hotKeyData: HotKeyMap) => {
   try {
-    await globalShortcut.unregisterAll();
+    globalShortcut.unregisterAll();
     for (const [key, appList] of Object.entries(hotKeyData)) {
       const appPaths = appList.map(({ path }) => path);
-      if (appList.length === 0) {
-        return;
-      } else if (appList.length === 1) {
+      if (appPaths.length === 0) {
+        continue;
+      } else if (appPaths.length === 1) {
         globalShortcut.register(`Control+${key}`, () => {
           shell.openPath(appPaths[0]);
         });
