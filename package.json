@@ -8,10 +8,10 @@
   "scripts": {
     "build": "webpack --node-env production",
     "watch": "webpack --watch",
-    "start": "electron-forge start",
-    "package": "electron-forge package",
-    "make": "yarn run build && electron-forge make",
-    "fmt": "yarn prettier --write '**/*.{ts,tsx}'"
+    "start": "electron .",
+    "fmt": "prettier --write '**/*.{ts,tsx}'",
+    "rebuild": "electron-rebuild -f -w node_modules/extract-file-icon/lib/addon.mm",
+    "pack": "npm run rebuild && node build.config.mjs"
   },
   "dependencies": {
     "electron-store": "^6.0.1",
@@ -23,8 +23,6 @@
     "react-dom": "^17.0.2"
   },
   "devDependencies": {
-    "@electron-forge/cli": "^6.0.0-beta.61",
-    "@electron-forge/maker-zip": "^6.0.0-beta.61",
     "@types/mini-css-extract-plugin": "2.2.0",
     "@types/node": "^16.7.6",
     "@types/react": "^17.0.19",
@@ -34,6 +32,8 @@
     "clean-webpack-plugin": "^4.0.0-alpha.0",
     "css-loader": "^6.2.0",
     "electron": "11.x",
+    "electron-packager": "^15.4.0",
+    "electron-rebuild": "^3.2.7",
     "esbuild-loader": "^2.13.1",
     "fork-ts-checker-webpack-plugin": "^6.3.2",
     "html-webpack-plugin": "^5.3.2",
@@ -45,25 +45,5 @@
     "typescript": "^4.4.2",
     "webpack": "^5.51.1",
     "webpack-cli": "^4.8.0"
-  },
-  "resolutions": {
-    "trim-newlines": "^3.0.1",
-    "json-schema": "^0.4.0"
-  },
-  "config": {
-    "forge": {
-      "packagerConfig": {
-        "name": "Hyper Launcher",
-        "icon": "./assets/Hyper Launcher.icns"
-      },
-      "makers": [
-        {
-          "name": "@electron-forge/maker-zip",
-          "platforms": [
-            "darwin"
-          ]
-        }
-      ]
-    }
   }
 }
