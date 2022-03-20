@@ -1,5 +1,5 @@
 {
-  "name": "hyper-launcher",
+  "name": "Hyper Launcher",
   "description": "Flexible and powerful application launcher for macOS.",
   "author": "konbu310",
   "version": "0.1.0",
@@ -11,7 +11,7 @@
     "start": "electron .",
     "fmt": "prettier --write '**/*.{ts,tsx}'",
     "rebuild": "electron-rebuild -f -w node_modules/extract-file-icon/lib/addon.mm",
-    "pack": "npm run rebuild && node build.config.mjs"
+    "pack": "npm run rebuild && npm run build && node build.config.mjs"
   },
   "dependencies": {
     "electron-store": "^6.0.1",
