@@ -5,13 +5,10 @@
 ## Usage
 
 ```bash
-# transpile and bundle
-$ yarn run build
-
 # make app
-$ yarn run make
+$ npm install && npm run pack
 
-# you will get an app in ./out directory
+# you will get an app in ./build directory
 ```
 
 ## Screenshot

@@ -3,9 +3,7 @@
 node_modules
 .idea
 .vscode
+.nova
 dist
-dist-tsc
 build
 .env
-.linaria-cache/
-out/
