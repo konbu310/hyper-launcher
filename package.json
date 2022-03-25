@@ -31,7 +31,7 @@
     "@types/webpack": "^5.28.0",
     "clean-webpack-plugin": "^4.0.0",
     "css-loader": "^6.7.1",
-    "electron": "11.x",
+    "electron": "13.x",
     "electron-packager": "^15.4.0",
     "electron-rebuild": "^3.2.7",
     "esbuild-loader": "^2.18.0",
