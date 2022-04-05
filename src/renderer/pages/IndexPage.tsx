@@ -1,5 +1,4 @@
 import React from "react";
-import { css } from "goober";
 import { Box } from "../components/Box";
 import { Card } from "../components/Card";
 import { AppInfo, HotKeyMap } from "../../common/interface";
@@ -12,23 +11,7 @@ import {
   Droppable,
 } from "react-beautiful-dnd";
 import update from "immutability-helper";
-
-const styles = {
-  LauncherSection: css`
-    width: 900px;
-    height: 900px;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-auto-rows: 300px;
-  `,
-  CardContainer: css`
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    overflow-y: auto;
-    overflow-x: hidden;
-  `,
-};
+import { launcherSection, cardContainer } from "../styles/IndexPage.css";
 
 export const IndexPage: FC = () => {
   const [hotKeyData, setHotKeyData] = useState<HotKeyMap | null>(null);
@@ -88,7 +71,7 @@ export const IndexPage: FC = () => {
   // View
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <div className={styles.LauncherSection}>
+      <div className={launcherSection}>
         {Object.entries(hotKeyData).map(([boxKey, appList]) => (
           <Droppable key={boxKey} droppableId={boxKey}>
             {(provided) => (
@@ -101,7 +84,7 @@ export const IndexPage: FC = () => {
               >
                 <div
                   ref={provided.innerRef}
-                  className={styles.CardContainer}
+                  className={cardContainer}
                   {...provided.droppableProps}
                 >
                   {appList.map((app, cardIndex) => (

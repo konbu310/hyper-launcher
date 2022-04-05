@@ -1,5 +1,4 @@
 import packager from "electron-packager";
-import { rebuild } from "electron-rebuild";
 
 packager({
   arch: "x64",
