@@ -1,12 +1,10 @@
 import { style } from "@vanilla-extract/css";
 
 export const card = style({
-  backgroundColor: "#ecf0f1",
+  backgroundColor: "white",
   margin: "5px",
   padding: "2px",
-  borderRadius: "5px",
   position: "relative",
-  boxShadow: "0 0 5px lightgrey",
   flex: "0 0 60px",
   cursor: "pointer",
 });
@@ -14,7 +12,7 @@ export const card = style({
 export const cardContainer = style({
   height: "100%",
   display: "flex",
-  justifyContent: "space-around",
+  justifyContent: "space-between",
   alignItems: "center",
 });
 
@@ -30,12 +28,12 @@ export const cardText = style({
   flexBasis: "210px",
   whiteSpace: "nowrap",
   textOverflow: "ellipsis",
+  fontSize: "0.75rem",
+  fontWeight: "500",
+  color: "rgb(0,0,0)",
 });
 
 export const removeButton = style({
-  fontSize: "25px",
-  marginLeft: "10px",
-  flexBasis: "30px",
   color: "rgba(192, 57, 43, 0.9)",
   cursor: "pointer",
   opacity: 0,
@@ -47,5 +45,10 @@ export const removeButton = style({
   },
   ":active": {
     color: "rgba(169, 50, 38, 0.9)",
+  },
+  selectors: {
+    [`${card}:hover &`]: {
+      opacity: 1,
+    },
   },
 });

@@ -13,6 +13,9 @@
     "pack": "npm run build && node scripts/pack.mjs"
   },
   "dependencies": {
+    "@dnd-kit/sortable": "^6.0.1",
+    "clsx": "^1.1.1",
+    "css.gg": "^2.0.0",
     "electron-store": "^6.0.1",
     "extract-file-icon": "^0.3.2",
     "immutability-helper": "^3.1.1",
@@ -33,6 +36,7 @@
     "css-loader": "^6.7.1",
     "electron": "18.x",
     "electron-packager": "^15.4.0",
+    "electron-reload": "^2.0.0-alpha.1",
     "esbuild-loader": "^2.18.0",
     "fork-ts-checker-webpack-plugin": "^7.2.1",
     "html-webpack-plugin": "^5.5.0",

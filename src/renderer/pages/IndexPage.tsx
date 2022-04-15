@@ -3,7 +3,6 @@ import { Box } from "../components/Box";
 import { Card } from "../components/Card";
 import { AppInfo, HotKeyMap } from "../../common/interface";
 import { useEffect, useState, FC } from "react";
-import { invokeGetHotKeyMap, invokeSetHotKeyMap } from "../ipcRenderer";
 import {
   DragDropContext,
   DragDropContextProps,
@@ -13,12 +12,16 @@ import {
 import update from "immutability-helper";
 import { launcherSection, cardContainer } from "../styles/IndexPage.css";
 
+const { getHotKeyMap, setHotKeyMap } = window.electron;
+
 export const IndexPage: FC = () => {
   const [hotKeyData, setHotKeyData] = useState<HotKeyMap | null>(null);
 
   const onDragEnd: DragDropContextProps["onDragEnd"] = async (result) => {
     const { source, destination } = result;
-    if (!destination || !hotKeyData) return;
+    if (!destination || !hotKeyData) {
+      return;
+    }
     const { droppableId: srcKey, index: srcIndex } = source;
     const { droppableId: destKey, index: destIndex } = destination;
     const srcItem = hotKeyData[srcKey][srcIndex];
@@ -39,25 +42,25 @@ export const IndexPage: FC = () => {
       });
     }
     setHotKeyData(nData);
-    invokeSetHotKeyMap(nData);
+    setHotKeyMap(nData);
   };
 
   const updateHotKeyMap = (boxKey: string) => (newApp: AppInfo) => {
     const nData = { ...hotKeyData };
     nData[boxKey].push(newApp);
     setHotKeyData(nData);
-    invokeSetHotKeyMap(nData);
+    setHotKeyMap(nData);
   };
 
   const removeHotKeyMap = (boxKey: string, cardIndex: number) => {
     const nData = { ...hotKeyData };
     nData[boxKey].splice(cardIndex, 1);
     setHotKeyData(nData);
-    invokeSetHotKeyMap(nData);
+    setHotKeyMap(nData);
   };
 
   useEffect(() => {
-    invokeGetHotKeyMap().then((res) => {
+    getHotKeyMap().then((res) => {
       if (res) {
         setHotKeyData(res);
       }

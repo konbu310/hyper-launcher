@@ -14,9 +14,15 @@ export const box = style({
 
 export const boxHeader = style({
   margin: "10px 20px",
-  fontWeight: "bold",
+  fontWeight: "500",
+  fontSize: "0.9rem",
 });
 
 export const addButton = style({
   float: "right",
+  cursor: "pointer",
+  color: "grey",
+  ":hover": {
+    opacity: 0.8,
+  },
 });

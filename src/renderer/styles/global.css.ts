@@ -2,7 +2,7 @@ import { globalStyle } from "@vanilla-extract/css";
 
 globalStyle("*", {
   boxSizing: "border-box",
-  fontFamily: "sans-serif",
+  fontFamily: "system-ui",
 });
 
 globalStyle("html", {

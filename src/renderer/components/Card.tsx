@@ -1,5 +1,4 @@
-import React from "react";
-import { FC } from "react";
+import React, { FC } from "react";
 import { DraggableProvided } from "react-beautiful-dnd";
 import {
   card,
@@ -8,6 +7,7 @@ import {
   cardText,
   removeButton,
 } from "../styles/Card.css";
+import "css.gg/icons/css/remove.css";
 
 type CardProps = {
   cardId: string;
@@ -27,15 +27,18 @@ export const Card: FC<CardProps> = (props) => {
       {...props.provided.dragHandleProps}
     >
       <div className={cardContainer}>
+        <div>
+          <i></i>
+        </div>
         <img
           className={cardIcon}
           src={`data:image/png;base64,${props.icon}`}
           alt="application icon"
         />
         <span className={cardText}>{props.name}</span>
-        <span className={removeButton} onClick={props.removeHotKeyMap}>
-          ×
-        </span>
+        <div onClick={props.removeHotKeyMap} className={removeButton}>
+          <i className="gg-remove" />
+        </div>
       </div>
     </section>
   );
