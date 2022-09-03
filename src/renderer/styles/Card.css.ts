@@ -1,12 +1,20 @@
 import { style } from "@vanilla-extract/css";
 
 export const card = style({
-  backgroundColor: "white",
+  backgroundColor: "#fff",
+  border: "1px solid rgb(216, 222, 227)",
+  borderRadius: "5px",
+  boxShadow: "0 1px 0 rgba(27,31,36,0.04)",
   margin: "5px",
   padding: "2px",
   position: "relative",
   flex: "0 0 60px",
   cursor: "pointer",
+  ":hover": {
+    boxShadow: "0 3px 6px rgba(140,149,159,0.15)",
+  },
+  // @ts-ignore
+  "-webkit-app-region": "no-drag",
 });
 
 export const cardContainer = style({

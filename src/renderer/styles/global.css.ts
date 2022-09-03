@@ -13,4 +13,7 @@ globalStyle("body", {
   backgroundColor: "transparent",
   margin: 0,
   padding: 0,
+
+  // @ts-ignore
+  "-webkit-app-region": "drag",
 });

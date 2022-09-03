@@ -1,4 +1,4 @@
-import React from "react";
+import React, { PropsWithChildren } from "react";
 import { AppInfo } from "../../common/interface";
 import { pathToName } from "../../common/util";
 import { DragEventHandler, useCallback, FC, ReactNode } from "react";
@@ -16,7 +16,7 @@ type BoxProps = {
   provided?: DroppableProvided;
 };
 
-export const Box: FC<BoxProps> = (props) => {
+export const Box: FC<PropsWithChildren<BoxProps>> = (props) => {
   const handleAppDrop: DragEventHandler = useCallback(
     async (ev) => {
       ev.preventDefault();

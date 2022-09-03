@@ -5,9 +5,8 @@ export const box = style({
   padding: "5px",
   width: "280px",
   borderRadius: "5px",
-  backgroundColor: "#fff",
-  boxShadow: "0 0 2px #808080",
-  border: "1px solid #fff",
+  backgroundColor: "rgb(245, 248, 250)",
+  border: "1px solid rgb(216, 222, 227)",
   display: "flex",
   flexDirection: "column",
 });
