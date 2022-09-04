@@ -13,8 +13,6 @@ $ npm install && npm run pack
 
 ## Screenshot
 
-![Image from Gyazo](https://raw.githubusercontent.com/konbu310/hyper-launcher/main/assets/screenshot.png)
-
 ## Note
 
 - _Icons made by [Freepik](https://www.flaticon.com/authors/freepik) from [www.flation.com](https://www.flaticon.com)_
