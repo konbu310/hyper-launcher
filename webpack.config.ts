@@ -2,6 +2,8 @@ const path = require("path");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
+const { VanillaExtractPlugin } = require("@vanilla-extract/webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const isProduction = process.env.NODE_ENV === "production";
 
@@ -90,7 +92,7 @@ module.exports = [
     name: "renderer",
     context: __dirname,
     target: "electron-renderer",
-    entry: path.join(__dirname, "src/renderer/index.tsx"),
+    entry: path.join(__dirname, "src/renderer/main.tsx"),
     output: {
       path: path.join(__dirname, "dist/"),
       filename: "renderer.js",
@@ -98,7 +100,7 @@ module.exports = [
     module: {
       rules: [
         {
-          test: /.ts$/,
+          test: /\.ts$/,
           exclude: /node_modules/,
           use: [
             useThreadLoader({ name: "renderer-ts-pool" }),
@@ -106,12 +108,16 @@ module.exports = [
           ],
         },
         {
-          test: /.tsx$/,
+          test: /\.tsx$/,
           exclude: /node_modules/,
           use: [
             useThreadLoader({ name: "renderer-tsx-pool" }),
             useEsbuildLoader({ loader: "tsx" }),
           ],
+        },
+        {
+          test: /\.css$/,
+          use: [MiniCssExtractPlugin.loader, "css-loader"],
         },
       ],
     },
@@ -128,6 +134,8 @@ module.exports = [
         filename: "index.html",
         template: "src/template/index.html",
       }),
+      new MiniCssExtractPlugin(),
+      new VanillaExtractPlugin(),
     ],
   },
   // Preload

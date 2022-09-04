@@ -1,9 +1,9 @@
+import { exec } from "child_process";
 import { globalShortcut, shell } from "electron";
-import { HotKeyMap } from "../common/interface";
-import { execFile } from "child_process";
 import { promisify } from "util";
+import { HotKeyMap } from "../common/interface";
 
-const execFilePromise = promisify(execFile);
+const execPromise = promisify(exec);
 
 const prevIndexMap: Map<string, number> = new Map([
   ["1", 0],
@@ -23,7 +23,6 @@ export const registerHotKey = async (hotKeyData: HotKeyMap) => {
     for (const [key, appList] of Object.entries(hotKeyData)) {
       const appPaths = appList.map(({ path }) => path);
       if (appPaths.length === 0) {
-        continue;
       } else if (appPaths.length === 1) {
         globalShortcut.register(`Control+${key}`, () => {
           shell.openPath(appPaths[0]);
@@ -41,55 +40,47 @@ export const registerHotKey = async (hotKeyData: HotKeyMap) => {
 
 const handleMultiApps = async (key: string, appPaths: string[]) => {
   const prevIndex = prevIndexMap.get(key) ?? 0;
-  const script = createHandleMultiAppScript(appPaths, prevIndex);
-  try {
-    const { stdout, stderr } = await execFilePromise("/usr/bin/osascript", [
-      "-l",
-      "JavaScript",
-      "-e",
-      script,
-    ]);
-    if (stderr) {
-      throw new Error(stderr);
-    } else {
-      const [nPrevIndex, nPath] = JSON.parse(stdout);
-      prevIndexMap.set(key, nPrevIndex);
-      await shell.openPath(nPath);
-    }
-  } catch (err) {
-    console.error("handleMultiApps", err);
-  }
+  const [index, path] = await getNextLaunchApp(appPaths, prevIndex);
+  prevIndexMap.set(key, index);
+  await shell.openPath(path);
 };
 
-const createHandleMultiAppScript = (
-  _appPaths: string[],
-  _prevIndex: number
-) => {
-  return `(() => {
-    const appPaths = ${JSON.stringify(_appPaths)};
-    const prevIndex = ${JSON.stringify(_prevIndex)};
-    let runningApps = [];
-    let frontmostFlag = false;
-    for (let index = 0, length = appPaths.length; index < length; index++) {
-      const path = appPaths[index];
-      const app = Application(path);
-      const isRunning = app.running();
-      const isFrontmost = app.frontmost();
-      if (!isRunning) continue;
-      if (frontmostFlag) {
-        return JSON.stringify([index, path]);
-      }
-      frontmostFlag = isFrontmost;
-      runningApps.push([index, path]);
+const getNextLaunchApp = async (
+  appPaths: string[],
+  prevIndex: number
+): Promise<[number, string]> => {
+  const { stdout: visibleAppsStr } = await execPromise(
+    "lsappinfo visibleProcessList"
+  );
+  const visibleAppPaths = await Promise.all(
+    visibleAppsStr.split(" ").map(async (asn) => {
+      const { stdout } = await execPromise(
+        `lsappinfo info ${asn.replace("\n", "")} -only bundlePath`
+      );
+      return stdout
+        .replaceAll('"', "")
+        .replace("\n", "")
+        .replace("LSBundlePath=", "");
+    })
+  );
+  let frontmostFlag = false;
+  let activeApps: [number, string][] = [];
+  for (let i = 0, length = appPaths.length; i < length; i++) {
+    const path = appPaths[i];
+    const index = visibleAppPaths.indexOf(path);
+    if (index === -1) continue;
+    if (frontmostFlag) {
+      return [i, path];
     }
-    if (frontmostFlag || runningApps.length === 0) {
-      return JSON.stringify([0, appPaths[0]]);
-    }
-    if (runningApps.length === 1) {
-      const target = runningApps[0];
-      return JSON.stringify([target[0], target[1]]);
-    }
-    return JSON.stringify([prevIndex, appPaths[prevIndex]]);
-  })();
-  `.replaceAll(/(\n|\s{2,})/g, "");
+    frontmostFlag = index === 0;
+    activeApps.push([i, path]);
+  }
+  if (frontmostFlag || activeApps.length === 0) {
+    return [0, appPaths[0]];
+  }
+  if (activeApps.length === 1) {
+    const target = activeApps[0];
+    return [target[0], target[1]];
+  }
+  return [prevIndex, appPaths[prevIndex]];
 };

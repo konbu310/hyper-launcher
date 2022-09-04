@@ -1,10 +1,8 @@
 import React from "react";
-import { css } from "goober";
 import { Box } from "../components/Box";
 import { Card } from "../components/Card";
 import { AppInfo, HotKeyMap } from "../../common/interface";
 import { useEffect, useState, FC } from "react";
-import { invokeGetHotKeyMap, invokeSetHotKeyMap } from "../ipcRenderer";
 import {
   DragDropContext,
   DragDropContextProps,
@@ -12,30 +10,18 @@ import {
   Droppable,
 } from "react-beautiful-dnd";
 import update from "immutability-helper";
+import { launcherSection, cardContainer } from "../styles/IndexPage.css";
 
-const styles = {
-  LauncherSection: css`
-    width: 900px;
-    height: 900px;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-auto-rows: 300px;
-  `,
-  CardContainer: css`
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    overflow-y: auto;
-    overflow-x: hidden;
-  `,
-};
+const { getHotKeyMap, setHotKeyMap } = window.electron;
 
 export const IndexPage: FC = () => {
   const [hotKeyData, setHotKeyData] = useState<HotKeyMap | null>(null);
 
   const onDragEnd: DragDropContextProps["onDragEnd"] = async (result) => {
     const { source, destination } = result;
-    if (!destination || !hotKeyData) return;
+    if (!destination || !hotKeyData) {
+      return;
+    }
     const { droppableId: srcKey, index: srcIndex } = source;
     const { droppableId: destKey, index: destIndex } = destination;
     const srcItem = hotKeyData[srcKey][srcIndex];
@@ -56,25 +42,25 @@ export const IndexPage: FC = () => {
       });
     }
     setHotKeyData(nData);
-    invokeSetHotKeyMap(nData);
+    setHotKeyMap(nData);
   };
 
   const updateHotKeyMap = (boxKey: string) => (newApp: AppInfo) => {
     const nData = { ...hotKeyData };
     nData[boxKey].push(newApp);
     setHotKeyData(nData);
-    invokeSetHotKeyMap(nData);
+    setHotKeyMap(nData);
   };
 
   const removeHotKeyMap = (boxKey: string, cardIndex: number) => {
     const nData = { ...hotKeyData };
     nData[boxKey].splice(cardIndex, 1);
     setHotKeyData(nData);
-    invokeSetHotKeyMap(nData);
+    setHotKeyMap(nData);
   };
 
   useEffect(() => {
-    invokeGetHotKeyMap().then((res) => {
+    getHotKeyMap().then((res) => {
       if (res) {
         setHotKeyData(res);
       }
@@ -88,7 +74,7 @@ export const IndexPage: FC = () => {
   // View
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <div className={styles.LauncherSection}>
+      <div className={launcherSection}>
         {Object.entries(hotKeyData).map(([boxKey, appList]) => (
           <Droppable key={boxKey} droppableId={boxKey}>
             {(provided) => (
@@ -101,7 +87,7 @@ export const IndexPage: FC = () => {
               >
                 <div
                   ref={provided.innerRef}
-                  className={styles.CardContainer}
+                  className={cardContainer}
                   {...provided.droppableProps}
                 >
                   {appList.map((app, cardIndex) => (

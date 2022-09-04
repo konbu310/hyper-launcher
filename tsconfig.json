@@ -5,9 +5,6 @@
     "jsx": "react",
     "strict": true,
     "moduleResolution": "node",
-    "esModuleInterop": true,
-    "baseUrl": "./",
-    "typeRoots": ["src/types", "node_modules/@types"]
-  },
-  "include": ["src/**/*"]
+    "esModuleInterop": true
+  }
 }
