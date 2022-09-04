@@ -1,8 +1,9 @@
 ![logo](</assets/Hyper Launcher LP.png>)
 
-### This App is beta version. Specification may change.
+## Download
+https://github.com/konbu310/hyper-launcher/releases
 
-## Usage
+## Build
 
 ```bash
 # make app
