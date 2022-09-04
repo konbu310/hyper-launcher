@@ -12,6 +12,7 @@ $ npm install && npm run pack
 ```
 
 ## Screenshot
+![](https://raw.githubusercontent.com/konbu310/hyper-launcher/main/assets/screenshot.png)
 
 ## Note
 
