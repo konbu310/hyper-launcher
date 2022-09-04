@@ -45,6 +45,7 @@ export const removeButton = style({
   color: "rgba(192, 57, 43, 0.9)",
   cursor: "pointer",
   opacity: 0,
+  marginRight: "8px",
   transition: "all 200ms",
   ":hover": {
     color: "rgba(217, 136, 128, 0.91)",

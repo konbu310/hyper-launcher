@@ -9,19 +9,28 @@ export const box = style({
   border: "1px solid rgb(216, 222, 227)",
   display: "flex",
   flexDirection: "column",
+  ":hover": {},
 });
 
 export const boxHeader = style({
+  color: "gray",
   margin: "10px 20px",
   fontWeight: "500",
   fontSize: "0.9rem",
 });
 
 export const addButton = style({
+  opacity: 0,
   float: "right",
   cursor: "pointer",
   color: "grey",
+  transition: "opacity 200ms",
   ":hover": {
     opacity: 0.8,
+  },
+  selectors: {
+    [`${box}:hover &`]: {
+      opacity: 1,
+    },
   },
 });

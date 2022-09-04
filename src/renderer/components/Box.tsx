@@ -4,7 +4,7 @@ import { pathToName } from "../../common/util";
 import { DragEventHandler, useCallback, FC, ReactNode } from "react";
 import { DroppableProvided } from "react-beautiful-dnd";
 import { box, addButton, boxHeader } from "../styles/Box.css";
-import cx from "clsx";
+import cc from "classcat";
 import "css.gg/icons/css/add.css";
 
 const { getAppIcon, openFileDialog } = window.electron;
@@ -59,7 +59,10 @@ export const Box: FC<PropsWithChildren<BoxProps>> = (props) => {
     >
       <header className={boxHeader}>
         {props.header}
-        <i onClick={handleOpenFileDialog} className={cx("gg-add", addButton)} />
+        <i
+          onClick={handleOpenFileDialog}
+          className={cc(["gg-add", addButton])}
+        />
       </header>
       {props.children}
     </div>

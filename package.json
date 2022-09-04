@@ -13,7 +13,7 @@
     "pack": "npm run build && node scripts/pack.mjs"
   },
   "dependencies": {
-    "clsx": "^1.2.1",
+    "classcat": "^5.0.4",
     "css.gg": "^2.0.0",
     "electron-store": "^8.1.0",
     "extract-file-icon": "^0.3.2",
@@ -35,7 +35,6 @@
     "css-loader": "^6.7.1",
     "electron": "^20.1.1",
     "electron-packager": "^16.0.0",
-    "electron-reload": "^2.0.0-alpha.1",
     "esbuild-loader": "^2.19.0",
     "fork-ts-checker-webpack-plugin": "^7.2.13",
     "html-webpack-plugin": "^5.5.0",
