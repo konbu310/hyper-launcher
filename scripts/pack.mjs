@@ -1,7 +1,7 @@
 import packager from "electron-packager";
 
 packager({
-  arch: "x64",
+  arch: ["x64", "arm64"],
   asar: true,
   dir: ".",
   icon: "./assets/Hyper Launcher.icns",
