@@ -1,5 +1,5 @@
 import { contextBridge, ipcRenderer, OpenDialogReturnValue } from "electron";
-import { HotKeyMap } from "./interface";
+import { HotKeyMap } from "../common/interface";
 
 console.log("__PRELOAD__");
 
@@ -20,7 +20,7 @@ const ipcEvents = {
 
 declare global {
   interface Window {
-    electron: typeof ipcEvents;
+    electron?: typeof ipcEvents;
   }
 }
 

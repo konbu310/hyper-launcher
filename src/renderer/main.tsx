@@ -6,9 +6,9 @@ import "./styles/global.css";
 
 const MainWindow = () => {
   return (
-    <div className={mainWindow}>
+    <main className={mainWindow}>
       <IndexPage />
-    </div>
+    </main>
   );
 };
 

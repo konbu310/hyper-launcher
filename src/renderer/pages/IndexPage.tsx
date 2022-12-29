@@ -12,14 +12,14 @@ import {
 import update from "immutability-helper";
 import { launcherSection, cardContainer } from "../styles/IndexPage.css";
 
-const { getHotKeyMap, setHotKeyMap } = window.electron;
+const { getHotKeyMap, setHotKeyMap } = window.electron!;
 
 export const IndexPage: FC = () => {
   const [hotKeyData, setHotKeyData] = useState<HotKeyMap | null>(null);
 
   const onDragEnd: DragDropContextProps["onDragEnd"] = async (result) => {
     const { source, destination } = result;
-    if (!destination || !hotKeyData) {
+    if (!(destination && hotKeyData)) {
       return;
     }
     const { droppableId: srcKey, index: srcIndex } = source;

@@ -1,0 +1,19 @@
+{
+  "$schema": "./node_modules/rome/configuration_schema.json",
+  "formatter": {
+    "enabled": true,
+    "indentSize": 2,
+    "indentStyle": "space",
+    "lineWidth": 80
+  },
+  "linter": {
+    "enabled": false
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "double",
+      "semicolons": "always",
+      "trailingComma": "es5"
+    }
+  }
+}
