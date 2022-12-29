@@ -4,10 +4,9 @@ import { pathToName } from "../../common/util";
 import { DragEventHandler, useCallback, FC, ReactNode } from "react";
 import { DroppableProvided } from "react-beautiful-dnd";
 import { box, addButton, boxHeader } from "../styles/Box.css";
-import cc from "classcat";
 import "css.gg/icons/css/add.css";
 
-const { getAppIcon, openFileDialog } = window.electron;
+const { getAppIcon, openFileDialog } = window.electron!;
 
 type BoxProps = {
   boxId: string;
@@ -37,6 +36,9 @@ export const Box: FC<PropsWithChildren<BoxProps>> = (props) => {
   const handleOpenFileDialog = useCallback(async () => {
     const fileNames = await openFileDialog();
     const appPath = fileNames.filePaths[0];
+    if (typeof appPath !== "string") {
+      return;
+    }
     const appName = pathToName(appPath);
     const appIcon = await getAppIcon(appPath);
     if (appName) {
@@ -59,10 +61,7 @@ export const Box: FC<PropsWithChildren<BoxProps>> = (props) => {
     >
       <header className={boxHeader}>
         {props.header}
-        <i
-          onClick={handleOpenFileDialog}
-          className={cc(["gg-add", addButton])}
-        />
+        <i onClick={handleOpenFileDialog} className={`gg-add ${addButton}`} />
       </header>
       {props.children}
     </div>

@@ -4,5 +4,5 @@
 //
 export const pathToName = (path: string): string => {
   const match = path.match(/\/.+\/(.+[^\/]).app/);
-  return (match && match[1]) || "";
+  return match?.[1] ?? "";
 };

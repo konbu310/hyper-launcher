@@ -12,9 +12,13 @@ export const createMainWindow = (): BrowserWindow => {
     },
   });
 
-  mainWindow
-    .loadFile(path.join(__dirname, "index.html"))
-    .catch((e) => console.error(e));
+  if (process.env.NODE_ENV === "production") {
+    mainWindow
+      .loadFile(path.join(__dirname, "../index.html"))
+      .catch((e) => console.error(e));
+  } else {
+    mainWindow.loadURL("http://localhost:3000").catch((e) => console.error(e));
+  }
 
   return mainWindow;
 };

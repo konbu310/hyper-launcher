@@ -8,9 +8,7 @@ import { mainWindow, store } from "./main";
 import { HotKeyMap, IpcKey, ipcKeys } from "../common/interface";
 import { getAppIcon } from "./application";
 
-const ipcEvents: {
-  [key in IpcKey]: (ev: IpcMainInvokeEvent, ...args: any) => Promise<any>;
-} = {
+const ipcEvents = {
   getAppIcon,
   openFileDialog: async (
     ev: IpcMainInvokeEvent
@@ -35,7 +33,10 @@ const ipcEvents: {
     store?.set("hotKeyMap", data);
     return true;
   },
-};
+} satisfies Record<
+  IpcKey,
+  (ev: IpcMainInvokeEvent, ...arg: any[]) => Promise<any>
+>;
 
 let initialized = false;
 
