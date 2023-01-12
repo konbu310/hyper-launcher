@@ -8,6 +8,7 @@
   "scripts": {
     "rimraf": "rimraf",
     "start": "electron .",
+    "dev": "npm run watch:renderer",
     "watch": "npm-run-all 'rimraf dist' --parallel watch:* start",
     "watch:main": "node scripts/build.mjs -w",
     "watch:renderer": "vite dev",
@@ -16,9 +17,11 @@
     "build:renderer": "NODE_ENV=production vite build",
     "prepack": "npm run build",
     "pack": "node scripts/pack.mjs",
-    "fmt": "prettier --write '**/*.{ts,tsx}'"
+    "fmt": "prettier --write '**/*.{ts,tsx}'",
+    "tauri": "tauri"
   },
   "dependencies": {
+    "@tauri-apps/api": "^1.2.0",
     "css.gg": "^2.0.0",
     "electron-store": "^8.1.0",
     "extract-file-icon": "^0.3.2",
@@ -28,6 +31,7 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
+    "@tauri-apps/cli": "^1.2.2",
     "@types/node": "^18.11.18",
     "@types/react": "^18.0.26",
     "@types/react-beautiful-dnd": "^13.1.3",
