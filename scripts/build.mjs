@@ -1,41 +1,50 @@
-import { build } from "esbuild";
+import esbuild from "esbuild";
 import { Command } from "commander";
 
 const program = new Command();
 program
-  .option("-p", "production mode", false)
-  .option("-w", "watch mode", false);
+  .option("--prd", "production mode", false)
+  .option("--watch", "watch mode", false)
+  .option("--metafile", "gen metafile", false);
 program.parse(process.argv);
-const { p, w } = program.opts();
+const { prd, watch, metafile } = program.opts();
 
 const external = ["electron"];
 
-if (!p) {
+if (!prd) {
   external.push("electron-reload");
 }
 
-build({
-  entryPoints: ["src/main/main.ts", "src/main/preload.ts"],
-  platform: "node",
-  external,
-  bundle: true,
-  minify: p,
-  sourcemap: !p,
-  outdir: "dist/main",
-  loader: {
-    ".node": "file",
-  },
-  define: {
-    "process.env.NODE_ENV": p ? "'production'" : "'development'",
-  },
-  watch: w
-    ? {
-        onRebuild(error, result) {
-          if (error) console.error("watch build failed:", error);
-          else console.log("watch build succeeded:", result);
-        },
+const nodeEnv = prd ? "production" : "development";
+
+(async () => {
+  const option = {
+    entryPoints: ["src/main/main.ts", "src/main/preload.ts"],
+    platform: "node",
+    external,
+    bundle: true,
+    minify: prd,
+    sourcemap: !prd,
+    outdir: "dist/main",
+    loader: {
+      ".node": "file",
+    },
+    define: {
+      "process.env.NODE_ENV": `"${nodeEnv}"`,
+    }
+  };
+  try {
+    if (watch) {
+      const ctx = await esbuild.context({ ...option });
+      await ctx.watch();
+    } else {
+      const result = await esbuild.build({ ...option, metafile });
+      if (metafile) {
+        await fs.writeFile("meta.json", JSON.stringify(result.metafile));
       }
-    : false,
-}).then((result) => {
-  console.log(w ? "watching..." : "done😎");
-});
+    }
+    return 0;
+  } catch (e) {
+    return 1;
+  }
+})();
