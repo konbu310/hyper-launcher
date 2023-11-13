@@ -6,7 +6,7 @@ export const createMainWindow = (): BrowserWindow => {
     width: 960,
     height: 950,
     resizable: false,
-    titleBarStyle: "hiddenInset",
+    titleBarStyle: "default",
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
     },
