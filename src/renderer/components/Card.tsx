@@ -32,7 +32,11 @@ export const Card: FC<CardProps> = (props) => {
         </div>
         <img
           className={cardIcon}
-          src={`data:image/png;base64,${props.icon}`}
+          src={
+            props.icon.startsWith("data:")
+              ? props.icon
+              : `data:image/png;base64,${props.icon}`
+          }
           alt="application icon"
         />
         <span className={cardText}>{props.name}</span>
