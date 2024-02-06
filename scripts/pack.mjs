@@ -1,13 +1,21 @@
-import packager from "electron-packager";
+import packager from "@electron/packager";
+import fs from "node:fs/promises";
+
+await fs.writeFile(
+  "./dist/package.json",
+  JSON.stringify({ main: "./main/main.js" }),
+  { flag: "wx" },
+);
 
 packager({
+  appname: "Hyper Launcher",
   arch: ["x64", "arm64"],
-  asar: true,
-  dir: ".",
+  platform: "darwin",
+  asar: false,
+  dir: "./dist",
   icon: "./assets/Hyper Launcher.icns",
   out: "./build",
   overwrite: true,
-  platform: "darwin",
 })
   .then(() => {
     console.log("done😎");
