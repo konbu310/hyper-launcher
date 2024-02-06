@@ -18,6 +18,9 @@ type CardProps = {
 };
 
 export const Card: FC<CardProps> = (props) => {
+  const iconSrc = props.icon.startsWith("data:")
+    ? props.icon
+    : `data:image/png;base64,${props.icon}`;
   return (
     <section
       ref={props.provided.innerRef}
@@ -30,11 +33,7 @@ export const Card: FC<CardProps> = (props) => {
         <div>
           <i></i>
         </div>
-        <img
-          className={cardIcon}
-          src={`data:image/png;base64,${props.icon}`}
-          alt="application icon"
-        />
+        <img className={cardIcon} src={iconSrc} alt="application icon" />
         <span className={cardText}>{props.name}</span>
         <div onClick={props.removeHotKeyMap} className={removeButton}>
           <i className="gg-remove" />
