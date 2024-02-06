@@ -30,7 +30,7 @@ export const Box: FC<PropsWithChildren<BoxProps>> = (props) => {
       };
       props.updateHotKeyMap(appData);
     },
-    [getAppIcon]
+    [getAppIcon],
   );
 
   const handleOpenFileDialog = useCallback(async () => {

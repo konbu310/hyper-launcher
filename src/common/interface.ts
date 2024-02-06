@@ -19,4 +19,4 @@ export const ipcKeys = [
   "setHotKeyMap",
 ] as const;
 
-export type IpcKey = typeof ipcKeys[number];
+export type IpcKey = (typeof ipcKeys)[number];

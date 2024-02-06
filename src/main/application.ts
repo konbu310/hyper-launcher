@@ -7,7 +7,7 @@ const fileIcon = require("extract-file-icon");
 //
 export const getAppIcon = async (
   ev: IpcMainInvokeEvent,
-  appPath: string
+  appPath: string,
 ): Promise<string> => {
   const icon = fileIcon(appPath, 32);
   return icon.toString("base64");

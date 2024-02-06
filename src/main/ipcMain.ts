@@ -11,7 +11,7 @@ import { getAppIcon } from "./application";
 const ipcEvents = {
   getAppIcon,
   openFileDialog: async (
-    ev: IpcMainInvokeEvent
+    ev: IpcMainInvokeEvent,
   ): Promise<OpenDialogReturnValue> => {
     if (!mainWindow) throw new Error("Window not found.");
     return await dialog.showOpenDialog(mainWindow, {
@@ -22,13 +22,13 @@ const ipcEvents = {
     });
   },
   getHotKeyMap: async (
-    ev: IpcMainInvokeEvent
+    ev: IpcMainInvokeEvent,
   ): Promise<HotKeyMap | undefined> => {
     return store?.get("hotKeyMap");
   },
   setHotKeyMap: async (
     ev: IpcMainInvokeEvent,
-    data: HotKeyMap
+    data: HotKeyMap,
   ): Promise<boolean> => {
     store?.set("hotKeyMap", data);
     return true;
