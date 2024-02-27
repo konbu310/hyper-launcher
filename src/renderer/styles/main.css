@@ -1,0 +1,39 @@
+:root {
+  --base-font-size: 1rem;
+  --responsive-factor: 0.5vw;
+}
+
+* {
+  font-family: "system-ui";
+}
+
+body {
+  font-size: calc(var(--base-font-size) + var(--responsive-factor));
+  background-color: transparent;
+}
+
+.main-window {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--white);
+  border-radius: 5px;
+}
+
+.launcher-section {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: 300px;
+  widht: 900px;
+  height: 900px;
+}
+
+.card-list {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+}

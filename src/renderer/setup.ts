@@ -1,15 +1,14 @@
-import { emptyData } from "../common/initial-data";
-import { HotKeyMap } from "../common/interface";
+import { sampleHotKeyMap } from "./sample";
 
 if (!("electron" in window)) {
   window.electron = {
-    getAppIcon: async (appPath: string) => {
+    getAppIcon: async () => {
       return "";
     },
     getHotKeyMap: async () => {
-      return emptyData;
+      return sampleHotKeyMap;
     },
-    setHotKeyMap: async (data: HotKeyMap) => {
+    setHotKeyMap: async () => {
       return true;
     },
     openFileDialog: async () => {

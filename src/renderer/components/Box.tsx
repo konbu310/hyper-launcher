@@ -3,8 +3,7 @@ import { AppInfo } from "../../common/interface";
 import { pathToName } from "../../common/util";
 import { DragEventHandler, useCallback, FC, ReactNode } from "react";
 import { DroppableProvided } from "react-beautiful-dnd";
-import { box, addButton, boxHeader } from "../styles/Box.css";
-import "css.gg/icons/css/add.css";
+import { Icon } from "./Icon";
 
 const { getAppIcon, openFileDialog } = window.electron!;
 
@@ -55,13 +54,17 @@ export const Box: FC<PropsWithChildren<BoxProps>> = (props) => {
 
   return (
     <div
-      className={box}
+      className="box"
       onDrop={handleAppDrop}
       {...props.provided?.droppableProps}
     >
-      <header className={boxHeader}>
+      <header className="box__header">
         {props.header}
-        <i onClick={handleOpenFileDialog} className={`gg-add ${addButton}`} />
+        <Icon
+          type="plus"
+          className="add-button"
+          onClick={handleOpenFileDialog}
+        />
       </header>
       {props.children}
     </div>
