@@ -1,13 +1,14 @@
-import React from "react";
+import React, { FC } from "react";
 import { createRoot } from "react-dom/client";
-import { IndexPage } from "./pages/IndexPage";
-import { mainWindow } from "./styles/MainWindow.css";
-import "./styles/global.css";
+import "./styles/entry.css";
+import { IconProvioder } from "./components/Icon";
+import { App } from "./App";
 
-const MainWindow = () => {
+const Root: FC = () => {
   return (
-    <main className={mainWindow}>
-      <IndexPage />
+    <main className="main-window">
+      <IconProvioder />
+      <App />
     </main>
   );
 };
@@ -15,4 +16,4 @@ const MainWindow = () => {
 const container = document.getElementById("root")!;
 const root = createRoot(container);
 
-root.render(<MainWindow />);
+root.render(<Root />);

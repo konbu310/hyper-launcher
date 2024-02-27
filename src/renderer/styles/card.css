@@ -1,0 +1,63 @@
+.card__container {
+  margin: 5px;
+  padding: 2px;
+  position: relative;
+  border: 1px solid var(--lightgray);
+  border-radius: 5px;
+  background-color: var(--white);
+  box-shadow: var(--shadow-elevation-low);
+  flex: 0 0 60px;
+  cursor: pointer;
+  transition: box-shadow 300ms;
+  &:hover {
+    box-shadow: var(--shadow-elevation-medium);
+  }
+
+  &:hover .remove-button {
+    opacity: 1;
+  }
+}
+
+.card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+}
+
+.card__icon {
+  margin: 0 10px 0 5px;
+  flex-basis: 40px;
+  vertical-align: middle;
+  height: 40px;
+}
+
+.card__text {
+  overflow: hidden;
+  flex-basis: 210px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--black);
+}
+
+.remove-button {
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-right: 8px;
+  cursor: pointer;
+  fill: var(--red);
+  opacity: 0;
+  transition:
+    transform 300ms,
+    opacity 300ms;
+
+  &:hover {
+    transform: scale(1.2);
+  }
+
+  &:active {
+    transform: scale(0.9);
+  }
+}

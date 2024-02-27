@@ -1,5 +1,4 @@
-import { vanillaExtractPlugin } from "@vanilla-extract/vite-plugin";
-import react from "@vitejs/plugin-react";
+import reactPlugin from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 
 export default defineConfig({
@@ -11,5 +10,5 @@ export default defineConfig({
   build: {
     outDir: "../dist",
   },
-  plugins: [react(), vanillaExtractPlugin()],
+  plugins: [reactPlugin()],
 });

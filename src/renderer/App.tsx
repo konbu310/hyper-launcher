@@ -1,7 +1,7 @@
 import React from "react";
-import { Box } from "../components/Box";
-import { Card } from "../components/Card";
-import { AppInfo, HotKeyMap } from "../../common/interface";
+import { Box } from "./components/Box";
+import { Card } from "./components/Card";
+import { AppInfo, HotKeyMap } from "../common/interface";
 import { useEffect, useState, FC } from "react";
 import {
   DragDropContext,
@@ -10,11 +10,10 @@ import {
   Droppable,
 } from "react-beautiful-dnd";
 import update from "immutability-helper";
-import { launcherSection, cardContainer } from "../styles/IndexPage.css";
 
 const { getHotKeyMap, setHotKeyMap } = window.electron!;
 
-export const IndexPage: FC = () => {
+export const App: FC = () => {
   const [hotKeyData, setHotKeyData] = useState<HotKeyMap | null>(null);
 
   const onDragEnd: DragDropContextProps["onDragEnd"] = async (result) => {
@@ -74,7 +73,7 @@ export const IndexPage: FC = () => {
   // View
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <div className={launcherSection}>
+      <div className="launcher-section">
         {Object.entries(hotKeyData).map(([boxKey, appList]) => (
           <Droppable key={boxKey} droppableId={boxKey}>
             {(provided) => (
@@ -87,7 +86,7 @@ export const IndexPage: FC = () => {
               >
                 <div
                   ref={provided.innerRef}
-                  className={cardContainer}
+                  className="card-list"
                   {...provided.droppableProps}
                 >
                   {appList.map((app, cardIndex) => (

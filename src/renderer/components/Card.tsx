@@ -1,44 +1,34 @@
 import React, { FC } from "react";
 import { DraggableProvided } from "react-beautiful-dnd";
-import {
-  card,
-  cardContainer,
-  cardIcon,
-  cardText,
-  removeButton,
-} from "../styles/Card.css";
-import "css.gg/icons/css/remove.css";
+import { Icon } from "./Icon";
 
-type CardProps = {
+export const Card: FC<{
   cardId: string;
   icon: string;
   name: string;
   removeHotKeyMap: VoidFunction;
   provided: DraggableProvided;
-};
-
-export const Card: FC<CardProps> = (props) => {
-  const iconSrc = props.icon.startsWith("data:")
-    ? props.icon
-    : `data:image/png;base64,${props.icon}`;
+}> = ({ cardId, icon, name, removeHotKeyMap, provided }) => {
+  const iconSrc = icon.startsWith("data:")
+    ? icon
+    : `data:image/png;base64,${icon}`;
   return (
-    <section
-      ref={props.provided.innerRef}
-      className={card}
-      id={props.cardId}
-      {...props.provided.draggableProps}
-      {...props.provided.dragHandleProps}
+    <div
+      ref={provided.innerRef}
+      className="card__container"
+      id={cardId}
+      {...provided.draggableProps}
+      {...provided.dragHandleProps}
     >
-      <div className={cardContainer}>
-        <div>
-          <i></i>
-        </div>
-        <img className={cardIcon} src={iconSrc} alt="application icon" />
-        <span className={cardText}>{props.name}</span>
-        <div onClick={props.removeHotKeyMap} className={removeButton}>
-          <i className="gg-remove" />
-        </div>
+      <div className="card">
+        <img className="card__icon" src={iconSrc} alt="application icon" />
+        <span className="card__text">{name}</span>
+        <Icon
+          type="cross"
+          className="remove-button"
+          onClick={removeHotKeyMap}
+        />
       </div>
-    </section>
+    </div>
   );
 };
