@@ -26,7 +26,7 @@ body {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-auto-rows: 300px;
-  widht: 900px;
+  width: 900px;
   height: 900px;
 }
 
