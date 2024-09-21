@@ -8,7 +8,7 @@ await fs.writeFile(
 );
 
 packager({
-  appname: "Hyper Launcher",
+  name: "Hyper Launcher",
   arch: ["x64", "arm64"],
   platform: "darwin",
   asar: false,
