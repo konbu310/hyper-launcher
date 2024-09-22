@@ -15,8 +15,10 @@ jobs:
           submodules: recursive
       - name: Build GetAppIcon
         run: |
-          cd GetAppIcon \
-          make build \
+          which swift
+          cd GetAppIcon
+          ls ./
+          make build
           cd ../
       - name: Use Node.js LTS
         uses: actions/setup-node@v4
