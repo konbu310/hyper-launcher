@@ -26,14 +26,10 @@ jobs:
           npm install
       - name: Publish
         run: |
-          npm run pack --appVersion ${{ env.GIT_TAG }} --archive
+          npm run pack -- --appVersion ${{ env.GIT_TAG }} --archive
       - name: Cleanup artifacts
         run: |
-          npx rimraf "build/!(*.zip)"
-      #      - name: Upload artifacts
-      #        uses: actions/upload-artifact@v4
-      #        with:
-      #          path: build
+          find build -mindepth 1 ! -name "*.zip" -exec rm -rf {} +
       - run: |
           ls -l build
       - name: Release
