@@ -1,8 +1,5 @@
 name: Electron CD
-on:
-  push:
-    tags:
-      - "[0-9]+.[0-9]+.[0-9]+"
+on: [push]
 env:
   GIT_TAG: ${{ github.ref_name }}
 jobs:
