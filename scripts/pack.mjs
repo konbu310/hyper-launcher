@@ -47,6 +47,8 @@ if (archive) {
         return [];
       }
     }),
-  );
+  ).catch((err) => {
+    console.error(err);
+  });
   console.log("done😎");
 }
