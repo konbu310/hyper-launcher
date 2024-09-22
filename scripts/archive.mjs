@@ -1,5 +1,6 @@
 import archiver from "archiver";
 import fs from "node:fs";
+import fsp from "node:fs/promises";
 
 export async function zipArchive(inputPath, outputPath) {
   return new Promise((resolve, reject) => {
@@ -16,3 +17,18 @@ export async function zipArchive(inputPath, outputPath) {
     archive.finalize();
   });
 }
+
+console.log("archive...");
+const dirs = await fsp.readdir("./build");
+await Promise.all(
+  dirs.map(async (dir) => {
+    if (dir.startsWith("Hyper Launcher")) {
+      const inputPath = `./build/${dir}`;
+      const outputPath = `./build/${dir}.zip`;
+      await zipArchive(inputPath, outputPath);
+    }
+  }),
+).catch((err) => {
+  console.error(err);
+});
+console.log("done😎");

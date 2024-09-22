@@ -15,6 +15,7 @@
     "build:renderer": "NODE_ENV=production vite build",
     "prepack": "npm run build",
     "pack": "node scripts/pack.mjs",
+    "archive": "node scripts/archive.mjs",
     "fmt": "prettier --write '**/*.{ts,tsx}'"
   },
   "dependencies": {

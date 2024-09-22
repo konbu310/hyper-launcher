@@ -10,28 +10,40 @@ jobs:
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
         run: echo "$GITHUB_CONTEXT"
+
       - uses: actions/checkout@v4
         with:
           submodules: recursive
+
       - name: Build GetAppIcon
         run: |
           cd GetAppIcon      
           make build
+
       - name: Use Node.js LTS
         uses: actions/setup-node@v4
         with:
           node-version: "20"
+
       - name: npm install
         run: |
           npm install
+
       - name: Publish
         run: |
           npm run pack -- --appVersion ${{ env.GIT_TAG }} --archive
+
+      - name: Archive
+        run: |
+          npm run archive
+
       - name: Cleanup artifacts
         run: |
           find build -mindepth 1 ! -name "*.zip" -exec rm -rf {} +
+
       - run: |
           ls -l build
+
       - name: Release
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
