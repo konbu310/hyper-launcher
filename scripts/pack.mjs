@@ -1,5 +1,11 @@
 import packager from "@electron/packager";
 import fs from "node:fs/promises";
+import { program } from "commander";
+
+program.option("--appVersion <version>", "app version", "development");
+
+program.parse(process.argv);
+const { appVersion } = program.opts();
 
 await fs.writeFile(
   "./dist/package.json",
@@ -9,6 +15,7 @@ await fs.writeFile(
 
 packager({
   name: "Hyper Launcher",
+  appVersion,
   arch: ["x64", "arm64"],
   platform: "darwin",
   asar: false,
