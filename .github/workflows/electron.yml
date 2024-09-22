@@ -31,7 +31,10 @@ jobs:
 
       - name: Publish
         run: |
-          npm run pack -- --appVersion ${{ env.GIT_TAG }} --archive
+          npm run pack -- --appVersion ${{ env.GIT_TAG }}
+
+      - run: |
+          ls -l build
 
       - name: Archive
         run: |

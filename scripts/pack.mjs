@@ -1,7 +1,6 @@
 import packager from "@electron/packager";
 import fs from "node:fs/promises";
 import { program } from "commander";
-import { zipArchive } from "./archive.mjs";
 
 program.option("--appVersion <version>", "app version", "development");
 
