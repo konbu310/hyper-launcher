@@ -33,20 +33,13 @@ jobs:
         run: |
           npm run pack -- --appVersion ${{ env.GIT_TAG }}
 
-      - run: |
-          ls -l build
-
       - name: Archive
         run: |
-          zip -r "build/Hyper Launcher-darwin-arm64.zip" "build/Hyper Launcher-darwin-arm64"
-          zip -r "build/Hyper Launcher-darwin-x64.zip" "build/Hyper Launcher-darwin-x64"
+          npm run archive
 
       - name: Cleanup artifacts
         run: |
           find build -mindepth 1 ! -name "*.zip" -exec rm -rf {} +
-
-      - run: |
-          ls -l build
 
       - name: Release
         uses: softprops/action-gh-release@v2
