@@ -13,6 +13,8 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
+      - run: |
+          ls  -l ./
       - name: Use Node.js LTS
         uses: actions/setup-node@v4
         with:
