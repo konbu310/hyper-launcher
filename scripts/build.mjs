@@ -1,6 +1,6 @@
 import esbuild from "esbuild";
 import { program } from "commander";
-import fs from "fs-extra";
+import fs from "node:fs/promises";
 
 program
   .option("--prd", "production mode", false)
@@ -11,11 +11,6 @@ program.parse(process.argv);
 const { prd, watch, metafile } = program.opts();
 
 const binaryPath = "GetAppIcon/.build/apple/Products/Release/GetAppIcon";
-
-if (!fs.existsSync(binaryPath)) {
-  console.error("GetAppIcon not found");
-  process.exit(1);
-}
 
 const external = ["electron"];
 
@@ -45,10 +40,17 @@ const option = {
 };
 
 async function copyBinaries() {
-  await fs.copy(binaryPath, "dist/main/GetAppIcon");
+  await fs.mkdir("dist/main", { recursive: true });
+  await fs.copyFile(binaryPath, "dist/main/GetAppIcon");
 }
 
 try {
+  const stat = await fs.stat(binaryPath);
+  if (!stat.isFile()) {
+    console.error("GetAppIcon not found");
+    process.exit(1);
+  }
+
   await copyBinaries();
   if (watch) {
     const ctx = await esbuild.context({ ...option });
@@ -56,7 +58,7 @@ try {
   } else {
     const result = await esbuild.build({ ...option, metafile });
     if (metafile) {
-      await fs.outputFile("meta.json", JSON.stringify(result.metafile));
+      await fs.writeFile("meta.json", JSON.stringify(result.metafile));
     }
   }
   process.exit(0);
