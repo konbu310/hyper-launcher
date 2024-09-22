@@ -38,7 +38,8 @@ jobs:
 
       - name: Archive
         run: |
-          npm run archive
+          zip -r "Hyper Launcher-darwin-arm64.zip" "Hyper Launcher-darwin-arm64"
+          zip -r "Hyper Launcher-darwin-x64.zip" "Hyper Launcher-darwin-x64"
 
       - name: Cleanup artifacts
         run: |
