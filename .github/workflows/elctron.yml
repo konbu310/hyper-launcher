@@ -15,11 +15,8 @@ jobs:
           submodules: recursive
       - name: Build GetAppIcon
         run: |
-          which swift
-          cd GetAppIcon
-          ls ./
+          cd GetAppIcon      
           make build
-          cd ../
       - name: Use Node.js LTS
         uses: actions/setup-node@v4
         with:
@@ -29,10 +26,10 @@ jobs:
           npm install
       - name: Publish
         run: |
-          npm run pack --appVersion ${{ env.GIT_TAG }}
+          npm run pack --appVersion ${{ env.GIT_TAG }} --archive
       - name: Cleanup artifacts
         run: |
-          npx rimraf "build/!*.app"
+          npx rimraf "build/!*.zip"
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
