@@ -1,45 +1,40 @@
-import React, { FC } from "react";
-import { DraggableProvided } from "react-beautiful-dnd";
-import { Icon } from "./Icon";
-import { AppInfo } from "../../common/interface";
 import cx from "classnames";
+import { FC, useCallback } from "react";
+import { AppInfo } from "../../common/interface";
+import { Icon } from "./Icon";
+import { useHotkeyMapActions } from "../useHotkeyMap";
 
-export const Card: FC<
-  AppInfo & {
-    cardId: string;
-    removeHotKeyMap: VoidFunction;
-    toggleDisable: VoidFunction;
-    provided: DraggableProvided;
-  }
-> = ({
-  cardId,
-  icon,
-  name,
-  disabled,
-  removeHotKeyMap,
-  toggleDisable,
-  provided,
-}) => {
-  const iconSrc = icon?.startsWith("data:")
-    ? icon
-    : `data:image/png;base64,${icon}`;
+const base64Prefix = "data:image/png;base64,";
+
+function ensureBase64Prefix(icon: string | undefined): string {
+  return icon?.startsWith("data:") ? icon : `${base64Prefix}${icon ?? ""}`;
+}
+
+export const Card: FC<{
+  id: string;
+  boxKey: string;
+  index: number;
+  app: AppInfo;
+}> = ({ id, boxKey, index, app }) => {
+  const { removeApp, toggleDisable } = useHotkeyMapActions();
+  const { name, icon, disabled } = app;
+  const iconSrc = ensureBase64Prefix(icon);
+
+  const handleChange = useCallback(() => {
+    toggleDisable(boxKey, index);
+  }, [boxKey, index, toggleDisable]);
+
+  const handleClick = useCallback(() => {
+    removeApp(boxKey, index);
+  }, [boxKey, index, removeApp]);
+
   return (
-    <div
-      ref={provided.innerRef}
-      className={cx("card__container", { disabled })}
-      id={cardId}
-      {...provided.draggableProps}
-      {...provided.dragHandleProps}
-    >
+    <div id={id} className={cx("card__container", { disabled })}>
       <div className="card">
-        <input type="checkbox" checked={!disabled} onChange={toggleDisable} />
+        <input type="checkbox" checked={!disabled} onChange={handleChange} />
         <img className="card__icon" src={iconSrc} alt="application icon" />
         <span className="card__text">{name}</span>
-        <Icon
-          type="cross"
-          className="remove-button"
-          onClick={removeHotKeyMap}
-        />
+        <Icon type="cross" className="remove-button" onClick={handleClick} />
       </div>
     </div>
   );

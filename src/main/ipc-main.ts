@@ -4,14 +4,35 @@ import {
   IpcMainInvokeEvent,
   OpenDialogReturnValue,
 } from "electron";
+import { execa } from "execa";
+import path from "node:path";
+import { emptyHotkeyMap } from "../common/initial-data";
+import { HotkeyMap, IpcKey, ipcKeys } from "../common/interface";
 import { mainWindow, store } from "./main";
-import { HotKeyMap, IpcKey, ipcKeys } from "../common/interface";
-import { getAppIcon } from "./application";
 
-const ipcEvents = {
-  getAppIcon,
+const ipcMainEvents = {
+  getAppIcon: async (
+    _ev: IpcMainInvokeEvent,
+    appPath: string
+  ): Promise<string> => {
+    const icon = await execa(path.resolve(__dirname, "GetAppIcon"), [appPath]);
+    return icon.stdout.toString();
+  },
+
+  getHotkeyMap: async (_ev: IpcMainInvokeEvent): Promise<HotkeyMap> => {
+    return store?.get("hotKeyMap") ?? emptyHotkeyMap;
+  },
+
+  setHotkeyMap: async (
+    _ev: IpcMainInvokeEvent,
+    data: HotkeyMap
+  ): Promise<boolean> => {
+    store?.set("hotKeyMap", data);
+    return true;
+  },
+
   openFileDialog: async (
-    ev: IpcMainInvokeEvent,
+    _ev: IpcMainInvokeEvent
   ): Promise<OpenDialogReturnValue> => {
     if (!mainWindow) throw new Error("Window not found.");
     return await dialog.showOpenDialog(mainWindow, {
@@ -21,22 +42,12 @@ const ipcEvents = {
       filters: [{ name: "application file", extensions: ["app"] }],
     });
   },
-  getHotKeyMap: async (
-    ev: IpcMainInvokeEvent,
-  ): Promise<HotKeyMap | undefined> => {
-    return store?.get("hotKeyMap");
-  },
-  setHotKeyMap: async (
-    ev: IpcMainInvokeEvent,
-    data: HotKeyMap,
-  ): Promise<boolean> => {
-    store?.set("hotKeyMap", data);
-    return true;
-  },
 } satisfies Record<
   IpcKey,
   (ev: IpcMainInvokeEvent, ...arg: any[]) => Promise<any>
 >;
+
+export type IpcMainEvents = typeof ipcMainEvents;
 
 let initialized = false;
 
@@ -45,7 +56,7 @@ export const initializeIpcEvents = () => {
   initialized = true;
 
   ipcKeys.map((key) => {
-    ipcMain.handle(key, ipcEvents[key]);
+    ipcMain.handle(key, ipcMainEvents[key]);
   });
 };
 

@@ -1,13 +1,15 @@
 import EStore from "electron-store";
 import { StoreKey } from "../common/interface";
-import { emptyData } from "../common/initial-data";
-import { registerHotKey } from "./hotKeyHandler";
+import { emptyHotkeyMap } from "../common/initial-data";
+import { registerHotkey } from "./hotkey-handler";
 
 export const createStore = (): EStore<StoreKey> => {
-  const store = new EStore<StoreKey>({ defaults: { hotKeyMap: emptyData } });
+  const store = new EStore<StoreKey>({
+    defaults: { hotKeyMap: emptyHotkeyMap },
+  });
 
   store.onDidChange("hotKeyMap", async (newData, _) => {
-    newData && (await registerHotKey(newData));
+    newData && (await registerHotkey(newData));
   });
 
   return store;

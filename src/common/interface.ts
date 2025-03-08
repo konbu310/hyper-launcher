@@ -5,19 +5,17 @@ export type AppInfo = {
   disabled?: boolean;
 };
 
-export type HotKeyMap = {
-  [key: string]: AppInfo[];
-};
+export type HotkeyMap = Record<string, Array<AppInfo>>;
 
 export type StoreKey = {
-  hotKeyMap: HotKeyMap;
+  hotKeyMap: HotkeyMap;
 };
 
 export const ipcKeys = [
   "getAppIcon",
   "openFileDialog",
-  "getHotKeyMap",
-  "setHotKeyMap",
+  "getHotkeyMap",
+  "setHotkeyMap",
 ] as const;
 
 export type IpcKey = (typeof ipcKeys)[number];

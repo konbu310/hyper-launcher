@@ -4,11 +4,11 @@ import fs from "node:fs/promises";
 
 program
   .option("--prd", "production mode", false)
-  .option("--watch", "watch mode", false)
+  .option("-w", "watch mode", false)
   .option("--metafile", "gen metafile", false);
 
 program.parse(process.argv);
-const { prd, watch, metafile } = program.opts();
+const { prd, w, metafile } = program.opts();
 
 const binaryPath = "GetAppIcon/.build/apple/Products/Release/GetAppIcon";
 
@@ -52,7 +52,7 @@ try {
   }
 
   await copyBinaries();
-  if (watch) {
+  if (w) {
     const ctx = await esbuild.context({ ...option });
     await ctx.watch();
   } else {
@@ -61,7 +61,6 @@ try {
       await fs.writeFile("meta.json", JSON.stringify(result.metafile));
     }
   }
-  process.exit(0);
 } catch (e) {
   console.error(e);
   process.exit(1);
