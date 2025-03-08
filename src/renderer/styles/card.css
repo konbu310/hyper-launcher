@@ -32,12 +32,16 @@
   gap: 8px;
   padding-inline: 8px;
   height: 100%;
+
+  & > input[type="checkbox"] {
+    scale: 1.25;
+  }
 }
 
 .card__icon {
   flex-basis: 40px;
-  vertical-align: middle;
   height: 40px;
+  aspect-ratio: 1;
 }
 
 .card__text {

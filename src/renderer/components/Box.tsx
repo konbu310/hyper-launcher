@@ -1,9 +1,13 @@
 import { FC, useCallback } from "react";
 import { AppInfo } from "../../common/interface";
-import { pathToName } from "../../common/util";
 import { useHotKeyMapActions } from "../useHotKeyMap";
 import { Card } from "./Card";
 import { Icon } from "./Icon";
+
+const pathToName = (path: string): string => {
+  const match = path.match(/\/.+\/(.+[^\/]).app/);
+  return match?.[1] ?? "";
+};
 
 export const Box: FC<{
   boxKey: string;
