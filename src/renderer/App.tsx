@@ -58,6 +58,13 @@ export const App: FC = () => {
     setHotKeyMap(nData);
   };
 
+  const toggleDisable = (boxKey: string, cardIndex: number) => {
+    const nData = { ...hotKeyData };
+    nData[boxKey][cardIndex].disabled = !nData[boxKey][cardIndex].disabled;
+    setHotKeyData(nData);
+    setHotKeyMap(nData);
+  };
+
   useEffect(() => {
     getHotKeyMap().then((res) => {
       if (res) {
@@ -99,11 +106,11 @@ export const App: FC = () => {
                         <Card
                           key={`card-${app.name}`}
                           cardId={`card-${app.name}`}
-                          icon={app.icon || ""}
-                          name={app.name}
+                          {...app}
                           removeHotKeyMap={() =>
                             removeHotKeyMap(boxKey, cardIndex)
                           }
+                          toggleDisable={() => toggleDisable(boxKey, cardIndex)}
                           provided={provided}
                         />
                       )}

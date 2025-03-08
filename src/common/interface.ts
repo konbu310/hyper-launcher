@@ -2,6 +2,7 @@ export type AppInfo = {
   name: string;
   path: string;
   icon?: string;
+  disabled?: boolean;
 };
 
 export type HotKeyMap = {
