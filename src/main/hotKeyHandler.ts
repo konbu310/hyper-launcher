@@ -24,7 +24,6 @@ export const registerHotKey = async (hotKeyData: HotKeyMap) => {
       const appPaths = appList
         .filter((app) => !app.disabled)
         .map(({ path }) => path);
-      console.log(appPaths);
       if (appPaths.length === 0) {
       } else if (appPaths.length === 1) {
         globalShortcut.register(`Control+${key}`, () => {
