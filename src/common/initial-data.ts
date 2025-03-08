@@ -1,6 +1,6 @@
-import { HotKeyMap } from "./interface";
+import { HotkeyMap } from "./interface";
 
-export const emptyData: HotKeyMap = {
+export const emptyHotkeyMap: HotkeyMap = {
   1: [],
   2: [],
   3: [],

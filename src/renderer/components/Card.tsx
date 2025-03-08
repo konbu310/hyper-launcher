@@ -2,7 +2,7 @@ import cx from "classnames";
 import { FC, useCallback } from "react";
 import { AppInfo } from "../../common/interface";
 import { Icon } from "./Icon";
-import { useHotKeyMapActions } from "../useHotKeyMap";
+import { useHotkeyMapActions } from "../useHotkeyMap";
 
 const base64Prefix = "data:image/png;base64,";
 
@@ -16,7 +16,7 @@ export const Card: FC<{
   index: number;
   app: AppInfo;
 }> = ({ id, boxKey, index, app }) => {
-  const { removeApp, toggleDisable } = useHotKeyMapActions();
+  const { removeApp, toggleDisable } = useHotkeyMapActions();
   const { name, icon, disabled } = app;
   const iconSrc = ensureBase64Prefix(icon);
 

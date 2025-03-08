@@ -1,10 +1,6 @@
-import { exec } from "child_process";
 import { globalShortcut, shell } from "electron";
-import { promisify } from "util";
-import { HotKeyMap } from "../common/interface";
-
-const execPromise = promisify(exec);
-
+import { execa } from "execa";
+import { HotkeyMap } from "../common/interface";
 const prevIndexMap: Map<string, number> = new Map([
   ["1", 0],
   ["2", 0],
@@ -17,26 +13,34 @@ const prevIndexMap: Map<string, number> = new Map([
   ["9", 0],
 ]);
 
-export const registerHotKey = async (hotKeyData: HotKeyMap) => {
+export const registerHotkey = async (hotKeyData: HotkeyMap) => {
   try {
     globalShortcut.unregisterAll();
     for (const [key, appList] of Object.entries(hotKeyData)) {
       const appPaths = appList
         .filter((app) => !app.disabled)
         .map(({ path }) => path);
-      if (appPaths.length === 0) {
-      } else if (appPaths.length === 1) {
-        globalShortcut.register(`Control+${key}`, () => {
-          shell.openPath(appPaths[0]);
-        });
-      } else {
-        globalShortcut.register(`Control+${key}`, () => {
-          handleMultiApps(key, appPaths);
-        });
+
+      switch (appPaths.length) {
+        case 0:
+          break;
+        case 1:
+          const path = appPaths.at(0);
+          if (path) {
+            globalShortcut.register(`Control+${key}`, () => {
+              shell.openPath(path);
+            });
+          }
+          break;
+        default:
+          globalShortcut.register(`Control+${key}`, () => {
+            handleMultiApps(key, appPaths);
+          });
+          break;
       }
     }
   } catch (err) {
-    console.error("registerHotKey: ", err);
+    console.error("registerHotkey: ", err);
   }
 };
 
@@ -51,12 +55,12 @@ const getNextLaunchApp = async (
   appPaths: string[],
   prevIndex: number
 ): Promise<[number, string]> => {
-  const { stdout: visibleAppsStr } = await execPromise(
+  const { stdout: visibleAppsStr } = await execa(
     "lsappinfo visibleProcessList"
   );
   const visibleAppPaths = await Promise.all(
     visibleAppsStr.split(" ").map(async (asn) => {
-      const { stdout } = await execPromise(
+      const { stdout } = await execa(
         `lsappinfo info ${asn.replace("\n", "")} -only bundlePath`
       );
       return stdout
@@ -66,23 +70,27 @@ const getNextLaunchApp = async (
     })
   );
   let frontmostFlag = false;
-  let activeApps: [number, string][] = [];
+  let activeApps: { index: number; path: string }[] = [];
   for (let i = 0, length = appPaths.length; i < length; i++) {
-    const path = appPaths[i];
+    const path = appPaths.at(i);
+    if (!path) continue;
     const index = visibleAppPaths.indexOf(path);
     if (index === -1) continue;
     if (frontmostFlag) {
       return [i, path];
     }
     frontmostFlag = index === 0;
-    activeApps.push([i, path]);
+    activeApps.push({ index: i, path });
   }
-  if (frontmostFlag || activeApps.length === 0) {
-    return [0, appPaths[0]];
+  const firstPath = appPaths.at(prevIndex);
+  if (firstPath && (frontmostFlag || activeApps.length === 0)) {
+    return [prevIndex, firstPath];
   }
-  if (activeApps.length === 1) {
-    const target = activeApps[0];
-    return [target[0], target[1]];
+
+  const target = activeApps.at(0);
+  if (target && activeApps.length === 1) {
+    return [target.index, target.path];
   }
-  return [prevIndex, appPaths[prevIndex]];
+
+  return [prevIndex, appPaths.at(prevIndex) ?? ""];
 };

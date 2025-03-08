@@ -1,5 +1,5 @@
 import { contextBridge, ipcRenderer } from "electron";
-import { IpcMainEvents } from "./ipcMain";
+import { IpcMainEvents } from "./ipc-main";
 
 type Tail<T extends any[]> = T extends [any, ...infer Rest] ? Rest : never;
 
@@ -11,12 +11,12 @@ const getAppIcon: FromMain<"getAppIcon"> = async (appPath) => {
   return await ipcRenderer.invoke("getAppIcon", appPath);
 };
 
-const getHotKeyMap: FromMain<"getHotKeyMap"> = async () => {
-  return await ipcRenderer.invoke("getHotKeyMap");
+const getHotkeyMap: FromMain<"getHotkeyMap"> = async () => {
+  return await ipcRenderer.invoke("getHotkeyMap");
 };
 
-const setHotKeyMap: FromMain<"setHotKeyMap"> = async (data) => {
-  return await ipcRenderer.invoke("setHotKeyMap", data);
+const setHotkeyMap: FromMain<"setHotkeyMap"> = async (data) => {
+  return await ipcRenderer.invoke("setHotkeyMap", data);
 };
 
 const openFileDialog: FromMain<"openFileDialog"> = async () => {
@@ -25,8 +25,8 @@ const openFileDialog: FromMain<"openFileDialog"> = async () => {
 
 const ipcRendererEvents = {
   getAppIcon,
-  getHotKeyMap,
-  setHotKeyMap,
+  getHotkeyMap,
+  setHotkeyMap,
   openFileDialog,
 };
 

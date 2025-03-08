@@ -1,6 +1,6 @@
 import { FC, useCallback } from "react";
 import { AppInfo } from "../../common/interface";
-import { useHotKeyMapActions } from "../useHotKeyMap";
+import { useHotkeyMapActions } from "../useHotkeyMap";
 import { Card } from "./Card";
 import { Icon } from "./Icon";
 
@@ -13,7 +13,7 @@ export const Box: FC<{
   boxKey: string;
   appList: AppInfo[];
 }> = ({ boxKey, appList }) => {
-  const { addApp } = useHotKeyMapActions();
+  const { addApp } = useHotkeyMapActions();
 
   const handleOpenFileDialog = useCallback(async () => {
     const fileNames = await window.api.openFileDialog();

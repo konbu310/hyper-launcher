@@ -67,6 +67,7 @@ export function constate<Props, Value, Selectors extends Selector<Value>[]>(
 
     for (let i = contexts.length - 1; i >= 0; i--) {
       const context = contexts[i];
+      if (!context) continue;
       const selector = selectors[i] || ((v) => v);
       element = (
         <context.Provider value={selector(value)}>{element}</context.Provider>

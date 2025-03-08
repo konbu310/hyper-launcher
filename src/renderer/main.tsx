@@ -3,20 +3,20 @@ import { createRoot } from "react-dom/client";
 import { App } from "./App";
 import { IconProvioder } from "./components/Icon";
 import "./styles/entry.css";
-import { HotKeyMapProvider } from "./useHotKeyMap";
+import { HotkeyMapProvider } from "./useHotkeyMap";
 
-window.api.getHotKeyMap().then((data) => {
+window.api.getHotkeyMap().then((data) => {
   const container = document.getElementById("root")!;
   const root = createRoot(container);
   document.getElementById("root-loader")?.remove();
   root.render(
     <StrictMode>
-      <HotKeyMapProvider hotKeyMap={data}>
+      <HotkeyMapProvider hotKeyMap={data}>
         <main className="main-window">
           <IconProvioder />
           <App />
         </main>
-      </HotKeyMapProvider>
+      </HotkeyMapProvider>
     </StrictMode>
   );
 });

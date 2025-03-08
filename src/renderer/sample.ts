@@ -1,4 +1,4 @@
-export const sampleHotKeyMap = {
+export const sampleHotkeyMap = {
   "1": [
     {
       name: "Finder",

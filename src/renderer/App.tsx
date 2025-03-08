@@ -1,9 +1,9 @@
 import { FC } from "react";
 import { Box } from "./components/Box";
-import { useHotKeyMap } from "./useHotKeyMap";
+import { useHotkeyMap } from "./useHotkeyMap";
 
 export const App: FC = () => {
-  const { hotKeyMap } = useHotKeyMap();
+  const { hotKeyMap } = useHotkeyMap();
 
   return (
     <div className="launcher-section">

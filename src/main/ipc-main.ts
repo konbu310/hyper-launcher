@@ -6,8 +6,8 @@ import {
 } from "electron";
 import { execa } from "execa";
 import path from "node:path";
-import { emptyData } from "../common/initial-data";
-import { HotKeyMap, IpcKey, ipcKeys } from "../common/interface";
+import { emptyHotkeyMap } from "../common/initial-data";
+import { HotkeyMap, IpcKey, ipcKeys } from "../common/interface";
 import { mainWindow, store } from "./main";
 
 const ipcMainEvents = {
@@ -19,13 +19,13 @@ const ipcMainEvents = {
     return icon.stdout.toString();
   },
 
-  getHotKeyMap: async (_ev: IpcMainInvokeEvent): Promise<HotKeyMap> => {
-    return store?.get("hotKeyMap") ?? emptyData;
+  getHotkeyMap: async (_ev: IpcMainInvokeEvent): Promise<HotkeyMap> => {
+    return store?.get("hotKeyMap") ?? emptyHotkeyMap;
   },
 
-  setHotKeyMap: async (
+  setHotkeyMap: async (
     _ev: IpcMainInvokeEvent,
-    data: HotKeyMap
+    data: HotkeyMap
   ): Promise<boolean> => {
     store?.set("hotKeyMap", data);
     return true;
