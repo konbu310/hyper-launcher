@@ -16,17 +16,25 @@
   &:hover .remove-button {
     opacity: 1;
   }
+
+  &.disabled {
+    background-color: var(--lightgray);
+    box-shadow: var(--shadow-elevation-low);
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
 }
 
 .card {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 8px;
+  padding-inline: 8px;
   height: 100%;
 }
 
 .card__icon {
-  margin: 0 10px 0 5px;
   flex-basis: 40px;
   vertical-align: middle;
   height: 40px;

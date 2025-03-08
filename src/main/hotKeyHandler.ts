@@ -21,7 +21,9 @@ export const registerHotKey = async (hotKeyData: HotKeyMap) => {
   try {
     globalShortcut.unregisterAll();
     for (const [key, appList] of Object.entries(hotKeyData)) {
-      const appPaths = appList.map(({ path }) => path);
+      const appPaths = appList
+        .filter((app) => !app.disabled)
+        .map(({ path }) => path);
       if (appPaths.length === 0) {
       } else if (appPaths.length === 1) {
         globalShortcut.register(`Control+${key}`, () => {
@@ -47,21 +49,21 @@ const handleMultiApps = async (key: string, appPaths: string[]) => {
 
 const getNextLaunchApp = async (
   appPaths: string[],
-  prevIndex: number,
+  prevIndex: number
 ): Promise<[number, string]> => {
   const { stdout: visibleAppsStr } = await execPromise(
-    "lsappinfo visibleProcessList",
+    "lsappinfo visibleProcessList"
   );
   const visibleAppPaths = await Promise.all(
     visibleAppsStr.split(" ").map(async (asn) => {
       const { stdout } = await execPromise(
-        `lsappinfo info ${asn.replace("\n", "")} -only bundlePath`,
+        `lsappinfo info ${asn.replace("\n", "")} -only bundlePath`
       );
       return stdout
         .replaceAll('"', "")
         .replace("\n", "")
         .replace("LSBundlePath=", "");
-    }),
+    })
   );
   let frontmostFlag = false;
   let activeApps: [number, string][] = [];
