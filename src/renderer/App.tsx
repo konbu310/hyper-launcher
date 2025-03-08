@@ -45,24 +45,37 @@ export const App: FC = () => {
   };
 
   const updateHotKeyMap = (boxKey: string) => (newApp: AppInfo) => {
-    const nData = { ...hotKeyData };
-    nData[boxKey].push(newApp);
-    setHotKeyData(nData);
-    setHotKeyMap(nData);
+    const nData = update(hotKeyData, {
+      [boxKey]: { $push: [newApp] },
+    });
+    if (nData) {
+      setHotKeyData(nData);
+      setHotKeyMap(nData);
+    }
   };
 
   const removeHotKeyMap = (boxKey: string, cardIndex: number) => {
-    const nData = { ...hotKeyData };
-    nData[boxKey].splice(cardIndex, 1);
-    setHotKeyData(nData);
-    setHotKeyMap(nData);
+    const nData = update(hotKeyData, {
+      [boxKey]: { $splice: [[cardIndex, 1]] },
+    });
+    if (nData) {
+      setHotKeyData(nData);
+      setHotKeyMap(nData);
+    }
   };
 
   const toggleDisable = (boxKey: string, cardIndex: number) => {
-    const nData = { ...hotKeyData };
-    nData[boxKey][cardIndex].disabled = !nData[boxKey][cardIndex].disabled;
-    setHotKeyData(nData);
-    setHotKeyMap(nData);
+    const nData = update(hotKeyData, {
+      [boxKey]: {
+        [cardIndex]: {
+          $toggle: ["disabled"],
+        },
+      },
+    });
+    if (nData) {
+      setHotKeyData(nData);
+      setHotKeyMap(nData);
+    }
   };
 
   useEffect(() => {
