@@ -1,7 +1,7 @@
 import { sampleHotKeyMap } from "./sample";
 
-if (!("electron" in window)) {
-  window.electron = {
+if (window.api === undefined) {
+  window.api = {
     getAppIcon: async () => {
       return "";
     },

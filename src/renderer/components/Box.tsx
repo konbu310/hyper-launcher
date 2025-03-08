@@ -1,72 +1,47 @@
-import React, { PropsWithChildren } from "react";
+import { FC, useCallback } from "react";
 import { AppInfo } from "../../common/interface";
 import { pathToName } from "../../common/util";
-import { DragEventHandler, useCallback, FC, ReactNode } from "react";
-import { DroppableProvided } from "react-beautiful-dnd";
+import { useHotKeyMapActions } from "../useHotKeyMap";
+import { Card } from "./Card";
 import { Icon } from "./Icon";
 
-const { getAppIcon, openFileDialog } = window.electron!;
-
-type BoxProps = {
-  boxId: string;
-  header: string | ReactNode;
-  updateHotKeyMap: Function;
-  provided?: DroppableProvided;
-};
-
-export const Box: FC<PropsWithChildren<BoxProps>> = (props) => {
-  const handleAppDrop: DragEventHandler = useCallback(
-    async (ev) => {
-      ev.preventDefault();
-      if (ev.dataTransfer.effectAllowed === "move") return;
-      const file = ev.dataTransfer.files[0];
-      const appName = file.name.slice(0, -4);
-      const appIcon = await getAppIcon(file.path);
-      const appData: AppInfo = {
-        name: appName,
-        path: file.path,
-        icon: appIcon,
-      };
-      props.updateHotKeyMap(appData);
-    },
-    [getAppIcon],
-  );
+export const Box: FC<{
+  boxKey: string;
+  appList: AppInfo[];
+}> = ({ boxKey, appList }) => {
+  const { addApp } = useHotKeyMapActions();
 
   const handleOpenFileDialog = useCallback(async () => {
-    const fileNames = await openFileDialog();
-    const appPath = fileNames.filePaths[0];
-    if (typeof appPath !== "string") {
-      return;
-    }
-    const appName = pathToName(appPath);
-    const appIcon = await getAppIcon(appPath);
-    if (appName) {
-      const appData: AppInfo = {
-        name: appName,
-        path: appPath,
-        icon: appIcon,
-      };
-      props.updateHotKeyMap(appData);
-    } else {
-      return;
-    }
-  }, [openFileDialog, pathToName, getAppIcon, props.updateHotKeyMap]);
+    const fileNames = await window.api.openFileDialog();
+    const path = fileNames.filePaths.at(0);
+    if (path == undefined) return;
+    const name = pathToName(path);
+    if (name === "") return;
+    const icon = await window.api.getAppIcon(path);
+    addApp(boxKey, { name, path, icon });
+  }, [addApp, boxKey]);
 
   return (
-    <div
-      className="box"
-      onDrop={handleAppDrop}
-      {...props.provided?.droppableProps}
-    >
+    <div className="box">
       <header className="box__header">
-        {props.header}
+        <span>{`Ctrl + ${boxKey}`}</span>
+
         <Icon
           type="plus"
           className="add-button"
           onClick={handleOpenFileDialog}
         />
       </header>
-      {props.children}
+
+      {appList.map((app, index) => (
+        <Card
+          key={`card-${app.name}`}
+          id={`card-${app.name}`}
+          index={index}
+          boxKey={boxKey}
+          app={app}
+        />
+      ))}
     </div>
   );
 };

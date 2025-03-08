@@ -5,9 +5,7 @@ export type AppInfo = {
   disabled?: boolean;
 };
 
-export type HotKeyMap = {
-  [key: string]: AppInfo[];
-};
+export type HotKeyMap = Record<string, Array<AppInfo>>;
 
 export type StoreKey = {
   hotKeyMap: HotKeyMap;

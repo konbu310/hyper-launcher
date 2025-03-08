@@ -1,19 +1,22 @@
-import React, { FC } from "react";
+import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import "./styles/entry.css";
-import { IconProvioder } from "./components/Icon";
 import { App } from "./App";
+import { IconProvioder } from "./components/Icon";
+import "./styles/entry.css";
+import { HotKeyMapProvider } from "./useHotKeyMap";
 
-const Root: FC = () => {
-  return (
-    <main className="main-window">
-      <IconProvioder />
-      <App />
-    </main>
+window.api.getHotKeyMap().then((data) => {
+  const container = document.getElementById("root")!;
+  const root = createRoot(container);
+  document.getElementById("root-loader")?.remove();
+  root.render(
+    <StrictMode>
+      <HotKeyMapProvider hotKeyMap={data}>
+        <main className="main-window">
+          <IconProvioder />
+          <App />
+        </main>
+      </HotKeyMapProvider>
+    </StrictMode>
   );
-};
-
-const container = document.getElementById("root")!;
-const root = createRoot(container);
-
-root.render(<Root />);
+});
