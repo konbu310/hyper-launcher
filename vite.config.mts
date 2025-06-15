@@ -9,6 +9,10 @@ export default defineConfig({
   base: "./",
   build: {
     outDir: "../dist",
+    emptyOutDir: false,
+    rollupOptions: {
+      external: ["electron"],
+    },
   },
   plugins: [reactPlugin()],
 });

@@ -9,14 +9,14 @@
     "rimraf": "rimraf",
     "start": "electron .",
     "watch": "npm-run-all 'rimraf dist' --parallel watch:* start",
-    "watch:main": "node scripts/build.mjs -w",
+    "watch:main": "node scripts/build.js -w",
     "watch:renderer": "vite dev",
     "build": "npm-run-all --parallel 'rimraf dist' 'rimraf build' --parallel build:*",
-    "build:main": "node scripts/build.mjs --prd",
+    "build:main": "node scripts/build.js --prd",
     "build:renderer": "NODE_ENV=production vite build",
     "prepack": "npm run build",
-    "pack": "node scripts/pack.mjs",
-    "archive": "node scripts/archive.mjs",
+    "pack": "node scripts/pack.js",
+    "archive": "node scripts/archive.js",
     "fmt": "prettier --write '**/*.{ts,tsx}'"
   },
   "dependencies": {

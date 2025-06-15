@@ -7,6 +7,8 @@
   display: flex;
   flex-direction: column;
   width: 280px;
+  height: 280px;
+  overflow-y: auto;
 
   &:hover .add-button {
     opacity: 1;
