@@ -34,7 +34,7 @@
     "@types/react-dom": "^19.1.6",
     "@vitejs/plugin-react": "^4.5.2",
     "commander": "^14.0.0",
-    "electron": "^36.4.0",
+    "electron": "^36.8.1",
     "electron-reload": "^2.0.0-alpha.1",
     "esbuild": "^0.25.5",
     "esbuild-node-externals": "^1.18.0",
