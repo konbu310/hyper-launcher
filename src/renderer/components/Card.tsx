@@ -1,4 +1,4 @@
-import cx from "classnames";
+import { clsx } from "clsx";
 import { FC, useCallback } from "react";
 import { AppInfo } from "../../common/interface";
 import { Icon } from "./Icon";
@@ -29,7 +29,7 @@ export const Card: FC<{
   }, [boxKey, index, removeApp]);
 
   return (
-    <div id={id} className={cx("card__container", { disabled })}>
+    <div id={id} className={clsx("card__container", { disabled })}>
       <div className="card">
         <input type="checkbox" checked={!disabled} onChange={handleChange} />
         <img className="card__icon" src={iconSrc} alt="application icon" />
