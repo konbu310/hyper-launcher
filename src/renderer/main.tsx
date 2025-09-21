@@ -11,7 +11,7 @@ window.api.getHotkeyMap().then((data) => {
   document.getElementById("root-loader")?.remove();
   root.render(
     <StrictMode>
-      <HotkeyMapProvider hotKeyMap={data}>
+      <HotkeyMapProvider hotkeyMap={data}>
         <main className="main-window">
           <IconProvioder />
           <App />

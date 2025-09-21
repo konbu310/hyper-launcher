@@ -20,14 +20,14 @@ const ipcMainEvents = {
   },
 
   getHotkeyMap: async (_ev: IpcMainInvokeEvent): Promise<HotkeyMap> => {
-    return store?.get("hotKeyMap") ?? emptyHotkeyMap;
+    return store?.get("hotkeyMap") ?? emptyHotkeyMap;
   },
 
   setHotkeyMap: async (
     _ev: IpcMainInvokeEvent,
     data: HotkeyMap
   ): Promise<boolean> => {
-    store?.set("hotKeyMap", data);
+    store?.set("hotkeyMap", data);
     return true;
   },
 

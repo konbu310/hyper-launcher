@@ -8,7 +8,7 @@ export type AppInfo = {
 export type HotkeyMap = Record<string, Array<AppInfo>>;
 
 export type StoreKey = {
-  hotKeyMap: HotkeyMap;
+  hotkeyMap: HotkeyMap;
 };
 
 export const ipcKeys = [

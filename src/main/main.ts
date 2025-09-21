@@ -8,8 +8,10 @@ import { createStore } from "./store";
 import { createMainWindow } from "./window-manager";
 
 if (process.env.NODE_ENV !== "production") {
-  require("electron-reload")(__dirname, {
-    electron: path.resolve(__dirname, "../../node_modules/.bin/electron"),
+  import("electron-reload").then(({ default: electronReload }) => {
+    electronReload(__dirname, {
+      electron: path.resolve(__dirname, "../../node_modules/.bin/electron"),
+    });
   });
 }
 
@@ -21,7 +23,7 @@ app.setName("Hyper Launcher");
 
 app.on("ready", async () => {
   store = createStore();
-  await registerHotkey(store.get("hotKeyMap"));
+  await registerHotkey(store.get("hotkeyMap"));
   mainWindow = createMainWindow();
   initializeIpcEvents();
 

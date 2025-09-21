@@ -5,10 +5,10 @@ import { registerHotkey } from "./hotkey-handler";
 
 export const createStore = (): EStore<StoreKey> => {
   const store = new EStore<StoreKey>({
-    defaults: { hotKeyMap: emptyHotkeyMap },
+    defaults: { hotkeyMap: emptyHotkeyMap },
   });
 
-  store.onDidChange("hotKeyMap", async (newData, _) => {
+  store.onDidChange("hotkeyMap", async (newData, _) => {
     newData && (await registerHotkey(newData));
   });
 

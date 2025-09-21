@@ -1,6 +1,6 @@
 import { useCallback, useReducer } from "react";
 import { AppInfo, HotkeyMap } from "../common/interface";
-import { constate } from "./constate";
+import constate from "constate";
 import update from "immutability-helper";
 
 type Action =
@@ -43,8 +43,8 @@ function reducer(state: HotkeyMap, action: Action) {
   }
 }
 
-const useHotkeyMapDef = ({ hotKeyMap }: { hotKeyMap: HotkeyMap }) => {
-  const [state, dispatch] = useReducer(reducer, hotKeyMap);
+const useHotkeyMapDef = ({ hotkeyMap }: { hotkeyMap: HotkeyMap }) => {
+  const [state, dispatch] = useReducer(reducer, hotkeyMap);
 
   const addApp = useCallback((boxKey: string, app: AppInfo) => {
     dispatch({ type: "add", boxKey, app });
@@ -59,7 +59,7 @@ const useHotkeyMapDef = ({ hotKeyMap }: { hotKeyMap: HotkeyMap }) => {
   }, []);
 
   return {
-    state: { hotKeyMap: state },
+    state: { hotkeyMap: state },
     actions: { addApp, removeApp, toggleDisable },
   };
 };
