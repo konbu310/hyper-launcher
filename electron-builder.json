@@ -1,8 +1,20 @@
 {
+  "$schema": "https://raw.githubusercontent.com/electron-userland/electron-builder/master/packages/app-builder-lib/scheme.json",
+  "asar": true,
+  "productName": "Hyper Launcher",
+  "directories": {
+    "output": "release/${version}"
+  },
+  "files": ["dist", "dist-electron"],
   "extraFiles": [
     {
       "from": "GetAppIcon/.build/apple/Products/Release/GetAppIcon",
       "to": "."
     }
-  ]
+  ],
+  "icon": "./assets/icon.png",
+  "mac": {
+    "target": ["dmg"],
+    "identity": null
+  }
 }
