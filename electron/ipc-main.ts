@@ -1,4 +1,5 @@
 import {
+  app,
   dialog,
   ipcMain,
   IpcMainInvokeEvent,
@@ -10,18 +11,19 @@ import { emptyHotkeyMap } from "../src/common/initial-data";
 import { HotkeyMap, IpcKey, ipcKeys } from "../src/common/interface";
 import { mainWindow, store } from "./main";
 
+const binaryPath = app.isPackaged
+  ? path.join(process.resourcesPath, "GetAppIcon")
+  : path.resolve(
+      __dirname,
+      "../GetAppIcon/.build/apple/Products/Release/GetAppIcon",
+    );
+
 const ipcMainEvents = {
   getAppIcon: async (
     _ev: IpcMainInvokeEvent,
-    appPath: string
+    appPath: string,
   ): Promise<string> => {
-    const icon = await execa(
-      path.resolve(
-        __dirname,
-        "../GetAppIcon/.build/apple/Products/Release/GetAppIcon"
-      ),
-      [appPath]
-    );
+    const icon = await execa(binaryPath, [appPath]);
     return icon.stdout.toString();
   },
 
@@ -31,14 +33,14 @@ const ipcMainEvents = {
 
   setHotkeyMap: async (
     _ev: IpcMainInvokeEvent,
-    data: HotkeyMap
+    data: HotkeyMap,
   ): Promise<boolean> => {
     store?.set("hotkeyMap", data);
     return true;
   },
 
   openFileDialog: async (
-    _ev: IpcMainInvokeEvent
+    _ev: IpcMainInvokeEvent,
   ): Promise<OpenDialogReturnValue> => {
     if (!mainWindow) throw new Error("Window not found.");
     return await dialog.showOpenDialog(mainWindow, {

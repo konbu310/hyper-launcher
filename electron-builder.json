@@ -9,7 +9,7 @@
   "extraFiles": [
     {
       "from": "GetAppIcon/.build/apple/Products/Release/GetAppIcon",
-      "to": "."
+      "to": "Resources/GetAppIcon"
     }
   ],
   "icon": "./assets/icon.png",
