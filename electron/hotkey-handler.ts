@@ -1,6 +1,6 @@
 import { globalShortcut, shell } from "electron";
 import { execa } from "execa";
-import { HotkeyMap } from "../common/interface";
+import { HotkeyMap } from "../src/common/interface";
 const prevIndexMap: Map<string, number> = new Map([
   ["1", 0],
   ["2", 0],
@@ -53,21 +53,21 @@ const handleMultiApps = async (key: string, appPaths: string[]) => {
 
 const getNextLaunchApp = async (
   appPaths: string[],
-  prevIndex: number
+  prevIndex: number,
 ): Promise<[number, string]> => {
   const { stdout: visibleAppsStr } = await execa(
-    "lsappinfo visibleProcessList"
+    "lsappinfo visibleProcessList",
   );
   const visibleAppPaths = await Promise.all(
     visibleAppsStr.split(" ").map(async (asn) => {
       const { stdout } = await execa(
-        `lsappinfo info ${asn.replace("\n", "")} -only bundlePath`
+        `lsappinfo info ${asn.replace("\n", "")} -only bundlePath`,
       );
       return stdout
         .replaceAll('"', "")
         .replace("\n", "")
         .replace("LSBundlePath=", "");
-    })
+    }),
   );
   let frontmostFlag = false;
   let activeApps: { index: number; path: string }[] = [];

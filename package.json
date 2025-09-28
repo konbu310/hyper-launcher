@@ -1,11 +1,11 @@
 {
-  "type": "module",
   "name": "hyper-launcher",
   "description": "Flexible and powerful application launcher for macOS.",
   "author": "konbu310",
-  "main": "dist/main/main.js",
+  "main": "dist-electron/main.js",
   "license": "MIT",
   "scripts": {
+    "dev": "vite",
     "rimraf": "rimraf",
     "start": "electron .",
     "watch": "npm-run-all 'rimraf dist' --parallel watch:* start",
@@ -47,6 +47,8 @@
     "rimraf": "^6.0.1",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.34.0",
-    "vite": "6.3.5"
+    "vite": "6.3.5",
+    "vite-plugin-electron": "^0.29.0",
+    "vite-plugin-electron-renderer": "^0.14.6"
   }
 }

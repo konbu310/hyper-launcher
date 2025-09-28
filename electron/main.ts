@@ -1,19 +1,10 @@
 import { app, BrowserWindow } from "electron";
 import EStore from "electron-store";
-import path from "path";
-import { StoreKey } from "../common/interface";
+import { StoreKey } from "../src/common/interface";
 import { registerHotkey } from "./hotkey-handler";
 import { initializeIpcEvents, releaseIpcEvents } from "./ipc-main";
 import { createStore } from "./store";
 import { createMainWindow } from "./window-manager";
-
-if (process.env.NODE_ENV !== "production") {
-  import("electron-reload").then(({ default: electronReload }) => {
-    electronReload(__dirname, {
-      electron: path.resolve(__dirname, "../../node_modules/.bin/electron"),
-    });
-  });
-}
 
 export let store: EStore<StoreKey> | null = null;
 

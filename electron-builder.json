@@ -1,0 +1,8 @@
+{
+  "extraFiles": [
+    {
+      "from": "GetAppIcon/.build/apple/Products/Release/GetAppIcon",
+      "to": "."
+    }
+  ]
+}

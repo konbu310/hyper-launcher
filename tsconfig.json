@@ -1,12 +1,13 @@
 {
   "compilerOptions": {
-    "target": "esnext",
+    "target": "es2022",
     "module": "esnext",
-    "jsx": "react-jsx",
-    "strict": true,
-    "moduleResolution": "bundler",
     "esModuleInterop": true,
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
     "skipLibCheck": true,
-    "noUncheckedIndexedAccess": true,
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": ".",
+    "jsx": "react-jsx"
   }
 }

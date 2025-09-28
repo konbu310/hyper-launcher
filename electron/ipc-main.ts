@@ -6,8 +6,8 @@ import {
 } from "electron";
 import { execa } from "execa";
 import path from "node:path";
-import { emptyHotkeyMap } from "../common/initial-data";
-import { HotkeyMap, IpcKey, ipcKeys } from "../common/interface";
+import { emptyHotkeyMap } from "../src/common/initial-data";
+import { HotkeyMap, IpcKey, ipcKeys } from "../src/common/interface";
 import { mainWindow, store } from "./main";
 
 const ipcMainEvents = {
@@ -15,7 +15,13 @@ const ipcMainEvents = {
     _ev: IpcMainInvokeEvent,
     appPath: string
   ): Promise<string> => {
-    const icon = await execa(path.resolve(__dirname, "GetAppIcon"), [appPath]);
+    const icon = await execa(
+      path.resolve(
+        __dirname,
+        "../GetAppIcon/.build/apple/Products/Release/GetAppIcon"
+      ),
+      [appPath]
+    );
     return icon.stdout.toString();
   },
 
