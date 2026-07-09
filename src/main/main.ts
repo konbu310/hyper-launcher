@@ -1,4 +1,3 @@
-import path from "path";
 import { app, BrowserWindow } from "electron";
 import EStore from "electron-store";
 import { StoreKey } from "../common/interface";
@@ -6,12 +5,6 @@ import { registerHotkey } from "./hotkey-handler";
 import { initializeIpcEvents, releaseIpcEvents } from "./ipc-main";
 import { createStore } from "./store";
 import { createMainWindow } from "./window-manager";
-
-if (process.env.NODE_ENV !== "production") {
-  require("electron-reload")(__dirname, {
-    electron: path.resolve(__dirname, "../../node_modules/.bin/electron"),
-  });
-}
 
 export let store: EStore<StoreKey> | null = null;
 

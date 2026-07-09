@@ -8,12 +8,14 @@ export const createMainWindow = (): BrowserWindow => {
     resizable: false,
     titleBarStyle: "default",
     webPreferences: {
-      preload: path.join(__dirname, "preload.js"),
+      preload: path.join(import.meta.dirname, "preload.js"),
     },
   });
 
   if (process.env.NODE_ENV === "production") {
-    mainWindow.loadFile(path.join(__dirname, "../index.html")).catch((e) => console.error(e));
+    mainWindow
+      .loadFile(path.join(import.meta.dirname, "../index.html"))
+      .catch((e) => console.error(e));
   } else {
     mainWindow.loadURL("http://localhost:3000").catch((e) => console.error(e));
   }
