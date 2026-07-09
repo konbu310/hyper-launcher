@@ -1,6 +1,6 @@
+import path from "path";
 import { app, BrowserWindow } from "electron";
 import EStore from "electron-store";
-import path from "path";
 import { StoreKey } from "../common/interface";
 import { registerHotkey } from "./hotkey-handler";
 import { initializeIpcEvents, releaseIpcEvents } from "./ipc-main";

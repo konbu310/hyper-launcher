@@ -1,5 +1,5 @@
-import { BrowserWindow } from "electron";
 import path from "path";
+import { BrowserWindow } from "electron";
 
 export const createMainWindow = (): BrowserWindow => {
   const mainWindow = new BrowserWindow({
@@ -13,9 +13,7 @@ export const createMainWindow = (): BrowserWindow => {
   });
 
   if (process.env.NODE_ENV === "production") {
-    mainWindow
-      .loadFile(path.join(__dirname, "../index.html"))
-      .catch((e) => console.error(e));
+    mainWindow.loadFile(path.join(__dirname, "../index.html")).catch((e) => console.error(e));
   } else {
     mainWindow.loadURL("http://localhost:3000").catch((e) => console.error(e));
   }

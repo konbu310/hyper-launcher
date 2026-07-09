@@ -1,8 +1,8 @@
-import cx from "classnames";
+import cx from "clsx";
 import { FC, useCallback } from "react";
 import { AppInfo } from "../../common/interface";
+import { useHotkeyMapActions } from "../useHotKeyMap";
 import { Icon } from "./Icon";
-import { useHotkeyMapActions } from "../useHotkeyMap";
 
 const base64Prefix = "data:image/png;base64,";
 

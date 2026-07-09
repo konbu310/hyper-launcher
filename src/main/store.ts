@@ -1,6 +1,6 @@
 import EStore from "electron-store";
-import { StoreKey } from "../common/interface";
 import { emptyHotkeyMap } from "../common/initial-data";
+import { StoreKey } from "../common/interface";
 import { registerHotkey } from "./hotkey-handler";
 
 export const createStore = (): EStore<StoreKey> => {
@@ -9,7 +9,9 @@ export const createStore = (): EStore<StoreKey> => {
   });
 
   store.onDidChange("hotKeyMap", async (newData, _) => {
-    newData && (await registerHotkey(newData));
+    if (newData) {
+      await registerHotkey(newData);
+    }
   });
 
   return store;

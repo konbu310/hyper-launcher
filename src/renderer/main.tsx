@@ -3,7 +3,7 @@ import { createRoot } from "react-dom/client";
 import { App } from "./App";
 import { IconProvioder } from "./components/Icon";
 import "./styles/entry.css";
-import { HotkeyMapProvider } from "./useHotkeyMap";
+import { HotkeyMapProvider } from "./useHotKeyMap";
 
 window.api.getHotkeyMap().then((data) => {
   const container = document.getElementById("root")!;
@@ -17,6 +17,6 @@ window.api.getHotkeyMap().then((data) => {
           <App />
         </main>
       </HotkeyMapProvider>
-    </StrictMode>
+    </StrictMode>,
   );
 });

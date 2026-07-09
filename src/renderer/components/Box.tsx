@@ -1,11 +1,11 @@
 import { FC, useCallback } from "react";
 import { AppInfo } from "../../common/interface";
-import { useHotkeyMapActions } from "../useHotkeyMap";
+import { useHotkeyMapActions } from "../useHotKeyMap";
 import { Card } from "./Card";
 import { Icon } from "./Icon";
 
 const pathToName = (path: string): string => {
-  const match = path.match(/\/.+\/(.+[^\/]).app/);
+  const match = path.match(/\/.+\/(.+[^/]).app/);
   return match?.[1] ?? "";
 };
 
@@ -30,11 +30,7 @@ export const Box: FC<{
       <header className="box__header">
         <span>{`Ctrl + ${boxKey}`}</span>
 
-        <Icon
-          type="plus"
-          className="add-button"
-          onClick={handleOpenFileDialog}
-        />
+        <Icon type="plus" className="add-button" onClick={handleOpenFileDialog} />
       </header>
 
       {appList.map((app, index) => (

@@ -1,7 +1,6 @@
-import { useCallback, useReducer } from "react";
 import { AppInfo, HotkeyMap } from "../common/interface";
-import { constate } from "./constate";
-import update from "immutability-helper";
+import constate from "constate";
+import { useCallback, useReducer } from "react";
 
 type Action =
   | {
@@ -22,22 +21,26 @@ type Action =
 
 function reducer(state: HotkeyMap, action: Action) {
   switch (action.type) {
-    case "add":
-      return update(state, {
-        [action.boxKey]: { $push: [action.app] },
-      });
-    case "remove":
-      return update(state, {
-        [action.boxKey]: { $splice: [[action.cardIndex, 1]] },
-      });
-    case "toggle":
-      return update(state, {
-        [action.boxKey]: {
-          [action.cardIndex]: {
-            $toggle: ["disabled"],
-          },
-        },
-      });
+    case "add": {
+      const appList = state[action.boxKey] ?? [];
+      return { ...state, [action.boxKey]: [...appList, action.app] };
+    }
+    case "remove": {
+      const appList = state[action.boxKey] ?? [];
+      return {
+        ...state,
+        [action.boxKey]: appList.filter((_, index) => index !== action.cardIndex),
+      };
+    }
+    case "toggle": {
+      const appList = state[action.boxKey] ?? [];
+      return {
+        ...state,
+        [action.boxKey]: appList.map((app, index) =>
+          index === action.cardIndex ? { ...app, disabled: !app.disabled } : app,
+        ),
+      };
+    }
     default:
       return state;
   }
@@ -67,5 +70,5 @@ const useHotkeyMapDef = ({ hotKeyMap }: { hotKeyMap: HotkeyMap }) => {
 export const [HotkeyMapProvider, useHotkeyMap, useHotkeyMapActions] = constate(
   useHotkeyMapDef,
   (v) => v.state,
-  (v) => v.actions
+  (v) => v.actions,
 );

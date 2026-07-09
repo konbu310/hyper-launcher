@@ -41,17 +41,7 @@ export const Icon: FC<{
   stroke?: CSSProperties["stroke"];
   size?: CSSProperties["width"] | CSSProperties["height"];
   onClick?: MouseEventHandler<SVGSVGElement>;
-}> = ({
-  type,
-  className,
-  style,
-  size,
-  width = size,
-  height = size,
-  fill,
-  stroke,
-  onClick,
-}) => {
+}> = ({ type, className, style, size, width = size, height = size, fill, stroke, onClick }) => {
   return (
     <svg
       onClick={onClick}

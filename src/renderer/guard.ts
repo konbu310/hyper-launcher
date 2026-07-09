@@ -3,7 +3,7 @@ type SomeNonNullable<T, TKey> = {
 };
 
 export const nonNullableObj = <T, TKey extends keyof T>(
-  obj: T
+  obj: T,
 ): obj is SomeNonNullable<T, TKey> => {
   for (const key in obj) {
     if (obj[key] == null) {

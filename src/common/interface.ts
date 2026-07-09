@@ -11,11 +11,6 @@ export type StoreKey = {
   hotKeyMap: HotkeyMap;
 };
 
-export const ipcKeys = [
-  "getAppIcon",
-  "openFileDialog",
-  "getHotkeyMap",
-  "setHotkeyMap",
-] as const;
+export const ipcKeys = ["getAppIcon", "openFileDialog", "getHotkeyMap", "setHotkeyMap"] as const;
 
 export type IpcKey = (typeof ipcKeys)[number];

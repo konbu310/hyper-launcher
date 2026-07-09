@@ -1,17 +1,27 @@
 import esbuild from "esbuild";
-import { program } from "commander";
 import fs from "node:fs/promises";
+import { parseArgs } from "node:util";
 import { nodeExternalsPlugin } from "esbuild-node-externals";
 
-program
-  .option("--prd", "production mode", false)
-  .option("-w", "watch mode", false)
-  .option("--metafile", "gen metafile", false);
+const {
+  values: { prd = false, w = false, metafile = false },
+} = parseArgs({
+  args: process.argv.slice(2),
+  options: {
+    prd: {
+      type: "boolean",
+    },
+    w: {
+      type: "boolean",
+      short: "w",
+    },
+    metafile: {
+      type: "boolean",
+    },
+  },
+});
 
-program.parse(process.argv);
-const { prd, w, metafile } = program.opts();
-
-const binaryPath = "GetAppIcon/.build/apple/Products/Release/GetAppIcon";
+const fileIconBinaryPath = "node_modules/file-icon/file-icon";
 
 const external = ["electron"];
 
@@ -39,7 +49,7 @@ const option = {
   logLevel: "info",
   color: true,
   format: "esm",
-  plugins: [nodeExternalsPlugin()],
+  plugins: [nodeExternalsPlugin({ allowList: ["file-icon"] })],
   banner: {
     js: `
 import { createRequire } from 'module';
@@ -55,13 +65,14 @@ const __dirname = dirname(__filename);
 
 async function copyBinaries() {
   await fs.mkdir("dist/main", { recursive: true });
-  await fs.copyFile(binaryPath, "dist/main/GetAppIcon");
+  await fs.copyFile(fileIconBinaryPath, "dist/main/file-icon");
+  await fs.chmod("dist/main/file-icon", 0o755);
 }
 
 try {
-  const stat = await fs.stat(binaryPath);
+  const stat = await fs.stat(fileIconBinaryPath);
   if (!stat.isFile()) {
-    console.error("GetAppIcon not found");
+    console.error("file-icon binary not found");
     process.exit(1);
   }
 

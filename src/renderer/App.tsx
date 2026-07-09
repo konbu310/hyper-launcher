@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { Box } from "./components/Box";
-import { useHotkeyMap } from "./useHotkeyMap";
+import { useHotkeyMap } from "./useHotKeyMap";
 
 export const App: FC = () => {
   const { hotKeyMap } = useHotkeyMap();

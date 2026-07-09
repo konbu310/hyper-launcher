@@ -1,11 +1,17 @@
 import packager from "@electron/packager";
 import fs from "node:fs/promises";
-import { program } from "commander";
+import { parseArgs } from "node:util";
 
-program.option("--appVersion <version>", "app version", "development");
-
-program.parse(process.argv);
-const { appVersion } = program.opts();
+const {
+  values: { appVersion = "development" },
+} = parseArgs({
+  args: process.argv.slice(2),
+  options: {
+    appVersion: {
+      type: "string",
+    },
+  },
+});
 
 await fs.writeFile(
   "./dist/package.json",
