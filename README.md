@@ -1,19 +1,21 @@
-![logo](</assets/Hyper Launcher LP.png>)
+![](/public/hero.png)
 
 ## Download
+
 https://github.com/konbu310/hyper-launcher/releases
 
 ## Build
 
 ```bash
 # make app
-$ npm install && npm run pack
+$ npm install && npm run build
 
-# you will get an app in ./build directory
+# you will get an app in ./release/<version> directory
 ```
 
 ## Screenshot
-![](https://raw.githubusercontent.com/konbu310/hyper-launcher/main/assets/screenshot.png)
+
+![](/public/screenshot.png)
 
 ## Note
 

@@ -1,48 +1,41 @@
 name: Electron CD
-on: [push]
-env:
-  GIT_TAG: ${{ github.ref_name }}
+
+on:
+  push:
+    tags:
+      - "v*"
+
+# Minimal permissions: only write access needed for creating releases
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: macos-latest
     steps:
-      - name: Context
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
-        run: echo "$GITHUB_CONTEXT"
-
       - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
         with:
-          submodules: recursive
+          node-version: "lts/*"
+          cache: "npm"
 
-      - name: Build GetAppIcon
-        run: |
-          cd GetAppIcon      
-          make build
+      - name: Install dependencies
+        run: npm ci
 
-      - name: Use Node.js LTS
-        uses: actions/setup-node@v4
-        with:
-          node-version: "20"
+      - name: Type check
+        run: npm run typecheck
 
-      - name: npm install
-        run: |
-          npm install
+      - name: Build
+        run: npx vite build
 
-      - name: Publish
-        run: |
-          npm run pack -- --appVersion ${{ env.GIT_TAG }}
-
-      - name: Archive
-        run: |
-          npm run archive
-
-      - name: Cleanup artifacts
-        run: |
-          find build -mindepth 1 ! -name "*.zip" -exec rm -rf {} +
+      - name: Package
+        run: npx electron-builder --config ./electron-builder.config.js
 
       - name: Release
         uses: softprops/action-gh-release@v2
-        if: startsWith(github.ref, 'refs/tags/')
         with:
-          files: "build/*.zip"
+          generate_release_notes: true
+          files: |
+            release/**/*.dmg
+            release/**/*.zip
