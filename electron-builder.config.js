@@ -14,6 +14,5 @@ export default {
     icon: "public/icons/macos/icon.icns",
     category: "public.app-category.productivity",
     identity: null,
-    publish: ["github"],
   },
 };
