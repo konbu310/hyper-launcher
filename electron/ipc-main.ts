@@ -1,10 +1,26 @@
+import { execFile } from "node:child_process";
+import { fileURLToPath } from "node:url";
+import { promisify } from "node:util";
 import {
+  app,
   dialog,
   ipcMain,
   IpcMainInvokeEvent,
   OpenDialogReturnValue,
 } from "electron";
-import { fileIconToBuffer } from "file-icon";
+import path from "node:path";
+
+const execFileAsync = promisify(execFile);
+
+const fileIconBinaryPath = app.isPackaged
+  ? path.join(process.resourcesPath, "bin", "file-icon")
+  : path.join(
+      path.dirname(fileURLToPath(import.meta.url)),
+      "..",
+      "node_modules",
+      "file-icon",
+      "file-icon",
+    );
 import { emptyHotkeyMap } from "../src/initial-data";
 import { HotkeyMap, IpcKey, ipcKeys } from "../src/interface";
 import { mainWindow, store } from "./main";
@@ -16,8 +32,12 @@ const ipcMainEvents = {
     _ev: IpcMainInvokeEvent,
     appPath: string,
   ): Promise<string> => {
-    const icon = await fileIconToBuffer(appPath, { size: appIconSize });
-    return Buffer.from(icon).toString("base64");
+    const { stdout } = await execFileAsync(
+      fileIconBinaryPath,
+      [JSON.stringify([{ appOrPID: appPath, size: appIconSize }])],
+      { encoding: null, maxBuffer: 100 * 1024 * 1024 },
+    );
+    return Buffer.from(stdout as unknown as Buffer).toString("base64");
   },
 
   getHotkeyMap: async (_ev: IpcMainInvokeEvent): Promise<HotkeyMap> => {

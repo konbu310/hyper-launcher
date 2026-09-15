@@ -9,13 +9,7 @@ export default defineConfig({
     electron({
       main: {
         entry: "electron/main.ts",
-        vite: {
-          build: {
-            rolldownOptions: {
-              external: ["file-icon"],
-            },
-          },
-        },
+        vite: {},
       },
       preload: {
         input: path.join(__dirname, "electron/preload.ts"),

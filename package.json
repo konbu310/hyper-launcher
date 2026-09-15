@@ -17,12 +17,12 @@
     "clsx": "2.1.1",
     "constate": "4.0.0",
     "electron-store": "11.0.2",
-    "file-icon": "6.0.0",
     "react": "19.3.0",
     "react-dom": "19.3.0"
   },
   "devDependencies": {
     "@types/node": "26.5.1",
+    "file-icon": "6.0.0",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
     "@vitejs/plugin-react": "6.1.1",
