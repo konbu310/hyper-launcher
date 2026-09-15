@@ -3,7 +3,9 @@ import pkg from "./package.json" with { type: "json" };
 export default {
   appId: "com.konbu310.hyper-launcher",
   asar: true,
-  asarUnpack: ["node_modules/file-icon/**"],
+  extraResources: [
+    { from: "node_modules/file-icon/file-icon", to: "bin/file-icon" },
+  ],
   productName: "Hyper Launcher",
   directories: {
     output: `release/${pkg.version}`,
