@@ -1,6 +1,6 @@
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "ignorePatterns": ["dist", "build", "coverage", "node_modules"],
+  "ignorePatterns": ["dist", "dist-electron", "node_modules"],
   "plugins": ["eslint", "typescript", "unicorn", "oxc", "react"],
   "rules": {
     "react/rules-of-hooks": "error",

@@ -1,0 +1,21 @@
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import { App } from "./App";
+import { IconProvioder } from "./components/Icon";
+import "./styles/entry.css";
+import { HotkeyMapProvider } from "./useHotKeyMap";
+
+window.api.getHotkeyMap().then((data) => {
+  const container = document.getElementById("root")!;
+  const root = createRoot(container);
+  root.render(
+    <StrictMode>
+      <HotkeyMapProvider hotKeyMap={data}>
+        <main className="main-window">
+          <IconProvioder />
+          <App />
+        </main>
+      </HotkeyMapProvider>
+    </StrictMode>,
+  );
+});

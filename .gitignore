@@ -1,9 +1,8 @@
-.DS_STORE
+.DS_Store
 *.log*
 node_modules
-.idea
-.vscode
-.nova
 dist
-build
+dist-electron
+release
 .env
+*.tsbuildinfo
