@@ -5,7 +5,7 @@
   "author": "konbu310",
   "main": "dist-electron/main.js",
   "license": "MIT",
-  "version": "2.0.0",
+  "version": "0.0.0",
   "scripts": {
     "dev": "vite",
     "build": "vite build && electron-builder --config ./electron-builder.config.js",
